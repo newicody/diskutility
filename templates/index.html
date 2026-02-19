@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Storage Monitor Pro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>🚀 Storage Dashboard</h1>
+        <div id="global-status">Système: Optimal</div>
+    </header>
+
+    <main class="container">
+        <section class="card">
+            <h2>🔌 Stockage Physique</h2>
+            <div class="disk-grid">
+                {% for d in disks if d.nature in ['⚡ NVMe', '💿 HDD', '🚀 SSD'] %}
+                <div class="disk-card" data-nature="{{ d.nature }}">
+                    <div class="disk-head">
+                        <span class="badge">{{ d.nature }}</span>
+                        <strong>{{ d.name }}</strong>
+                    </div>
+                    <small>{{ d.model }}</small>
+                    <div class="usage-container">
+                        <div class="usage-bar">
+                            <div class="fill {{ 'warn' if d.usage_val > 85 }}" style="width: {{ d.usage_val }}%"></div>
+                        </div>
+                        <span>{{ d.usage_val }}%</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>🛡️ Pools ZFS & Snapshots</h2>
+            <div class="zfs-container">
+                <table class="zfs-table">
+                    <thead><tr><th>Pool</th><th>Santé</th><th>Frag</th><th>Usage</th></tr></thead>
+                    <tbody>
+                        {% for p in zfs.pools %}
+                        <tr class="{{ 'status-ok' if p.health == 'ONLINE' else 'status-bad' }}">
+                            <td>{{ p.name }}</td>
+                            <td>{{ p.health }}</td>
+                            <td>{{ p.frag }}</td>
+                            <td>{{ p.cap }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    <section class="card">
+<div>
+        <h2>📋 Historique des Scans</h2>
+        <button onclick="runDailyNow()" class="btn-quick">⚡ Lancer le DailyCheck</button>
+    </div>
+    
+    <div class="reports-grid" id="reports-list">
+        {% for id, t in tests.items()|sort(attribute='1.timestamp', reverse=True) %}
+<a href="/test_detail/{{ id }}" class="report-card {{ t.status.lower() }}">
+    <div class="report-top">
+        <strong>{{ t.name }}</strong>
+        <span class="date">{{ t.date }}</span>
+    </div>
+    <div class="report-bottom">
+        <span class="badge">{{ t.status }}</span>
+        <div class="actions">
+            <input type="checkbox" class="chart-toggle" value="{{ id }}" onclick="event.stopPropagation()">
+            <button onclick="event.preventDefault(); deleteTest('{{ id }}')" class="btn-delete">🗑️</button>
+        </div>
+    </div>
+</a>
+
+        {% endfor %}
+<div>
+    </section>
+
+    <section class="card">
+        <h3>🛠️ Nouveau Benchmark</h3>
+        <form id="benchForm" class="bench-form">
+            <input type="text" id="testName" placeholder="Nom du scan (ex: Stress Test SSD)">
+            <div class="options-flex">
+                <div class="disk-sel">
+                    {% for d in disks if d.type == 'disk' %}
+                    <label><input type="checkbox" name="disks" value="{{ d.name }}"> {{ d.name }}</label>
+                    {% endfor %}
+                </div>
+                <div class="test-sel">
+                    <label><input type="checkbox" name="tests" value="read"> Débit</label>
+                    <label><input type="checkbox" name="tests" value="latency"> Latence</label>
+                    <label><input type="checkbox" name="tests" value="smart" checked> SMART</label>
+                </div>
+                <div class="dur-sel">
+                    Durée: <input type="number" id="testDuration" value="5" min="1" max="60">s
+                </div>
+            </div>
+            <button type="submit" class="btn-primary">Lancer le scan manuel</button>
+        </form>
+    </section>
+
+<section class="card settings-card">
+    <h3>⚙️ Configuration DailyCheck</h3>
+    <div class="settings-grid">
+        <div class="setting-item">
+            <label>Disques à surveiller quotidiennement :</label>
+            <div id="daily-disks-list" class="checkbox-group">
+                {% for d in disks if d.type == 'disk' %}
+                <label class="check-item">
+                    <input type="checkbox" class="daily-disk" value="{{ d.name }}"
+                           {% if d.name in config.disks %}checked{% endif %}> 
+                    {{ d.name }} <small>({{ d.size }})</small>
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="setting-item">
+            <label>Options du DailyCheck :</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" class="daily-test" value="smart" 
+                    {% if 'smart' in config.tests %}checked{% endif %}> SMART</label>
+                <label><input type="checkbox" class="daily-test" value="read" 
+                    {% if 'read' in config.tests %}checked{% endif %}> Débit</label>
+            </div>
+            <div class="input-group">
+                Durée : <input type="number" id="dailyDuration" value="{{ config.duration }}" style="width:50px"> s
+            </div>
+        </div>
+
+        <div class="setting-actions">
+            <button onclick="saveDailyConfig()" class="btn-primary">💾 Enregistrer la Config</button>
+        </div>
+    </div>
+</section>
+    </main>
+
+    <script src="{{ url_for('static', filename='monitor.js') }}"></script>
+</body>
+</html>

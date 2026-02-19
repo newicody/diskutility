@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails {{ test.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .device-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .device-header { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
+        .temp-badge { padding: 5px 10px; border-radius: 15px; color: white; font-weight: bold; font-size: 0.9em; }
+        .temp-ok { background: #2ecc71; }
+        .temp-warn { background: #f1c40f; }
+        .temp-hot { background: #e74c3c; }
+        .temp-na { background: #bdc3c7; }
+        
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        .stat-box { background: #f8f9fa; padding: 10px; border-radius: 5px; text-align: center; }
+        .stat-val { font-size: 1.2em; font-weight: bold; color: #2c3e50; }
+        
+        .smart-table { width: 100%; border-collapse: collapse; font-size: 0.85em; }
+        .smart-table th { text-align: left; color: #7f8c8d; border-bottom: 2px solid #eee; padding: 5px; }
+        .smart-table td { padding: 5px; border-bottom: 1px solid #f1f1f1; }
+        .row-danger { background-color: #ffecec; color: #c0392b; }
+        
+        .chart-container { margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-actions">
+        <div>
+            <h1>📊 Rapport : {{ test.name }}</h1>
+            <small>{{ test.date }} — Status: {{ test.status }}</small>
+        </div>
+        <a href="/" class="btn-primary" style="text-decoration: none; padding: 10px 20px; background: #34495e; color: white; border-radius: 5px;">← Retour</a>
+    </div>
+
+    {% if charts %}
+    <div class="device-card">
+        <h3>Comparatif Global</h3>
+        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+            {% for type, uri in charts.items() %}
+                <div style="flex: 1; min-width: 300px;">
+                    <img src="{{ uri }}" style="width: 100%; height: auto;">
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% for dev, results in test.data.items() %}
+    <div class="device-card">
+        <div class="device-header">
+            <h2>💾 Disque : {{ dev }}</h2>
+            
+            {% set temp = results.smart.get('temp', 'N/A') %}
+            {% if temp != 'N/A' and temp|int > 0 %}
+                <div class="temp-badge {{ 'temp-hot' if temp|int > 55 else ('temp-warn' if temp|int > 45 else 'temp-ok') }}">
+                    🌡️ {{ temp }}°C
+                </div>
+            {% else %}
+                <div class="temp-badge temp-na">🌡️ --</div>
+            {% endif %}
+        </div>
+
+        <div class="stat-grid">
+            {% if results.read %}
+            <div class="stat-box">
+                <div>Lecture</div>
+                <div class="stat-val">{{ results.read.value }} <small>{{ results.read.unit }}</small></div>
+            </div>
+            {% endif %}
+            
+            {% if results.latency %}
+            <div class="stat-box">
+                <div>Latence</div>
+                <div class="stat-val">{{ results.latency.value }} <small>{{ results.latency.unit }}</small></div>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if results.smart and results.smart.attributes %}
+            <details>
+                <summary style="cursor: pointer; padding: 10px; background: #eee; border-radius: 5px;">🔍 Voir les détails SMART</summary>
+                <div style="margin-top: 15px;">
+                    {% if results.smart.critical_alerts %}
+                        <div style="background: #e74c3c; color: white; padding: 10px; margin-bottom: 10px; border-radius: 4px;">
+                            {% for alert in results.smart.critical_alerts %}
+                                <div>⚠️ {{ alert }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <table class="smart-table">
+                        <thead>
+                            <tr><th>ID</th><th>Attribut</th><th>Valeur</th><th>Brut (Raw)</th></tr>
+                        </thead>
+                        <tbody>
+                            {% for attr in results.smart.attributes %}
+                                {% set raw_val = attr.raw_display | default('0') %}
+                                <tr class="{{ 'row-danger' if attr.id in [5, 197, 198] and raw_val|int > 0 }}">
+                                    <td>{{ attr.id }}</td>
+                                    <td>{{ attr.name }}</td>
+                                    <td>{{ attr.value }}</td>
+                                    <td>{{ raw_val }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+        {% elif results.smart and results.smart.error %}
+            <div style="color: red; padding: 10px; border: 1px solid red; border-radius: 5px;">
+                🚫 Echec SMART : {{ results.smart.error }}
+            </div>
+        {% else %}
+            <p style="color: #7f8c8d;">Aucune donnée SMART disponible pour ce périphérique.</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>
