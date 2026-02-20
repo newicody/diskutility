@@ -1,1 +1,21 @@
-{"disks": ["sda", "sdb", "sdc", "sdd", "sde", "nvme1n1", "nvme0n1"], "tests": ["smart", "read"], "duration": "30"}
+{
+  "disks": [
+    "sda",
+    "sdb",
+    "sdc",
+    "sdd",
+    "sde",
+    "nvme1n1",
+    "nvme0n1"
+  ],
+  "tests": [
+    "smart",
+    "read",
+    "latency",
+    "zfs_scrub",
+    "zfs_perf"
+  ],
+  "duration": 1,
+  "zfs_scrub": true,
+  "zfs_perf": true
+}
