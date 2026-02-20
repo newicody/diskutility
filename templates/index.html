@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Storage Monitor Pro</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
@@ -13,16 +14,18 @@
     </header>
 
     <main class="container">
-        <section class="card">
+        <!-- Stockage Physique -->
+        <section class="card accent-disk">
             <h2>🔌 Stockage Physique</h2>
             <div class="disk-grid">
                 {% for d in disks if d.nature in ['⚡ NVMe', '💿 HDD', '🚀 SSD'] %}
-                <div class="disk-card" data-nature="{{ d.nature }}">
+                <div class="disk-card" onclick="UI.openDiskModal('{{ d.name }}')" data-nature="{{ d.nature }}">
                     <div class="disk-head">
                         <span class="badge">{{ d.nature }}</span>
+                        <span class="health-icon" id="health-{{ d.name }}">{{ health_map.get(d.name,'🟢') }}</span> 
                         <strong>{{ d.name }}</strong>
                     </div>
-                    <small>{{ d.model }}</small>
+                    <small>{{ d.model or 'N/A' }}</small>
                     <div class="usage-container">
                         <div class="usage-bar">
                             <div class="fill {{ 'warn' if d.usage_val > 85 }}" style="width: {{ d.usage_val }}%"></div>
@@ -34,18 +37,95 @@
             </div>
         </section>
 
+        <!-- État ZFS -->
+        <section class="card accent-zfs">
+            <h2>🛡️ État des Pools ZFS</h2>
+            {% if not zfs %}
+                <p class="text-muted">Aucun pool ZFS détecté sur ce système.</p>
+            {% else %}
+                {% for pool in zfs %}
+                <div class="zfs-pool">
+                    <div class="zfs-header">
+                        <h3>Pool: <span class="text-primary">{{ pool.name }}</span></h3>
+                        <span class="badge {% if pool.health == 'ONLINE' %}bg-success{% else %}bg-danger{% endif %}">
+                            {{ pool.health }}
+                        </span>
+                    </div>
+
+                    <div class="zfs-grid">
+                        <div class="zfs-stat">
+                            <strong>Capacité:</strong> {{ pool.alloc }} / {{ pool.size }} ({{ pool.cap }}%)
+                            <div class="progress-bar-bg" style="margin-top:5px;">
+                                <div class="progress-bar-fill" style="width: {{ pool.cap }}%"></div>
+                            </div>
+                        </div>
+                        <div class="zfs-stat">
+                            <strong>Fragmentation:</strong> {{ pool.frag }}
+                        </div>
+                        <div class="zfs-stat">
+                            <strong>Erreurs (R/W/CK):</strong> 
+                            <span class="{% if pool.errors.read != '0' %}text-danger{% endif %}">{{ pool.errors.read }}</span> /
+                            <span class="{% if pool.errors.write != '0' %}text-danger{% endif %}">{{ pool.errors.write }}</span> /
+                            <span class="{% if pool.errors.cksum != '0' %}text-danger{% endif %}">{{ pool.errors.cksum }}</span>
+                        </div>
+                    </div>
+
+                    <div class="zfs-scrub" style="margin:10px 0; padding:10px; background:var(--bg); border-radius:6px;">
+                        <strong>Dernier Scan/Scrub :</strong> <small>{{ pool.scrub }}</small>
+                    </div>
+
+                    <details>
+                        <summary style="cursor:pointer; padding:5px;">Voir les Datasets ({{ pool.datasets|length }})</summary>
+                        <table class="fs-table">
+                            {% for ds in pool.datasets %}
+                            <tr>
+                                <td><small>{{ ds.name }}</small></td>
+                                <td><strong>{{ ds.used }}</strong> utilisé</td>
+                                <td><code class="mount-path">{{ ds.mount }}</code></td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </details>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </section>
+
+        <!-- Systèmes de Fichiers -->
         <section class="card">
-            <h2>🛡️ Pools ZFS & Snapshots</h2>
-            <div class="zfs-container">
-                <table class="zfs-table">
-                    <thead><tr><th>Pool</th><th>Santé</th><th>Frag</th><th>Usage</th></tr></thead>
+            <h2>📂 Systèmes de Fichiers & Partitions</h2>
+            <div class="table-responsive">
+                <table class="fs-table">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Montage</th>
+                            <th>Format</th>
+                            <th>Taille</th>
+                            <th>Libre</th>
+                            <th>Usage</th>
+                            <th>UUID</th>
+                        </tr>
+                    </thead>
                     <tbody>
-                        {% for p in zfs.pools %}
-                        <tr class="{{ 'status-ok' if p.health == 'ONLINE' else 'status-bad' }}">
-                            <td>{{ p.name }}</td>
-                            <td>{{ p.health }}</td>
-                            <td>{{ p.frag }}</td>
-                            <td>{{ p.cap }}</td>
+                        {% for p in partitions %}
+                        <tr>
+                            <td><strong>{{ p.name }}</strong></td>
+                            <td><code class="mount-path">{{ p.mountpoint or '-' }}</code></td>
+                            <td><span class="badge">{{ p.fstype or 'N/A' }}</span></td>
+                            <td>{{ p.fssize_human or p.size_human or p.size }}</td>
+                            <td class="text-success">{{ p.fsavail_human or p.fsavail or '-' }}</td>
+                            <td>
+                                {% if p['fsuse%'] %}
+                                <div class="usage-container" style="margin:0;">
+                                    <div class="usage-bar" style="width:80px;">
+                                        <div class="fill" style="width: {{ p['fsuse%'] }}%"></div>
+                                    </div>
+                                    <span>{{ p['fsuse%'] }}</span>
+                                </div>
+                                {% else %} - {% endif %}
+                            </td>
+                            <td><small class="uuid-text">{{ p.uuid or '-' }}</small></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -53,90 +133,215 @@
             </div>
         </section>
 
-    <section class="card">
-<div>
-        <h2>📋 Historique des Scans</h2>
-        <button onclick="runDailyNow()" class="btn-quick">⚡ Lancer le DailyCheck</button>
-    </div>
-    
-    <div class="reports-grid" id="reports-list">
-        {% for id, t in tests.items()|sort(attribute='1.timestamp', reverse=True) %}
-<a href="/test_detail/{{ id }}" class="report-card {{ t.status.lower() }}">
-    <div class="report-top">
-        <strong>{{ t.name }}</strong>
-        <span class="date">{{ t.date }}</span>
-    </div>
-    <div class="report-bottom">
-        <span class="badge">{{ t.status }}</span>
-        <div class="actions">
-            <input type="checkbox" class="chart-toggle" value="{{ id }}" onclick="event.stopPropagation()">
-            <button onclick="event.preventDefault(); deleteTest('{{ id }}')" class="btn-delete">🗑️</button>
+        <!-- Actions rapides -->
+        <div class="top-management-grid">
+            <section class="card accent-daily">
+                <h3>⚡ Daily Check</h3>
+                <p>Scan complet programmé des disques configurés.</p>
+                <div class="btn-group-mini">
+                    <button onclick="Bench.runDailyNow()" class="btn-primary">🚀 Lancer maintenant</button>
+                    <button onclick="Bench.startQuickSmart()" class="btn-sm">🔍 Quick SMART</button>
+                </div>
+            </section>
+
+            <section class="card accent-daily">
+                <h3>📊 Analyse</h3>
+                <div class="btn-group-mini" style="flex-wrap: wrap;">
+                    <button onclick="Charts.showRead()" class="btn-sm">📈 Débit</button>
+                    <button onclick="Charts.showLatency()" class="btn-sm">⏱️ Latence</button>
+                    <button onclick="Charts.showErrors()" class="btn-sm">⚠️ Erreurs</button>
+                    <button onclick="Charts.toggleDaily()" class="btn-sm">📅 Toggle Daily</button>
+                    <button onclick="Charts.filterSmartOnly()" class="btn-sm">🔍 SMART only</button>
+                </div>
+            </section>
         </div>
-    </div>
-</a>
 
-        {% endfor %}
-<div>
-    </section>
-
-    <section class="card">
-        <h3>🛠️ Nouveau Benchmark</h3>
-        <form id="benchForm" class="bench-form">
-            <input type="text" id="testName" placeholder="Nom du scan (ex: Stress Test SSD)">
-            <div class="options-flex">
-                <div class="disk-sel">
-                    {% for d in disks if d.type == 'disk' %}
-                    <label><input type="checkbox" name="disks" value="{{ d.name }}"> {{ d.name }}</label>
-                    {% endfor %}
-                </div>
-                <div class="test-sel">
-                    <label><input type="checkbox" name="tests" value="read"> Débit</label>
-                    <label><input type="checkbox" name="tests" value="latency"> Latence</label>
-                    <label><input type="checkbox" name="tests" value="smart" checked> SMART</label>
-                </div>
-                <div class="dur-sel">
-                    Durée: <input type="number" id="testDuration" value="5" min="1" max="60">s
-                </div>
+        <!-- Graphiques -->
+        <section class="card">
+            <h2>📊 Historique des performances</h2>
+            <div id="chart-container" class="svg-container">
+                <p style="padding:40px; text-align:center; color:#7f8c8d;">📊 Cochez des tests pour voir les graphiques</p>
             </div>
-            <button type="submit" class="btn-primary">Lancer le scan manuel</button>
-        </form>
-    </section>
+        </section>
 
-<section class="card settings-card">
-    <h3>⚙️ Configuration DailyCheck</h3>
-    <div class="settings-grid">
-        <div class="setting-item">
-            <label>Disques à surveiller quotidiennement :</label>
-            <div id="daily-disks-list" class="checkbox-group">
-                {% for d in disks if d.type == 'disk' %}
-                <label class="check-item">
-                    <input type="checkbox" class="daily-disk" value="{{ d.name }}"
-                           {% if d.name in config.disks %}checked{% endif %}> 
-                    {{ d.name }} <small>({{ d.size }})</small>
-                </label>
+        <!-- Historique des Scans -->
+        <section class="card">
+            <h2>📋 Historique des Scans</h2>
+            <div class="reports-grid" id="reports-list">
+                {% for id, t in tests.items()|sort(attribute='1.timestamp', reverse=True) %}
+                <a href="/test_detail/{{ id }}" class="report-card {{ t.status.lower() }}" id="report-{{ id }}">
+                    <div class="report-top">
+                        <strong>{{ t.name }}</strong>
+                        <span class="date">{{ t.date }}</span>
+                    </div>
+                    <div class="report-bottom">
+                        <span class="badge {% if t.status == 'Finished' %}bg-success{% elif t.status == 'Running' %}bg-warning{% else %}bg-danger{% endif %}">
+                            {{ t.status }}
+                        </span>
+                        <div class="actions">
+                            <input type="checkbox" class="chart-toggle" value="{{ id }}" onclick="event.stopPropagation()">
+                            <button onclick="event.preventDefault(); Bench.deleteTest('{{ id }}')" class="btn-delete" title="Supprimer">🗑️</button>
+                        </div>
+                    </div>
+                </a>
                 {% endfor %}
             </div>
+        </section>
+
+        <!-- Benchmarks -->
+        <div class="benchmark-container">
+            <section class="card accent-disk">
+                <h2>💾 Benchmark Disques Physiques</h2>
+                <form onsubmit="Bench.startManual(event, 'disk')">
+                    <label>Cibles :</label>
+                    <div class="selection-box checkbox-group">
+                        {% for disk in disks if disk.type == 'disk' %}
+                        <label class="check-item">
+                            <input type="checkbox" name="targets" value="/dev/{{ disk.name }}"> 
+                            {{ disk.name }} ({{ disk.size }}) - {{ disk.nature }}
+                        </label>
+                        {% endfor %}
+                    </div>
+                    
+                    <label>Tests à effectuer :</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="test_types" value="read" checked> Lecture Séquentielle</label>
+                        <label><input type="checkbox" name="test_types" value="latency"> Latence (Rand-Read)</label>
+                        <label><input type="checkbox" name="test_types" value="smart" checked> Analyse SMART</label>
+                    </div>
+                    
+                    <div class="input-group" style="margin:15px 0;">
+                        <label>Durée (secondes) :</label>
+                        <input type="number" name="duration" value="30" min="5" max="300" style="width:80px;">
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Lancer le Benchmark</button>
+                </form>
+            </section>
+
+            <section class="card accent-zfs">
+                <h2>🛡️ Benchmark Pool ZFS</h2>
+                <form onsubmit="Bench.startManual(event, 'zfs')">
+                    <label>Datasets :</label>
+                    <div class="selection-box checkbox-group">
+                        {% for pool in zfs %}
+                            {% for ds in pool.datasets %}
+                            <label class="check-item">
+                                <input type="checkbox" name="targets" value="{{ ds.mount }}"> 
+                                {{ ds.name }} ({{ ds.used }})
+                            </label>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                    
+                    <label>Tests ZFS :</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="test_types" value="read" checked> Débit Séquentiel</label>
+                        <label><input type="checkbox" name="test_types" value="latency"> Latence</label>
+                        <label><input type="checkbox" name="test_types" value="zfs_scrub"> Forcer un Scrub</label>
+                        <label><input type="checkbox" name="test_types" value="zfs_perf"> Performance Pool</label>
+                    </div>
+                    
+                    <div class="input-group" style="margin:15px 0;">
+                        <label>Durée (secondes) :</label>
+                        <input type="number" name="duration" value="30" min="5" max="300" style="width:80px;">
+                    </div>
+                    
+                    <div class="input-group" style="margin:15px 0;">
+                        <label>Taille du test :</label>
+                        <select name="size">
+                            <option value="1G">1 Go (Cache ARC)</option>
+                            <option value="8G" selected>8 Go (Standard)</option>
+                            <option value="32G">32 Go (Stress disques)</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn-zfs">Lancer le Benchmark ZFS</button>
+                </form>
+            </section>
         </div>
 
-        <div class="setting-item">
-            <label>Options du DailyCheck :</label>
-            <div class="checkbox-group">
-                <label><input type="checkbox" class="daily-test" value="smart" 
-                    {% if 'smart' in config.tests %}checked{% endif %}> SMART</label>
-                <label><input type="checkbox" class="daily-test" value="read" 
-                    {% if 'read' in config.tests %}checked{% endif %}> Débit</label>
+        <!-- Configuration DailyCheck -->
+        <section class="card accent-conf">
+            <h3>⚙️ Configuration DailyCheck</h3>
+            <div class="settings-grid">
+                <div class="setting-item">
+                    <label><strong>Disques à surveiller</strong></label>
+                    <div class="checkbox-group">
+                        {% for d in disks if d.type == 'disk' %}
+                        <label class="check-item">
+                            <input type="checkbox" class="daily-disk" value="{{ d.name }}"
+                                   {% if d.name in config.disks %}checked{% endif %}> 
+                            {{ d.name }} <small>({{ d.size }}) - {{ d.nature }}</small>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <label><strong>Tests quotidiens</strong></label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" class="daily-test" value="smart" 
+                            {% if 'smart' in config.tests %}checked{% endif %}> SMART</label>
+                        <label><input type="checkbox" class="daily-test" value="read" 
+                            {% if 'read' in config.tests %}checked{% endif %}> Débit</label>
+                        <label><input type="checkbox" class="daily-test" value="latency" 
+                            {% if 'latency' in config.tests %}checked{% endif %}> Latence</label>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Durée (s) :</label>
+                        <input type="number" id="dailyDuration" value="{{ config.duration }}" min="5" max="300" style="width:70px;">
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <label><strong>Options ZFS</strong></label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="check-zfs-scrub" class="daily-test" value="zfs_scrub"
+                            {% if config.zfs_scrub %}checked{% endif %}> Scrub automatique</label>
+                        <label><input type="checkbox" id="check-zfs-perf" class="daily-test" value="zfs_perf"
+                            {% if config.zfs_perf %}checked{% endif %}> Test de performance</label>
+                    </div>
+                </div>
             </div>
-            <div class="input-group">
-                Durée : <input type="number" id="dailyDuration" value="{{ config.duration }}" style="width:50px"> s
+            
+            <div class="btn-group-mini" style="margin-top:20px;">
+                <button onclick="Bench.saveDailyConfig()" class="btn-primary">💾 Enregistrer la Configuration</button>
             </div>
+        </section>
+
+        <!-- Modal pour les notes de disques -->
+        <div id="disk-modal" class="modal"></div>
+    </main>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <div class="status-left">
+            <span>👥 <b id="stat-users">0</b> utilisateurs</span>
+            <span>🔄 IO: <b id="stat-io">0.0 MB/s</b></span>
         </div>
 
-        <div class="setting-actions">
-            <button onclick="saveDailyConfig()" class="btn-primary">💾 Enregistrer la Config</button>
+        <div id="task-status-btn" class="task-indicator" onclick="UI.toggleTasks()">
+            🔼 Tâches en cours
+        </div>
+
+        <div class="status-right">
+            <span>🌍 Sessions: <b id="stat-sessions">1</b></span>
+            <span>Système: <b style="color:var(--success)">Optimal</b></span>
         </div>
     </div>
-</section>
-    </main>
+
+    <!-- Popup des tâches en cours -->
+    <div id="active-tasks" class="card">
+        <div class="popup-header">
+            <h3 style="margin:0;">⚙️ Opérations en cours</h3>
+            <button class="btn-close-popup" onclick="UI.toggleTasks()">−</button>
+        </div>
+        <div id="tasks-container">
+            <p class="text-muted" style="text-align:center; padding:20px;">Aucune tâche en cours</p>
+        </div>
+    </div>
 
     <script src="{{ url_for('static', filename='monitor.js') }}"></script>
 </body>
