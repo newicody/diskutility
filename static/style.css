@@ -68,10 +68,7 @@ header h1 {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-}
+/* Hover retiré des sections principales - uniquement sur les éléments interactifs */
 
 /* Section accents */
 .accent-disk { border-top-color: var(--primary) !important; }
@@ -90,6 +87,7 @@ header h1 {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 15px;
+    align-items: start; /* les cartes s'alignent en haut sans étirer */
 }
 
 .reports-grid {
@@ -107,15 +105,134 @@ header h1 {
 
 /* Disk cards */
 .disk-card {
-    border: 1px solid var(--border);
-    padding: 15px;
-    border-radius: 10px;
-    background: var(--card-bg);
-    transition: all 0.2s;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    /* overflow visible quand expanded pour que les détails s'affichent */
 }
 
-.disk-card:hover {
+.disk-card.expanded {
+    grid-column: 1 / -1;   /* pleine largeur dans la grille */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    border-color: var(--primary) !important;
+    overflow: visible;
+    cursor: default;
+}
+
+/* Désactiver le mini-zoom hover sur les cartes dépliées */
+.disk-card.expanded:hover {
+    transform: none;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.disk-card .expand-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.1em;
+    opacity: 0.4;
+    transition: opacity 0.2s, transform 0.3s ease;
+    cursor: pointer;
+    user-select: none;
+    z-index: 10;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.disk-card:hover .expand-icon {
+    opacity: 1;
+}
+
+.disk-card.expanded .expand-icon {
+    opacity: 1;
+    transform: rotate(180deg);
+}
+
+/* Note icon : dans le flux du disk-head, après le nom */
+.disk-card .note-icon {
+    font-size: 0.95em;
+    color: #aab4be;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s, color 0.2s;
+    flex-shrink: 0;
+    padding: 2px 4px;
+    border-radius: 4px;
+    line-height: 1;
+}
+
+.disk-card .note-icon:hover {
+    opacity: 1;
+    color: var(--primary);
+    background: rgba(52,152,219,0.08);
+}
+
+.disk-card .note-icon.has-note {
+    opacity: 1;
+    color: #f39c12;
+}
+
+.disk-card .disk-details {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease, opacity 0.3s ease;
+    margin-top: 15px;
+    padding: 0 10px;
+}
+
+.disk-card.expanded .disk-details {
+    max-height: 1000px;
+    opacity: 1;
+    padding: 15px 10px;
+    border-top: 1px solid var(--border);
+}
+
+
+.disk-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.disk-details-section {
+    background: var(--bg);
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary);
+}
+
+.disk-details-section h4 {
+    margin: 0 0 10px 0;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.attribute-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    margin-left: 5px;
+}
+
+.attribute-badge.critical {
+    background: var(--danger);
+    color: white;
+}
+
+.attribute-badge.warning {
+    background: var(--warning);
+    color: var(--text);
+}
+
+
+/* Hover mini-zoom seulement sur les cartes non-dépliées */
+.disk-card:not(.expanded):hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.1);
     border-color: var(--primary);
@@ -124,8 +241,9 @@ header h1 {
 .disk-head {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     margin-bottom: 10px;
+    padding-right: 28px; /* espace pour l'expand-icon absolu top-right */
 }
 
 .disk-head strong {
@@ -141,9 +259,6 @@ header h1 {
     font-weight: 500;
 }
 
-.health-icon {
-    font-size: 1.2em;
-}
 
 /* Usage bar */
 .usage-container {
@@ -205,6 +320,7 @@ header h1 {
 .table-responsive {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    max-width: 100%;
 }
 
 .fs-table, .detail-table {
@@ -272,8 +388,15 @@ header h1 {
     transition: all 0.2s;
 }
 
-.btn-sm:hover {
-    background: var(--hover);
+.btn-sm.btn-active-type {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    font-weight: 600;
+}
+
+.btn-sm.btn-active-type:hover {
+    background: #2980b9;
 }
 
 .btn-delete {
@@ -437,22 +560,62 @@ header h1 {
 /* Chart container */
 #chart-container {
     width: 100%;
-    height: 400px;
+    min-height: 420px;
     background: white;
     border-radius: 8px;
-    padding: 15px;
+    padding: 10px;
     margin-top: 15px;
-}
-
-.svg-container {
-    width: 100%;
-    height: 100%;
     overflow: hidden;
 }
 
-.svg-container svg {
+/* Layout deux graphiques côte à côte (HDD vs NVMe) */
+.charts-dual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 100%;
+}
+
+/* Layout un seul graphique pleine largeur */
+.charts-single {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+}
+
+.chart-block {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+.chart-block.chart-full {
+    /* Pleine largeur déjà gérée par le parent */
+}
+
+.chart-subtitle {
+    margin: 0 0 8px 0;
+    font-size: 0.9em;
+    color: var(--text);
+    font-weight: 600;
+    padding: 4px 8px;
+    background: white;
+    border-radius: 4px;
+    border-left: 3px solid var(--primary);
+}
+
+.chart-block svg {
     width: 100% !important;
-    height: 100% !important;
+    height: auto !important;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .charts-dual {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Settings */
@@ -490,47 +653,6 @@ header h1 {
 }
 
 /* Responsive */
-@media (max-width: 768px) {
-    .container {
-        padding: 10px;
-    }
-    
-    .top-management-grid,
-    .benchmark-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .status-bar {
-        font-size: 0.8em;
-        padding: 0 10px;
-    }
-    
-    .status-left, .status-right {
-        gap: 10px;
-    }
-    
-    #active-tasks {
-        width: 90%;
-        right: 5%;
-        left: 5%;
-    }
-    
-    .modal-content {
-        width: 95%;
-        margin: 10px;
-    }
-    
-    header {
-        flex-direction: column;
-        text-align: center;
-        gap: 10px;
-    }
-    
-    .disk-grid,
-    .reports-grid {
-        grid-template-columns: 1fr;
-    }
-}
 
 /* Report cards */
 .report-card {
@@ -600,4 +722,923 @@ header h1 {
     font-family: monospace;
     font-size: 0.8em;
     color: #7f8c8d;
+}
+
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;
+    min-width: 250px;
+    max-width: 350px;
+    background: #2c3e50;
+    color: white;
+    text-align: left;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 0.85em;
+    font-weight: normal;
+    position: absolute;
+    z-index: 10000;
+    bottom: 150%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    pointer-events: none;
+    white-space: normal;
+    line-height: 1.5;
+    border: 1px solid #34495e;
+    word-break: break-word;
+}
+
+.tooltip .tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -6px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: #2c3e50 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Tooltips pour les lignes du tableau */
+.tooltip-row {
+    position: relative;
+    cursor: help;
+}
+
+.tooltip-row::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2c3e50;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s;
+    pointer-events: none;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.tooltip-row:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Alertes dans la liste */
+.alert-list li.tooltip {
+    cursor: help;
+    border-bottom: 1px dotted rgba(255,255,255,0.3);
+    list-style-type: none;
+    padding: 5px 0;
+}
+
+/* Pastille santé */
+.health-icon {
+    font-size: 1.3em;
+    padding: 2px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* note-icon styles définis dans .disk-card .note-icon ci-dessus */
+
+.health-icon.tooltip .tooltip-text {
+    width: 300px;
+    font-size: 0.9em;
+    text-align: left;
+    white-space: normal;
+}
+
+/* Animation pour les alertes graves */
+@keyframes pulse-soft {
+    0% { opacity: 1; }
+    50% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+.health-icon[data-tooltip*="PROBLÈMES GRAVES"] {
+    animation: pulse-soft 2s infinite;
+}
+
+
+/* Pour très petits écrans */
+/* Remplacer toute la section @media (max-width: 768px) par celle-ci */
+
+@media (max-width: 768px) {
+    .disk-card.expanded {
+        margin: 5px -5px;
+        width: calc(100% + 10px);
+    }
+    .disk-details-grid {
+        grid-template-columns: 1fr;
+    }
+    .container {
+        padding: 8px;
+        gap: 8px;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+    
+    /* Header mobile */
+    header {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+        padding: 12px;
+        margin-bottom: 8px;
+        width: 100%;
+    }
+    
+    header h1 {
+        font-size: 1.3em;
+        white-space: normal;
+        word-break: break-word;
+    }
+    
+    #global-status {
+        font-size: 0.85em;
+        padding: 4px 8px;
+        width: auto;
+        display: inline-block;
+    }
+    
+    /* Cards - Réduire les padding et marges */
+    .card {
+        padding: 12px;
+        margin-bottom: 0;
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+    }
+    
+    /* Grids en colonne */
+    .top-management-grid,
+    .benchmark-container {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        width: 100%;
+    }
+    
+    .disk-grid,
+    .reports-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        width: 100%;
+    }
+    
+    /* Disk cards - Adaptation */
+    .disk-card {
+        width: 100%;
+        margin: 0;
+        padding: 12px;
+    }
+    
+    .disk-head {
+        flex-wrap: wrap;
+        gap: 5px;
+        width: 100%;
+    }
+    
+    .disk-head strong {
+        font-size: 1.1em;
+        width: auto;
+        flex: 1;
+        min-width: 120px;
+    }
+    
+    .badge {
+        font-size: 0.7em;
+        padding: 2px 6px;
+        white-space: nowrap;
+    }
+    
+    .health-icon {
+        font-size: 1.1em;
+    }
+    
+    /* Usage bar */
+    .usage-container {
+        width: 100%;
+    }
+    
+    .usage-bar {
+        flex: 1;
+    }
+    
+    /* ZFS pools */
+    .zfs-pool {
+        padding: 10px;
+        width: 100%;
+    }
+    
+    .zfs-grid {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+    
+    .zfs-stat {
+        padding: 8px;
+        width: 100%;
+    }
+    
+    /* Tables - ascenseur horizontal */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+    
+    .fs-table {
+        min-width: 500px; /* Largeur minimale pour que le contenu soit lisible */
+        width: 100%;
+        font-size: 0.8em;
+    }
+    
+    .fs-table th, 
+    .fs-table td {
+        padding: 6px 4px;
+        white-space: nowrap;
+    }
+    
+    /* Status bar mobile */
+    .status-bar {
+        font-size: 0.7em;
+        padding: 0 5px;
+        height: auto;
+        min-height: 40px;
+        flex-wrap: wrap;
+        gap: 3px;
+        width: 100%;
+    }
+    
+    .status-left, .status-right {
+        gap: 5px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .status-left span, .status-right span {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        white-space: nowrap;
+    }
+    
+    /* Popup mobile */
+    #active-tasks {
+        width: 95%;
+        right: 2.5%;
+        left: 2.5%;
+        bottom: 45px;
+        max-height: 60vh;
+    }
+    
+    #tasks-container {
+        max-height: 300px;
+        overflow-y: auto;
+        padding: 5px;
+    }
+    
+    /* Graphiques mobiles */
+    #chart-container {
+        min-height: 280px;
+        padding: 8px;
+        width: 100%;
+    }
+    
+    .charts-dual {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .chart-block {
+        padding: 8px;
+    }
+    
+    /* Boutons */
+    .btn-group-mini {
+        flex-wrap: wrap;
+        gap: 4px;
+        width: 100%;
+    }
+    
+    .btn-sm {
+        flex: 1 1 calc(50% - 4px);
+        min-width: 0;
+        padding: 8px 4px;
+        font-size: 0.8em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .btn-primary, .btn-zfs {
+        width: 100%;
+        padding: 10px;
+        font-size: 0.9em;
+    }
+    
+    /* Settings */
+    .settings-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        width: 100%;
+    }
+    
+    .setting-item {
+        padding: 10px;
+        width: 100%;
+    }
+    
+    .checkbox-group {
+        gap: 6px;
+    }
+    
+    .check-item {
+        font-size: 0.85em;
+        flex-wrap: wrap;
+    }
+    
+    .input-group {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    
+    .input-group input {
+        width: 60px !important;
+    }
+    
+    /* Métriques */
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+        width: 100%;
+    }
+    
+    .metric-card {
+        padding: 8px;
+    }
+    
+    .metric-value {
+        font-size: 1.2em;
+        word-break: break-word;
+    }
+    
+    .metric-value small {
+        font-size: 0.7em;
+    }
+    
+    .metric-label {
+        font-size: 0.8em;
+    }
+    
+    /* Alertes */
+    .alert-banner {
+        padding: 8px;
+        font-size: 0.85em;
+        width: 100%;
+    }
+    
+    .alert-list {
+        margin-left: 15px;
+    }
+    
+    .alert-list li {
+        font-size: 0.85em;
+        margin: 3px 0;
+        word-break: break-word;
+    }
+    
+    /* Rapports */
+    .reports-grid .report-card {
+        margin-bottom: 0;
+        width: 100%;
+        padding: 10px;
+    }
+    
+    .report-top {
+        flex-direction: row;
+        align-items: center;
+        gap: 5px;
+        width: 100%;
+    }
+    
+    .report-top strong {
+        font-size: 0.9em;
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .report-top .date {
+        font-size: 0.8em;
+        white-space: nowrap;
+    }
+    
+    .report-bottom {
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+    }
+    
+    .actions {
+        margin-left: auto;
+        display: flex;
+        gap: 5px;
+    }
+    
+    .actions input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+    }
+    
+    /* Disques */
+    .temp-badge {
+        padding: 3px 8px;
+        font-size: 0.8em;
+        white-space: nowrap;
+    }
+    
+    /* Tooltips - ajustement pour mobile */
+    .tooltip .tooltip-text {
+        min-width: 200px;
+        max-width: 280px;
+        font-size: 0.8em;
+        bottom: 120%;
+    }
+    
+    .tooltip .tooltip-text::after {
+        left: 10px;
+    }
+    
+    /* ZFS details */
+    .zfs-scrub {
+        padding: 8px !important;
+        font-size: 0.85em;
+        word-break: break-word;
+    }
+    
+    details summary {
+        font-size: 0.9em;
+    }
+    
+    /* Summary stats */
+    .summary-stats {
+        gap: 5px;
+    }
+    
+    .summary-item {
+        padding: 5px 8px;
+        font-size: 0.8em;
+    }
+    
+    /* Modals */
+    .modal-content {
+        width: 95%;
+        margin: 10px auto;
+        padding: 15px;
+        max-height: 80vh;
+    }
+    
+    .modal-content textarea {
+        height: 120px !important;
+    }
+    
+    /* Historique */
+    .reports-grid {
+        max-height: none;
+        overflow-y: visible;
+    }
+}
+
+/* Pour très petits écrans */
+@media (max-width: 480px) {
+    .container {
+        padding: 5px;
+        gap: 5px;
+    }
+    
+    .card {
+        padding: 10px;
+    }
+    
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .status-bar {
+        font-size: 0.65em;
+        padding: 3px;
+    }
+    
+    .task-indicator {
+        padding: 3px 6px;
+        font-size: 0.75em;
+    }
+    
+    .btn-group-mini {
+        flex-direction: column;
+    }
+    
+    .btn-sm {
+        width: 100%;
+        flex: none;
+    }
+    
+    .disk-head {
+        flex-direction: column;
+        align-items: flex-start;
+        position: relative;
+    }
+    
+    .disk-head strong {
+        order: -1;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    
+    .badge {
+        align-self: flex-start;
+    }
+    
+    .health-icon {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+    }
+    
+    .disk-card {
+        position: relative;
+        padding-top: 30px;
+    }
+    
+    .report-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .report-top strong {
+        width: 100%;
+        white-space: normal;
+    }
+    
+    .report-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .actions {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    .fs-table {
+        min-width: 400px;
+    }
+    
+    .btn-primary, .btn-zfs {
+        padding: 8px;
+        font-size: 0.85em;
+    }
+    
+    .temp-badge {
+        margin-top: 5px;
+        width: fit-content;
+    }
+    
+    .modal-content {
+        padding: 10px;
+    }
+    
+    .modal-header h3 {
+        font-size: 1em;
+    }
+}
+
+/* Pour les très grands écrans, garder une largeur max */
+@media (min-width: 1600px) {
+    .container {
+        max-width: 1400px;
+    }
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+}
+
+.fs-table {
+    min-width: 100%; /* Pas de largeur minimale forcée */
+    width: 100%;
+}
+
+/* Zones de texte avec ascenseur */
+textarea {
+    overflow-y: auto;
+    resize: vertical;
+    max-height: 300px;
+}
+
+/* Popup avec ascenseur si nécessaire */
+#tasks-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 5px;
+}
+
+/* Toolbox - Tâches */
+.task-progress-item {
+    padding: 10px 12px;
+    margin: 6px 0;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border-left: 4px solid #3498db;
+    transition: opacity 0.3s ease;
+    position: relative;
+}
+
+.task-progress-item.task-running {
+    border-left-color: #f39c12;
+    background: #fffbf0;
+}
+
+.task-progress-item.task-success {
+    border-left-color: #2ecc71;
+    background: #f0fff4;
+}
+
+.task-progress-item.task-error {
+    border-left-color: #e74c3c;
+    background: #fff5f5;
+}
+
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+    gap: 8px;
+}
+
+.task-name {
+    font-weight: 600;
+    font-size: 0.9em;
+    flex: 1;
+}
+
+.task-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.task-remove-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85em;
+    color: #bdc3c7;
+    padding: 2px 4px;
+    border-radius: 3px;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.task-remove-btn:hover {
+    color: #e74c3c;
+    background: rgba(231, 76, 60, 0.1);
+}
+
+.task-meta {
+    display: flex;
+    gap: 8px;
+    font-size: 0.75em;
+    color: #7f8c8d;
+    margin-bottom: 3px;
+    flex-wrap: wrap;
+}
+
+.task-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.75em;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+.task-status-badge.running { background: #fff3cd; color: #856404; }
+.task-status-badge.success { background: #d1e7dd; color: #0f5132; }
+.task-status-badge.error { background: #f8d7da; color: #842029; }
+
+.task-current-op {
+    font-size: 0.8em;
+    color: #555;
+    margin: 2px 0;
+    font-style: italic;
+}
+
+/* Toolbar header avec bouton clear */
+.toolbox-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-clear-toolbox {
+    background: none;
+    border: 1px solid var(--border);
+    color: #7f8c8d;
+    font-size: 0.75em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-clear-toolbox:hover {
+    background: #fee;
+    border-color: #e74c3c;
+    color: #e74c3c;
+}
+
+/* Log options panel */
+.log-options-panel {
+    padding: 10px 15px;
+    border-top: 1px solid var(--border);
+    background: #f8f9fa;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    display: none;
+}
+
+.log-options-panel.show {
+    display: block;
+}
+
+.log-options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    margin-top: 6px;
+}
+
+.log-option-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.8em;
+    cursor: pointer;
+    padding: 2px 0;
+}
+
+.btn-log-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    color: #7f8c8d;
+    font-size: 0.75em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-log-toggle:hover {
+    background: var(--hover);
+}
+
+.tooltip.tooltip-bottom .tooltip-text {
+    bottom: auto;
+    top: 150%;
+}
+
+.tooltip.tooltip-bottom .tooltip-text::after {
+    top: auto;
+    bottom: 100%;
+    border-color: transparent transparent #2c3e50 transparent;
+}
+
+
+/* Modal agrandi pour les détails disque */
+.disk-detail-modal .modal-content {
+    width: 90%;
+    max-width: 1200px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.disk-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.disk-detail-section {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+}
+
+.disk-detail-section h4 {
+    margin: 0 0 15px 0;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.disk-detail-section.full-width {
+    grid-column: 1 / -1;
+}
+
+.disk-detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+}
+
+.disk-detail-table th {
+    text-align: left;
+    color: #7f8c8d;
+    padding: 8px 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.disk-detail-table td {
+    padding: 6px 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.disk-detail-table tr:hover {
+    background: #fff;
+}
+
+.disk-detail-attributes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.attribute-item {
+    background: white;
+    padding: 8px 12px;
+    margin: 5px 0;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    border-left: 3px solid #3498db;
+}
+
+.attribute-item.critical {
+    border-left-color: var(--danger);
+    background: #fff5f5;
+}
+
+.attribute-name {
+    font-weight: 600;
+}
+
+.attribute-value {
+    font-family: monospace;
+    color: var(--text);
+}
+
+.attribute-raw {
+    font-family: monospace;
+    background: #f1f1f1;
+    padding: 2px 5px;
+    border-radius: 3px;
 }
