@@ -176,116 +176,115 @@ class DiskScanner:
 
     @staticmethod
     def get_smart_data(device):
-        """Récupère les données SMART d'un périphérique"""
-        data = {
-            "temp": "N/A",
-            "critical_alerts": [],
-            "attributes": [],
-            "health": "OK"
-        }
-        
-        try:
-            # Vérifier si le périphérique supporte SMART
-            check_cmd = ["sudo", "smartctl", "-i", f"/dev/{device}"]
-            check_result = subprocess.run(check_cmd, capture_output=True, text=True)
-            
-            if "SMART support is: Unavailable" in check_result.stdout:
-                data["error"] = "SMART non supporté"
-                return data
-            
-            # Récupérer les données SMART
-            cmd = ["sudo", "smartctl", "-a", "-j", f"/dev/{device}"]
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
-            
-            if result.returncode != 0 and "NVMe" not in result.stdout:
-                data["error"] = f"smartctl error: {result.stderr}"
-                return data
-            
-            if not result.stdout.strip():
-                data["error"] = "Aucune donnée SMART"
-                return data
-            
-            raw = json.loads(result.stdout)
-            
-            # Température
-            if "temperature" in raw:
-                data["temp"] = raw["temperature"].get("current", "N/A")
-            elif "nvme_smart_health_information_log" in raw:
-                data["temp"] = raw["nvme_smart_health_information_log"].get("temperature", "N/A")
-            
-            # Attributs SMART (SATA)
-            if "ata_smart_attributes" in raw:
-                for attr in raw["ata_smart_attributes"].get("table", []):
-                    raw_val = attr.get("raw", {}).get("value", 0)
-                    attr_data = {
-                        "id": attr.get("id"),
-                        "name": attr.get("name", "Unknown"),
-                        "value": attr.get("value", "N/A"),
-                        "raw_display": attr.get("raw", {}).get("string", "0"),
-                        "raw_value": raw_val,
-                        "threshold": attr.get("thresh", "N/A"),
-                        "worst": attr.get("worst", "N/A")
-                    }
-                    data["attributes"].append(attr_data)
-                    
-                    # Alertes critiques
-                    if attr.get("id") in [5, 10, 184, 187, 188, 197, 198, 201]:
-                        if raw_val > 0:
-                            data["critical_alerts"].append(
-                                f"{attr.get('name')}: {raw_val}"
-                            )
-                            data["health"] = "ALERTE"
-            
-            # Attributs NVMe
-            elif "nvme_smart_health_information_log" in raw:
-                nvme = raw["nvme_smart_health_information_log"]
-                
-                attrs = [
-                    ("Critical Warning", nvme.get("critical_warning", 0)),
-                    ("Temperature", nvme.get("temperature", 0)),
-                    ("Available Spare", nvme.get("available_spare", 0)),
-                    ("Available Spare Threshold", nvme.get("available_spare_threshold", 0)),
-                    ("Percentage Used", nvme.get("percentage_used", 0)),
-                    ("Data Units Read", nvme.get("data_units_read", 0)),
-                    ("Data Units Written", nvme.get("data_units_written", 0)),
-                    ("Host Read Commands", nvme.get("host_read_commands", 0)),
-                    ("Host Write Commands", nvme.get("host_write_commands", 0)),
-                    ("Controller Busy Time", nvme.get("controller_busy_time", 0)),
-                    ("Power Cycles", nvme.get("power_cycles", 0)),
-                    ("Power On Hours", nvme.get("power_on_hours", 0)),
-                    ("Unsafe Shutdowns", nvme.get("unsafe_shutdowns", 0)),
-                    ("Media Errors", nvme.get("media_errors", 0)),
-                    ("Error Info Log Entries", nvme.get("error_info_log_entry_count", 0))
-                ]
-                
-                for name, value in attrs:
-                    data["attributes"].append({
-                        "id": name,
-                        "name": name,
-                        "value": value,
-                        "raw_display": str(value)
-                    })
-                
-                if nvme.get("media_errors", 0) > 0:
-                    data["critical_alerts"].append(f"Erreurs média: {nvme.get('media_errors')}")
-                    data["health"] = "ALERTE"
-                
-                if nvme.get("critical_warning", 0) > 0:
-                    data["critical_alerts"].append("Avertissement critique matériel")
-                    data["health"] = "ALERTE"
-            
-            # Santé globale
-            if "smart_status" in raw:
-                if not raw["smart_status"].get("passed", True):
-                    data["health"] = "FAILED"
-                    data["critical_alerts"].append("SMART auto-test failed")
-            
-            return data
-            
-        except Exception as e:
-            logger.error(f"Erreur SMART {device}: {e}")
-            data["error"] = str(e)
-            return data
+	    """Récupère les données SMART - Version sans timeout avec meilleure gestion d'erreur"""
+	    data = {
+	        "temp": "N/A",
+	        "critical_alerts": [],
+	        "attributes": [],
+	        "health": "Inconnu"
+	    }
+	    
+	    try:
+	        cmd = ["sudo", "smartctl", "-a", "-j", f"/dev/{device}"]
+	        
+	        # Utiliser Popen directement pour un contrôle plus fin
+	        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+	        stdout, stderr = process.communicate()  # Pas de timeout !
+	        
+	        # Analyser le code de retour
+	        if process.returncode != 0:
+	            # smartctl retourne souvent !=0 même avec des données valides
+	            # Vérifier si on a quand même du JSON
+	            if stdout and stdout.strip().startswith('{'):
+	                try:
+	                    raw = json.loads(stdout)
+	                    # Ajouter une alerte pour le code d'erreur
+	                    data["critical_alerts"].append(f"smartctl exit status: {process.returncode}")
+	                except:
+	                    data["error"] = f"smartctl error {process.returncode}: {stderr[:200]}"
+	                    return data
+	            else:
+	                data["error"] = f"smartctl error {process.returncode}: {stderr[:200]}"
+	                return data
+	        else:
+	            # Code de retour 0, tout est OK
+	            raw = json.loads(stdout)
+	        
+	        # Extraction de la température
+	        if "temperature" in raw:
+	            data["temp"] = raw["temperature"].get("current", "N/A")
+	        elif "nvme_smart_health_information_log" in raw:
+	            data["temp"] = raw["nvme_smart_health_information_log"].get("temperature", "N/A")
+	
+	        # Vérifier les self-test logs pour sdb (qui a des échecs)
+	        if "ata_smart_self_test_log" in raw:
+	            test_log = raw["ata_smart_self_test_log"].get("standard", {})
+	            for test in test_log.get("table", []):
+	                if not test.get("status", {}).get("passed", True):
+	                    status_str = test.get("status", {}).get("string", "Échec inconnu")
+	                    data["critical_alerts"].append(f"Self-test échoué: {status_str}")
+                        
+	
+	        # Extraction des attributs (SATA)
+	        if "ata_smart_attributes" in raw:
+	            for attr in raw["ata_smart_attributes"].get("table", []):
+	                raw_val = attr.get("raw", {}).get("value", 0)
+	                attr_name = attr.get("name", "Unknown")
+	                attr_id = attr.get("id")
+	                
+	                data["attributes"].append({
+	                    "id": attr_id,
+	                    "name": attr_name,
+	                    "value": attr.get("value", "N/A"),
+	                    "worst": attr.get("worst", "N/A"),
+	                    "thresh": attr.get("thresh", "N/A"),
+	                    "raw_display": attr.get("raw", {}).get("string", "0"),
+	                    "raw_value": raw_val
+	                })
+	                
+	                # Attributs critiques (ajout de 188 pour Command_Timeout)
+	                critical_ids = [5, 10, 184, 187, 188, 197, 198, 201]
+	                
+	                if attr_id in critical_ids and raw_val > 0:
+	                    data["critical_alerts"].append(f"{attr_name}: {raw_val}")
+	                
+	                # Pour sdb, Current_Pending_Sector (197) est à 2159 !
+	                if attr_id == 197 and raw_val > 0:
+	                    data["critical_alerts"].append(f"SECTEURS PENDING: {raw_val}")
+	
+	        # Extraction pour NVMe
+	        elif "nvme_smart_health_information_log" in raw:
+	            nvme_log = raw["nvme_smart_health_information_log"]
+	            
+	            data["attributes"].extend([
+	                {"id": "Warn", "name": "Critical Warning", "value": nvme_log.get("critical_warning", 0), "raw_display": str(nvme_log.get("critical_warning", 0))},
+	                {"id": "Usure", "name": "Percentage Used", "value": nvme_log.get("percentage_used", 0), "raw_display": f"{nvme_log.get('percentage_used', 0)}%"},
+	                {"id": "Spare", "name": "Available Spare", "value": nvme_log.get("available_spare", 0), "raw_display": f"{nvme_log.get('available_spare', 0)}%"},
+	                {"id": "Err", "name": "Media Errors", "value": nvme_log.get("media_errors", 0), "raw_display": str(nvme_log.get("media_errors", 0))}
+	            ])
+	
+	            if nvme_log.get("media_errors", 0) > 0:
+	                data["critical_alerts"].append(f"Erreurs Média: {nvme_log.get('media_errors')}")
+	            if nvme_log.get("critical_warning", 0) > 0:
+	                data["critical_alerts"].append("Avertissement critique matériel !")
+	
+	        # Santé globale
+	        if "smart_status" in raw:
+	            if raw["smart_status"].get("passed", True):
+	                data["health"] = "OK"
+	            else:
+	                data["health"] = "FAILED"
+	                data["critical_alerts"].append("SMART global: FAILED")
+	
+	        return data
+	
+	    except subprocess.TimeoutExpired:
+	        # Normalement on n'arrive jamais ici car on n'a pas mis de timeout
+	        data["error"] = "Timeout - Le processus a été tué"
+	        return data
+	    except Exception as e:
+	        data["error"] = f"Exception: {str(e)}"
+	        return data
 
     @staticmethod
     def get_partitions():
