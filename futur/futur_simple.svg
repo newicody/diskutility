@@ -1,0 +1,1929 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg width="7500pt" height="4519pt" viewBox="0.00 0.00 7500.00 4519.24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 4515.2406)">
+<title>SauvetageExpert</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-4515.2406 7496,-4515.2406 7496,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster_legend</title>
+<polygon fill="none" stroke="#000000" points="8,-4389.6406 8,-4503.2406 1764,-4503.2406 1764,-4389.6406 8,-4389.6406"/>
+<text text-anchor="middle" x="886" y="-4486.6406" font-family="Times,serif" font-size="14.00" fill="#000000">LÉGENDE - INTERVENTION HUMAINE</text>
+</g>
+<g id="clust2" class="cluster">
+<title>cluster_monitoring</title>
+<polygon fill="none" stroke="#ff0000" points="1772,-4395.0406 1772,-4497.8406 3963,-4497.8406 3963,-4395.0406 1772,-4395.0406"/>
+<text text-anchor="middle" x="2867.5" y="-4481.2406" font-family="Times,serif" font-size="14.00" fill="#ff0000">🔴 SURVEILLANCE CONTINUE - TOUT AU LONG DU PROCESSUS</text>
+</g>
+<g id="clust3" class="cluster">
+<title>cluster_diag</title>
+<polygon fill="none" stroke="#444444" points="2175,-4102.8 2175,-4216.4 3618,-4216.4 3618,-4102.8 2175,-4102.8"/>
+<text text-anchor="middle" x="2896.5" y="-4199.8" font-family="Times,serif" font-size="14.00" fill="#000000">RÉSULTATS DIAGNOSTIC - CONFIRMATION REQUISE</text>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_feedback</title>
+<polygon fill="none" stroke="#ffa000" points="5515,-2717.6 5515,-2925.6 7484,-2925.6 7484,-2717.6 5515,-2717.6"/>
+<text text-anchor="middle" x="6499.5" y="-2909" font-family="Times,serif" font-size="14.00" fill="#000000">🔄 BOUCLES DE RÉTROACTION - DÉCISIONS HUMAINES AVEC CONFIRMATION</text>
+</g>
+<g id="clust5" class="cluster">
+<title>cluster_cas1</title>
+<polygon fill="none" stroke="#2e7d32" points="1695,-3345.8 1695,-4038.8 2051,-4038.8 2051,-3345.8 1695,-3345.8"/>
+<text text-anchor="middle" x="1873" y="-4022.2" font-family="Times,serif" font-size="14.00" fill="#000000">CAS 1 : DISQUE SAIN</text>
+</g>
+<g id="clust6" class="cluster">
+<title>cluster_cas2</title>
+<polygon fill="none" stroke="#ff6b6b" points="4741,-1150.8 4741,-4360.8406 5507,-4360.8406 5507,-1150.8 4741,-1150.8"/>
+<text text-anchor="middle" x="5124" y="-4344.2406" font-family="Times,serif" font-size="14.00" fill="#000000">CAS 2 : DISQUE DÉFAILLANT</text>
+</g>
+<g id="clust7" class="cluster">
+<title>cluster_cas3</title>
+<polygon fill="none" stroke="#ff8f00" points="3063,-2462 3063,-3848.2 4613,-3848.2 4613,-2462 3063,-2462"/>
+<text text-anchor="middle" x="3838" y="-3831.6" font-family="Times,serif" font-size="14.00" fill="#000000">CAS 3 : BRUITS ANORMAUX</text>
+</g>
+<g id="clust8" class="cluster">
+<title>cluster_cas4</title>
+<polygon fill="none" stroke="#b71c1c" points="2395,-1892.4 2395,-4020.4 3025,-4020.4 3025,-1892.4 2395,-1892.4"/>
+<text text-anchor="middle" x="2710" y="-4003.8" font-family="Times,serif" font-size="14.00" fill="#000000">CAS 4 : DISQUE NON DÉTECTÉ</text>
+</g>
+<g id="clust9" class="cluster">
+<title>cluster_cas5</title>
+<polygon fill="none" stroke="#6a1b9a" points="2059,-2074.6 2059,-4022.6 2387,-4022.6 2387,-2074.6 2059,-2074.6"/>
+<text text-anchor="middle" x="2223" y="-4006" font-family="Times,serif" font-size="14.00" fill="#000000">CAS 5 : POOL ZFS</text>
+</g>
+<g id="clust10" class="cluster">
+<title>cluster_cas6</title>
+<polygon fill="none" stroke="#00796b" points="3876,-1143.2 3876,-1790.6 4649,-1790.6 4649,-1143.2 3876,-1143.2"/>
+<text text-anchor="middle" x="4262.5" y="-1774" font-family="Times,serif" font-size="14.00" fill="#000000">CAS 6 : RAID LOGICIEL</text>
+</g>
+<g id="clust11" class="cluster">
+<title>cluster_post</title>
+<polygon fill="none" stroke="#388e3c" points="4456,-73 4456,-1114.4 4845,-1114.4 4845,-73 4456,-73"/>
+<text text-anchor="middle" x="4650.5" y="-1097.8" font-family="Times,serif" font-size="14.00" fill="#000000">PHASE FINALE : TRAVAIL SUR L'IMAGE</text>
+</g>
+<!-- LegendAuto -->
+<g id="node1" class="node">
+<title>LegendAuto</title>
+<polygon fill="#0056b3" stroke="#555555" points="1756.3771,-4454.4426 1599.6229,-4454.4426 1599.6229,-4413.6386 1756.3771,-4413.6386 1756.3771,-4454.4426"/>
+<text text-anchor="middle" x="1678" y="-4442.1406" font-family="Courier New" font-size="9.00" fill="#ffffff">🔵 AUTOMATIQUE</text>
+<text text-anchor="middle" x="1678" y="-4431.3406" font-family="Courier New" font-size="9.00" fill="#ffffff">Détectable par la machine</text>
+<text text-anchor="middle" x="1678" y="-4420.5406" font-family="Courier New" font-size="9.00" fill="#ffffff">SMART, dmesg, lsblk, etc.</text>
+</g>
+<!-- LegendManual -->
+<g id="node2" class="node">
+<title>LegendManual</title>
+<polygon fill="#ff8f00" stroke="#555555" points="1582.0563,-4454.4426 1301.9437,-4454.4426 1301.9437,-4413.6386 1582.0563,-4413.6386 1582.0563,-4454.4426"/>
+<text text-anchor="middle" x="1442" y="-4442.1406" font-family="Courier New" font-size="9.00" fill="#000000">🟠 INTERVENTION HUMAINE REQUISE</text>
+<text text-anchor="middle" x="1442" y="-4431.3406" font-family="Courier New" font-size="9.00" fill="#000000">Paramètres que la machine ne peut pas connaître</text>
+<text text-anchor="middle" x="1442" y="-4420.5406" font-family="Courier New" font-size="9.00" fill="#000000">Bruits, odeurs, décisions stratégiques</text>
+</g>
+<!-- LegendMixed -->
+<g id="node3" class="node">
+<title>LegendMixed</title>
+<polygon fill="#2e7d32" stroke="#555555" points="1284.3679,-4452.0406 1073.6321,-4452.0406 1073.6321,-4416.0406 1284.3679,-4416.0406 1284.3679,-4452.0406"/>
+<text text-anchor="middle" x="1179" y="-4436.7406" font-family="Courier New" font-size="9.00" fill="#ffffff">🟢 MIXTE</text>
+<text text-anchor="middle" x="1179" y="-4425.9406" font-family="Courier New" font-size="9.00" fill="#ffffff">Détection auto + validation humaine</text>
+</g>
+<!-- LegendUrgent -->
+<g id="node4" class="node">
+<title>LegendUrgent</title>
+<polygon fill="#d32f2f" stroke="#555555" points="1055.2533,-4452.0406 758.7467,-4452.0406 758.7467,-4416.0406 1055.2533,-4416.0406 1055.2533,-4452.0406"/>
+<text text-anchor="middle" x="907" y="-4436.7406" font-family="Courier New" font-size="9.00" fill="#ffffff">🔴 ALERTE HUMAINE</text>
+<text text-anchor="middle" x="907" y="-4425.9406" font-family="Courier New" font-size="9.00" fill="#ffffff">Situation critique nécessitant décision immédiate</text>
+</g>
+<!-- LegendDecision -->
+<g id="node5" class="node">
+<title>LegendDecision</title>
+<polygon fill="#ffffff" stroke="#555555" points="476,-4463.741 211.7827,-4434.0406 476,-4404.3403 740.2173,-4434.0406 476,-4463.741"/>
+<text text-anchor="middle" x="476" y="-4436.7406" font-family="Courier New" font-size="9.00" fill="#000000">⬜ DÉCISION HUMAINE</text>
+<text text-anchor="middle" x="476" y="-4425.9406" font-family="Courier New" font-size="9.00" fill="#000000">Point de choix où l'utilisateur doit décider</text>
+</g>
+<!-- LegendConfirm -->
+<g id="node6" class="node">
+<title>LegendConfirm</title>
+<polygon fill="#4caf50" stroke="#555555" points="193.973,-4470.3409 16.027,-4470.3409 16.027,-4397.7403 193.973,-4397.7403 193.973,-4470.3409"/>
+<text text-anchor="middle" x="105" y="-4458.3406" font-family="Courier New" font-size="9.00" fill="#000000">✅ CONFIRMATION REQUISE</text>
+<text text-anchor="middle" x="105" y="-4447.5406" font-family="Courier New" font-size="9.00" fill="#000000">Chaque action affiche d'abord:</text>
+<text text-anchor="middle" x="105" y="-4436.7406" font-family="Courier New" font-size="9.00" fill="#000000">• Ce qui va être fait</text>
+<text text-anchor="middle" x="105" y="-4425.9406" font-family="Courier New" font-size="9.00" fill="#000000">• Les risques</text>
+<text text-anchor="middle" x="105" y="-4415.1406" font-family="Courier New" font-size="9.00" fill="#000000">• Les alternatives</text>
+<text text-anchor="middle" x="105" y="-4404.3406" font-family="Courier New" font-size="9.00" fill="#000000">• Puis demande confirmation</text>
+</g>
+<!-- MonitorTemp -->
+<g id="node7" class="node">
+<title>MonitorTemp</title>
+<g id="a_node7"><a xlink:title="⚠️ ACTION PRÉVUE: Surveiller température toutes les 5 secondes&#xA;🔴 SI &gt;55°C: Envoyer SIGSTOP au processus&#xA;📋 RAPPORT: Température actuelle: XX°C, Seuil: 55°C&#xA;✅ Confirmez-vous la mise en pause automatique? (oui/non)">
+<polygon fill="#bf360c" stroke="#555555" points="2049.6568,-4465.0406 1780.3432,-4465.0406 1780.3432,-4403.0406 2055.6568,-4403.0406 2055.6568,-4459.0406 2049.6568,-4465.0406"/>
+<polyline fill="none" stroke="#555555" points="2049.6568,-4465.0406 2049.6568,-4459.0406 "/>
+<polyline fill="none" stroke="#555555" points="2055.6568,-4459.0406 2049.6568,-4459.0406 "/>
+<text text-anchor="middle" x="1918" y="-4452.9406" font-family="Courier New" font-size="9.00" fill="#ffffff">🌡️ MONITORING TEMPÉRATURE</text>
+<text text-anchor="middle" x="1918" y="-4442.1406" font-family="Courier New" font-size="9.00" fill="#ffffff">🔵 AUTO: sensors, smartctl</text>
+<text text-anchor="middle" x="1918" y="-4431.3406" font-family="Courier New" font-size="9.00" fill="#ffffff">🟠 HUMAIN: Vérifier ventilation physique</text>
+<text text-anchor="middle" x="1918" y="-4420.5406" font-family="Courier New" font-size="9.00" fill="#ffffff">🔴 ALERTE: &gt;55°C HDD, &gt;70°C SSD</text>
+<text text-anchor="middle" x="1918" y="-4409.7406" font-family="Courier New" font-size="9.00" fill="#ffffff">✅ CONFIRMATION: Pause automatique ou manuelle?</text>
+</a>
+</g>
+</g>
+<!-- Start -->
+<g id="node15" class="node">
+<title>Start</title>
+<g id="a_node15"><a xlink:title="⚠️ ACTION PRÉVUE: Lancer diagnostic complet&#xA;📋 RAPPORT PRÉLIMINAIRE:&#xA;• Disque: /dev/sdX&#xA;• Modèle: [détecté]&#xA;• SMART: [PASS/FAIL]&#xA;• Partitions: [trouvées]&#xA;✅ Confirmez-vous le lancement du diagnostic? (oui/non)">
+<ellipse fill="#2e7d32" stroke="#555555" cx="2882" cy="-4297.0406" rx="156.2758" ry="43.6818"/>
+<text text-anchor="middle" x="2882" y="-4315.9406" font-family="Courier New" font-size="9.00" fill="#ffffff">ÉTAPE 1 : DIAGNOSTIC</text>
+<text text-anchor="middle" x="2882" y="-4305.1406" font-family="Courier New" font-size="9.00" fill="#ffffff">🔵 AUTO: smartctl, dmesg, lsblk</text>
+<text text-anchor="middle" x="2882" y="-4294.3406" font-family="Courier New" font-size="9.00" fill="#ffffff">🟠 HUMAIN: Écouter, sentir, toucher</text>
+<text text-anchor="middle" x="2882" y="-4283.5406" font-family="Courier New" font-size="9.00" fill="#ffffff">🟢 MIXTE: Interpréter résultats</text>
+<text text-anchor="middle" x="2882" y="-4272.7406" font-family="Courier New" font-size="9.00" fill="#ffffff">✅ CONFIRMATION: Valider chaque test</text>
+</a>
+</g>
+</g>
+<!-- MonitorTemp&#45;&gt;Start -->
+<g id="edge1" class="edge">
+<title>MonitorTemp-&gt;Start</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="1,5" d="M2012.8714,-4402.9385C2029.7829,-4398.0404 2047.3239,-4393.3712 2064,-4389.6406 2287.1919,-4339.711 2550.9804,-4316.02 2717.4009,-4305.274"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="2717.9677,-4308.7451 2727.7247,-4304.616 2717.5223,-4301.7593 2717.9677,-4308.7451"/>
+<text text-anchor="middle" x="2217.7517" y="-4371.5406" font-family="Arial" font-size="9.00" fill="#000000">SURVEILLANCE PERMANENTE</text>
+</g>
+<!-- MonitorSpeed -->
+<g id="node8" class="node">
+<title>MonitorSpeed</title>
+<g id="a_node8"><a xlink:title="⚠️ ACTION PRÉVUE: Surveiller vitesse de lecture&#xA;🔴 SI &lt;100KB/s pendant 5min: Proposer reverse mode&#xA;📋 RAPPORT: Vitesse actuelle: XX KB/s, Durée ralentissement: X min&#xA;✅ Voulez-vous passer en mode reverse? (oui/non)">
+<polygon fill="#2d2d2d" stroke="#555555" points="2288.7668,-4465.0406 2073.2332,-4465.0406 2073.2332,-4403.0406 2288.7668,-4403.0406 2288.7668,-4465.0406"/>
+<text text-anchor="middle" x="2181" y="-4452.9406" font-family="Courier New" font-size="9.00" fill="#ffffff">⚡ MONITORING VITESSE</text>
+<text text-anchor="middle" x="2181" y="-4442.1406" font-family="Courier New" font-size="9.00" fill="#ffffff">🔵 AUTO: ddrescue --status-interval</text>
+<text text-anchor="middle" x="2181" y="-4431.3406" font-family="Courier New" font-size="9.00" fill="#ffffff">🟠 HUMAIN: Interpréter tendances</text>
+<text text-anchor="middle" x="2181" y="-4420.5406" font-family="Courier New" font-size="9.00" fill="#ffffff">🔴 ALERTE: &lt;100KB/s pendant 5min</text>
+<text text-anchor="middle" x="2181" y="-4409.7406" font-family="Courier New" font-size="9.00" fill="#ffffff">✅ CONFIRMATION: Changer stratégie?</text>
+</a>
+</g>
+</g>
+<!-- MonitorSpeed&#45;&gt;Start -->
+<g id="edge2" class="edge">
+<title>MonitorSpeed-&gt;Start</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="1,5" d="M2256.0957,-4402.9499C2269.8734,-4397.9914 2284.2477,-4393.2987 2298,-4389.6406 2440.0642,-4351.8522 2605.9297,-4327.3649 2724.5159,-4313.1221"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="2725.2462,-4316.56 2734.7625,-4311.9028 2724.419,-4309.609 2725.2462,-4316.56"/>
+</g>
+<!-- MonitorErrors -->
+<g id="node9" class="node">
+<title>MonitorErrors</title>
+<g id="a_node9"><a xlink:title="⚠️ ACTION PRÉVUE: Analyser les erreurs noyau&#xA;🔴 SI CRC errors &gt; 10: Proposer changement câble&#xA;📋 RAPPORT: X erreurs CRC détectées, Y erreurs UNC&#xA;✅ Voulez-vous changer le câble maintenant? (oui/non)">
+<polygon fill="#2d2d2d" stroke="#555555" points="2587.0563,-4465.0406 2306.9437,-4465.0406 2306.9437,-4403.0406 2587.0563,-4403.0406 2587.0563,-4465.0406"/>
+<text text-anchor="middle" x="2447" y="-4452.9406" font-family="Courier New" font-size="9.00" fill="#ffffff">⚠️ MONITORING ERREURS</text>
+<text text-anchor="middle" x="2447" y="-4442.1406" font-family="Courier New" font-size="9.00" fill="#ffffff">🔵 AUTO: dmesg, smartctl -l error</text>
+<text text-anchor="middle" x="2447" y="-4431.3406" font-family="Courier New" font-size="9.00" fill="#ffffff">🟠 HUMAIN: Changer câble, vérifier connexions</text>
+<text text-anchor="middle" x="2447" y="-4420.5406" font-family="Courier New" font-size="9.00" fill="#ffffff">🔴 ALERTE: CRC errors, UNC, DRDY</text>
+<text text-anchor="middle" x="2447" y="-4409.7406" font-family="Courier New" font-size="9.00" fill="#ffffff">✅ CONFIRMATION: Continuer ou changer hardware?</text>
+</a>
+</g>
+</g>
+<!-- MonitorErrors&#45;&gt;Start -->
+<g id="edge3" class="edge">
+<title>MonitorErrors-&gt;Start</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="1,5" d="M2545.4364,-4403.0388C2611.6219,-4382.1942 2699.0686,-4354.6535 2768.2372,-4332.8694"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="2769.385,-4336.1774 2777.8717,-4329.835 2767.2822,-4329.5007 2769.385,-4336.1774"/>
+</g>
+<!-- MonitorSound -->
+<g id="node10" class="node">
+<title>MonitorSound</title>
+<g id="a_node10"><a xlink:title="⚠️ ACTION REQUISE: Écouter le disque&#xA;🎤 [APPUYEZ SUR ESPACE pour confirmer que vous écoutez]&#xA;🔴 Si vous entendez un grincement: RÉPONDEZ 'STOP'&#xA;📋 RAPPORT: Bruit détecté: [clic/grincement/silence]">
+<polygon fill="#ff8f00" stroke="#555555" points="2874.7578,-4459.741 2605.2422,-4459.741 2605.2422,-4408.3402 2874.7578,-4408.3402 2874.7578,-4459.741"/>
+<text text-anchor="middle" x="2740" y="-4447.5406" font-family="Courier New" font-size="9.00" fill="#000000">🔊 MONITORING SONORE</text>
+<text text-anchor="middle" x="2740" y="-4436.7406" font-family="Courier New" font-size="9.00" fill="#000000">🟠 HUMAIN UNIQUEMENT - Écouter attentivement</text>
+<text text-anchor="middle" x="2740" y="-4425.9406" font-family="Courier New" font-size="9.00" fill="#000000">🔴 ALERTE: Nouveaux clics, grincement</text>
+<text text-anchor="middle" x="2740" y="-4415.1406" font-family="Courier New" font-size="9.00" fill="#000000">✅ CONFIRMATION: STOP immédiat si grincement</text>
+</a>
+</g>
+</g>
+<!-- MonitorSound&#45;&gt;Start -->
+<g id="edge4" class="edge">
+<title>MonitorSound-&gt;Start</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="1,5" d="M2766.7091,-4408.272C2784.7542,-4390.8623 2809.1545,-4367.3212 2830.8613,-4346.3787"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="2833.3399,-4348.8508 2838.1064,-4339.3887 2828.4796,-4343.8131 2833.3399,-4348.8508"/>
+</g>
+<!-- MonitorOdor -->
+<g id="node11" class="node">
+<title>MonitorOdor</title>
+<g id="a_node11"><a xlink:title="⚠️ ACTION REQUISE: Sentir l'odeur&#xA;👃 [APPUYEZ SUR ESPACE pour confirmer que vous sentez]&#xA;🔴 Si odeur de brûlé: RÉPONDEZ 'STOP'&#xA;📋 RAPPORT: Odeur détectée: [normale/brûlé]">
+<polygon fill="#ff8f00" stroke="#555555" points="3157.3588,-4459.741 2892.6412,-4459.741 2892.6412,-4408.3402 3157.3588,-4408.3402 3157.3588,-4459.741"/>
+<text text-anchor="middle" x="3025" y="-4447.5406" font-family="Courier New" font-size="9.00" fill="#000000">👃 MONITORING OLFACTIF</text>
+<text text-anchor="middle" x="3025" y="-4436.7406" font-family="Courier New" font-size="9.00" fill="#000000">🟠 HUMAIN UNIQUEMENT - Sentir</text>
+<text text-anchor="middle" x="3025" y="-4425.9406" font-family="Courier New" font-size="9.00" fill="#000000">🔴 ALERTE: Odeur de brûlé, composant chaud</text>
+<text text-anchor="middle" x="3025" y="-4415.1406" font-family="Courier New" font-size="9.00" fill="#000000">✅ CONFIRMATION: STOP immédiat</text>
+</a>
+</g>
+</g>
+<!-- MonitorOdor&#45;&gt;Start -->
+<g id="edge5" class="edge">
+<title>MonitorOdor-&gt;Start</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="1,5" d="M2998.1028,-4408.272C2979.858,-4390.7927 2955.1618,-4367.1327 2933.2366,-4346.1275"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="2935.563,-4343.5091 2925.9207,-4339.1185 2930.7204,-4348.5638 2935.563,-4343.5091"/>
+</g>
+<!-- MonitorVibration -->
+<g id="node12" class="node">
+<title>MonitorVibration</title>
+<g id="a_node12"><a xlink:title="⚠️ ACTION REQUISE: Toucher le disque&#xA;✋ [APPUYEZ SUR ESPACE pour confirmer que vous touchez]&#xA;🔴 Si vibrations excessives: RÉPONDEZ 'STOP'&#xA;📋 RAPPORT: Vibrations: [normales/anormales]">
+<polygon fill="#ff8f00" stroke="#555555" points="3406.964,-4459.741 3175.036,-4459.741 3175.036,-4408.3402 3406.964,-4408.3402 3406.964,-4459.741"/>
+<text text-anchor="middle" x="3291" y="-4447.5406" font-family="Courier New" font-size="9.00" fill="#000000">🖐️ MONITORING VIBRATIONS</text>
+<text text-anchor="middle" x="3291" y="-4436.7406" font-family="Courier New" font-size="9.00" fill="#000000">🟠 HUMAIN UNIQUEMENT - Toucher</text>
+<text text-anchor="middle" x="3291" y="-4425.9406" font-family="Courier New" font-size="9.00" fill="#000000">🔴 ALERTE: Vibrations anormales</text>
+<text text-anchor="middle" x="3291" y="-4415.1406" font-family="Courier New" font-size="9.00" fill="#000000">✅ CONFIRMATION: Stabiliser ou arrêter</text>
+</a>
+</g>
+</g>
+<!-- MonitorVibration&#45;&gt;Start -->
+<g id="edge6" class="edge">
+<title>MonitorVibration-&gt;Start</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="1,5" d="M3219.7213,-4408.3605C3202.1872,-4402.1433 3183.4401,-4395.5801 3166,-4389.6406 3109.8488,-4370.5176 3047.1793,-4349.9971 2995.0257,-4333.1455"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="2996.0055,-4329.784 2985.4138,-4330.0428 2993.8551,-4336.4455 2996.0055,-4329.784"/>
+</g>
+<!-- MonitorProgress -->
+<g id="node13" class="node">
+<title>MonitorProgress</title>
+<g id="a_node13"><a xlink:title="⚠️ ACTION PRÉVUE: Analyser la progression&#xA;📊 PROGRESSION: XX% récupéré, YY% non récupéré&#xA;🔴 SI &lt;95% après 24h: Proposer arrêt&#xA;✅ Voulez-vous continuer? (oui/non/ignorer zones)">
+<polygon fill="#2e7d32" stroke="#555555" points="3694.7578,-4459.741 3425.2422,-4459.741 3425.2422,-4408.3402 3694.7578,-4408.3402 3694.7578,-4459.741"/>
+<text text-anchor="middle" x="3560" y="-4447.5406" font-family="Courier New" font-size="9.00" fill="#ffffff">📊 MONITORING PROGRESSION</text>
+<text text-anchor="middle" x="3560" y="-4436.7406" font-family="Courier New" font-size="9.00" fill="#ffffff">🔵 AUTO: map.log, taille image</text>
+<text text-anchor="middle" x="3560" y="-4425.9406" font-family="Courier New" font-size="9.00" fill="#ffffff">🟢 MIXTE: Décider quand arrêter</text>
+<text text-anchor="middle" x="3560" y="-4415.1406" font-family="Courier New" font-size="9.00" fill="#ffffff">✅ CONFIRMATION: 95% suffit? Réessayer zones?</text>
+</a>
+</g>
+</g>
+<!-- MonitorProgress&#45;&gt;Start -->
+<g id="edge7" class="edge">
+<title>MonitorProgress-&gt;Start</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="1,5" d="M3483.1523,-4408.3636C3461.5806,-4401.6987 3438.0055,-4394.9184 3416,-4389.6406 3287.7892,-4358.8907 3139.9437,-4334.0599 3032.3712,-4317.8813"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="3032.8239,-4314.4102 3022.416,-4316.3915 3031.7878,-4321.3331 3032.8239,-4314.4102"/>
+</g>
+<!-- MonitorHealth -->
+<g id="node14" class="node">
+<title>MonitorHealth</title>
+<g id="a_node14"><a xlink:title="⚠️ ACTION PRÉVUE: Analyser attributs SMART&#xA;📊 Reallocated sectors: X (+Y en 1h), Pending: Z&#xA;🔴 SI augmentation rapide: Proposer accélération&#xA;✅ Voulez-vous augmenter la priorité? (oui/non)">
+<polygon fill="#2e7d32" stroke="#555555" points="3955.2623,-4465.0406 3712.7377,-4465.0406 3712.7377,-4403.0406 3955.2623,-4403.0406 3955.2623,-4465.0406"/>
+<text text-anchor="middle" x="3834" y="-4452.9406" font-family="Courier New" font-size="9.00" fill="#ffffff">🏥 MONITORING SMART</text>
+<text text-anchor="middle" x="3834" y="-4442.1406" font-family="Courier New" font-size="9.00" fill="#ffffff">🔵 AUTO: smartctl -A</text>
+<text text-anchor="middle" x="3834" y="-4431.3406" font-family="Courier New" font-size="9.00" fill="#ffffff">🟠 HUMAIN: Interpréter tendances</text>
+<text text-anchor="middle" x="3834" y="-4420.5406" font-family="Courier New" font-size="9.00" fill="#ffffff">🔴 ALERTE: Reallocated en hausse</text>
+<text text-anchor="middle" x="3834" y="-4409.7406" font-family="Courier New" font-size="9.00" fill="#ffffff">✅ CONFIRMATION: Accélérer ou ralentir?</text>
+</a>
+</g>
+</g>
+<!-- MonitorHealth&#45;&gt;Start -->
+<g id="edge8" class="edge">
+<title>MonitorHealth-&gt;Start</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="1,5" d="M3751.8976,-4403.0041C3736.1706,-4397.9161 3719.7081,-4393.1639 3704,-4389.6406 3479.3037,-4339.2413 3213.5937,-4315.6486 3046.4047,-4305.0545"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="3046.482,-4301.5526 3036.2829,-4304.4214 3046.0449,-4308.5389 3046.482,-4301.5526"/>
+</g>
+<!-- DiagOK -->
+<g id="node16" class="node">
+<title>DiagOK</title>
+<g id="a_node16"><a xlink:title="📋 RAPPORT DIAGNOSTIC:&#xA;✓ SMART: PASS&#xA;✓ dmesg: 0 erreurs&#xA;✓ Partitions: trouvées&#xA;🟠 Bruits: [à confirmer par l'utilisateur]&#xA;✅ Le disque semble sain. Procéder au backup préventif? (oui/non)">
+<polygon fill="#0056b3" stroke="#555555" points="2404.6659,-4183.5003 2183.3341,-4183.5003 2183.3341,-4110.8997 2404.6659,-4110.8997 2404.6659,-4183.5003"/>
+<text text-anchor="middle" x="2294" y="-4171.5" font-family="Courier New" font-size="9.00" fill="#ffffff">CAS 1 : Disque sain</text>
+<text text-anchor="middle" x="2294" y="-4160.7" font-family="Courier New" font-size="9.00" fill="#ffffff">🔵 SMART PASS</text>
+<text text-anchor="middle" x="2294" y="-4149.9" font-family="Courier New" font-size="9.00" fill="#ffffff">🔵 Pas d'erreur dmesg</text>
+<text text-anchor="middle" x="2294" y="-4139.1" font-family="Courier New" font-size="9.00" fill="#ffffff">🟠 Pas de bruit anormal</text>
+<text text-anchor="middle" x="2294" y="-4128.3" font-family="Courier New" font-size="9.00" fill="#ffffff">🔵 Partitions visibles</text>
+<text text-anchor="middle" x="2294" y="-4117.5" font-family="Courier New" font-size="9.00" fill="#ffffff">✅ CONFIRMATION: Valider et continuer</text>
+</a>
+</g>
+</g>
+<!-- Start&#45;&gt;DiagOK -->
+<g id="edge9" class="edge">
+<title>Start-&gt;DiagOK</title>
+<path fill="none" stroke="#aaaaaa" d="M2731.4319,-4284.9148C2637.6806,-4274.0322 2515.7919,-4253.7468 2413,-4216.4 2393.5034,-4209.3164 2373.5479,-4199.0813 2355.6857,-4188.6461"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2357.4772,-4185.6393 2347.0964,-4183.5201 2353.8899,-4191.6503 2357.4772,-4185.6393"/>
+</g>
+<!-- DiagBad -->
+<g id="node17" class="node">
+<title>DiagBad</title>
+<g id="a_node17"><a xlink:title="📋 RAPPORT DIAGNOSTIC:&#xA;✗ SMART: FAIL&#xA;✗ Erreurs I/O: X détectées&#xA;✗ Secteurs realloués: Y&#xA;⚠️ URGENCE: Le disque peut lâcher&#xA;✅ Confirmez-vous le lancement de la récupération d'urgence? (oui/non)">
+<polygon fill="#ff6b6b" stroke="#555555" points="3609.7668,-4183.5003 3394.2332,-4183.5003 3394.2332,-4110.8997 3609.7668,-4110.8997 3609.7668,-4183.5003"/>
+<text text-anchor="middle" x="3502" y="-4171.5" font-family="Courier New" font-size="9.00" fill="#ffffff">CAS 2 : Disque défaillant accessible</text>
+<text text-anchor="middle" x="3502" y="-4160.7" font-family="Courier New" font-size="9.00" fill="#ffffff">⚠️ SMART FAIL</text>
+<text text-anchor="middle" x="3502" y="-4149.9" font-family="Courier New" font-size="9.00" fill="#ffffff">⚠️ Erreurs I/O</text>
+<text text-anchor="middle" x="3502" y="-4139.1" font-family="Courier New" font-size="9.00" fill="#ffffff">⚠️ Secteurs realloués</text>
+<text text-anchor="middle" x="3502" y="-4128.3" font-family="Courier New" font-size="9.00" fill="#ffffff">🟠 Bruits éventuels</text>
+<text text-anchor="middle" x="3502" y="-4117.5" font-family="Courier New" font-size="9.00" fill="#ffffff">✅ CONFIRMATION: URGENCE - Agir</text>
+</a>
+</g>
+</g>
+<!-- Start&#45;&gt;DiagBad -->
+<g id="edge10" class="edge">
+<title>Start-&gt;DiagBad</title>
+<path fill="none" stroke="#aaaaaa" d="M3034.8195,-4287.4795C3136.4844,-4277.5325 3271.6618,-4257.3277 3385,-4216.4 3404.1852,-4209.472 3423.7528,-4199.3338 3441.2575,-4188.9428"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3443.4826,-4191.6863 3450.2103,-4183.5017 3439.847,-4185.7044 3443.4826,-4191.6863"/>
+</g>
+<!-- DiagNoise -->
+<g id="node18" class="node">
+<title>DiagNoise</title>
+<g id="a_node18"><a xlink:title="📋 RAPPORT SONORE:&#xA;🎤 [Veuillez décrire ce que vous entendez]&#xA;Options:&#xA;1. Clics réguliers&#xA;2. Grincement métallique&#xA;3. Bip électronique&#xA;4. Silence moteur&#xA;5. Clics puis arrêt&#xA;✅ Sélectionnez le type de bruit (1-5):">
+<polygon fill="#ff8f00" stroke="#555555" points="3376.4685,-4167.602 3171.5315,-4167.602 3171.5315,-4126.798 3376.4685,-4126.798 3376.4685,-4167.602"/>
+<text text-anchor="middle" x="3274" y="-4155.3" font-family="Courier New" font-size="9.00" fill="#000000">CAS 3 : Bruits anormaux</text>
+<text text-anchor="middle" x="3274" y="-4144.5" font-family="Courier New" font-size="9.00" fill="#000000">🟠 HUMAIN: Clics, grincement, bip</text>
+<text text-anchor="middle" x="3274" y="-4133.7" font-family="Courier New" font-size="9.00" fill="#000000">✅ CONFIRMATION: Décrire le bruit</text>
+</a>
+</g>
+</g>
+<!-- Start&#45;&gt;DiagNoise -->
+<g id="edge11" class="edge">
+<title>Start-&gt;DiagNoise</title>
+<path fill="none" stroke="#aaaaaa" d="M3004.5947,-4269.7726C3054.8101,-4256.5894 3112.7996,-4238.7258 3163,-4216.4 3189.4435,-4204.6397 3217.0672,-4187.439 3238.1428,-4173.1291"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3240.2101,-4175.9552 3246.4609,-4167.4008 3236.2398,-4170.19 3240.2101,-4175.9552"/>
+</g>
+<!-- DiagDead -->
+<g id="node19" class="node">
+<title>DiagDead</title>
+<g id="a_node19"><a xlink:title="📋 RAPPORT:&#xA;✗ Disque non détecté&#xA;✅ Actions à effectuer:&#xA;1. Avez-vous changé le câble? (oui/non)&#xA;2. Avez-vous testé un autre port? (oui/non)&#xA;3. Avez-vous testé sur un autre PC? (oui/non)&#xA;✅ Après ces actions, le disque est-il détecté? (oui/non)">
+<polygon fill="#2e7d32" stroke="#555555" points="2882.4685,-4172.9004 2677.5315,-4172.9004 2677.5315,-4121.4996 2882.4685,-4121.4996 2882.4685,-4172.9004"/>
+<text text-anchor="middle" x="2780" y="-4160.7" font-family="Courier New" font-size="9.00" fill="#ffffff">CAS 4 : Disque non détecté</text>
+<text text-anchor="middle" x="2780" y="-4149.9" font-family="Courier New" font-size="9.00" fill="#ffffff">🔵 Absent de lsblk</text>
+<text text-anchor="middle" x="2780" y="-4139.1" font-family="Courier New" font-size="9.00" fill="#ffffff">🟠 HUMAIN: Vérifier branchement</text>
+<text text-anchor="middle" x="2780" y="-4128.3" font-family="Courier New" font-size="9.00" fill="#ffffff">✅ CONFIRMATION: Actions physiques</text>
+</a>
+</g>
+</g>
+<!-- Start&#45;&gt;DiagDead -->
+<g id="edge12" class="edge">
+<title>Start-&gt;DiagDead</title>
+<path fill="none" stroke="#aaaaaa" d="M2852.4974,-4253.7005C2836.8803,-4230.7587 2817.9714,-4202.981 2803.381,-4181.5472"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2806.1366,-4179.3754 2797.6161,-4173.0785 2800.35,-4183.3145 2806.1366,-4179.3754"/>
+</g>
+<!-- DiagZFS -->
+<g id="node20" class="node">
+<title>DiagZFS</title>
+<g id="a_node20"><a xlink:title="📋 RAPPORT:&#xA;✓ Pool ZFS détecté: [nom]&#xA;⚠️ RAPPEL: Ne JAMAIS travailler sur les disques originaux&#xA;✅ Avez-vous bien compris qu'il faut d'abord sauver chaque disque avec ddrescue? (oui/non)">
+<polygon fill="#2e7d32" stroke="#555555" points="2659.8634,-4172.9004 2422.1366,-4172.9004 2422.1366,-4121.4996 2659.8634,-4121.4996 2659.8634,-4172.9004"/>
+<text text-anchor="middle" x="2541" y="-4160.7" font-family="Courier New" font-size="9.00" fill="#ffffff">CAS 5 : Pool ZFS détecté</text>
+<text text-anchor="middle" x="2541" y="-4149.9" font-family="Courier New" font-size="9.00" fill="#ffffff">🔵 zpool import</text>
+<text text-anchor="middle" x="2541" y="-4139.1" font-family="Courier New" font-size="9.00" fill="#ffffff">🟠 HUMAIN: Sauver chaque disque d'abord</text>
+<text text-anchor="middle" x="2541" y="-4128.3" font-family="Courier New" font-size="9.00" fill="#ffffff">✅ CONFIRMATION: Principe compris?</text>
+</a>
+</g>
+</g>
+<!-- Start&#45;&gt;DiagZFS -->
+<g id="edge13" class="edge">
+<title>Start-&gt;DiagZFS</title>
+<path fill="none" stroke="#aaaaaa" d="M2783.5861,-4262.9066C2747.1479,-4249.4551 2705.7705,-4233.2089 2669,-4216.4 2643.748,-4204.8566 2616.585,-4190.4695 2593.8066,-4177.8084"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2595.4175,-4174.6992 2584.9821,-4172.8683 2591.9981,-4180.8072 2595.4175,-4174.6992"/>
+</g>
+<!-- DiagRAID -->
+<g id="node21" class="node">
+<title>DiagRAID</title>
+<g id="a_node21"><a xlink:title="📋 RAPPORT:&#xA;✓ RAID détecté: [type]&#xA;📋 Membres trouvés: [disques]&#xA;✅ Voulez-vous assembler le RAID maintenant? (oui/non)">
+<polygon fill="#2e7d32" stroke="#555555" points="3153.5608,-4172.9004 2900.4392,-4172.9004 2900.4392,-4121.4996 3153.5608,-4121.4996 3153.5608,-4172.9004"/>
+<text text-anchor="middle" x="3027" y="-4160.7" font-family="Courier New" font-size="9.00" fill="#ffffff">CAS 6 : RAID logiciel détecté</text>
+<text text-anchor="middle" x="3027" y="-4149.9" font-family="Courier New" font-size="9.00" fill="#ffffff">🔵 mdadm/LVM détecté</text>
+<text text-anchor="middle" x="3027" y="-4139.1" font-family="Courier New" font-size="9.00" fill="#ffffff">🟠 HUMAIN: Assembler avant récupération</text>
+<text text-anchor="middle" x="3027" y="-4128.3" font-family="Courier New" font-size="9.00" fill="#ffffff">✅ CONFIRMATION: Procéder à l'assemblage?</text>
+</a>
+</g>
+</g>
+<!-- Start&#45;&gt;DiagRAID -->
+<g id="edge14" class="edge">
+<title>Start-&gt;DiagRAID</title>
+<path fill="none" stroke="#aaaaaa" d="M2923.1633,-4254.5031C2945.9319,-4230.9744 2973.8064,-4202.1694 2994.9401,-4180.3301"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2997.6759,-4182.5361 3002.1148,-4172.9159 2992.6456,-4177.6682 2997.6759,-4182.5361"/>
+</g>
+<!-- C1_Confirm -->
+<g id="node27" class="node">
+<title>C1_Confirm</title>
+<polygon fill="#4caf50" stroke="#555555" points="2037.2533,-4005.9003 1746.7467,-4005.9003 1746.7467,-3933.2997 2043.2533,-3933.2997 2043.2533,-3999.9003 2037.2533,-4005.9003"/>
+<polyline fill="none" stroke="#555555" points="2037.2533,-4005.9003 2037.2533,-3999.9003 "/>
+<polyline fill="none" stroke="#555555" points="2043.2533,-3999.9003 2037.2533,-3999.9003 "/>
+<text text-anchor="middle" x="1895" y="-3993.9" font-family="Courier New" font-size="9.00" fill="#000000">✅ CONFIRMATION PRÉALABLE</text>
+<text text-anchor="middle" x="1895" y="-3983.1" font-family="Courier New" font-size="9.00" fill="#000000">📋 ACTION PRÉVUE: Backup préventif avec ddrescue</text>
+<text text-anchor="middle" x="1895" y="-3972.3" font-family="Courier New" font-size="9.00" fill="#000000">📊 DESTINATION: /backup/disk.img (XX Go libres)</text>
+<text text-anchor="middle" x="1895" y="-3961.5" font-family="Courier New" font-size="9.00" fill="#000000">⚠️ RISQUES: Aucun, opération non-destructive</text>
+<text text-anchor="middle" x="1895" y="-3950.7" font-family="Courier New" font-size="9.00" fill="#000000">⏱️ TEMPS ESTIMÉ: X heures</text>
+<text text-anchor="middle" x="1895" y="-3939.9" font-family="Courier New" font-size="9.00" fill="#000000">✅ Lancer le backup préventif? (oui/non)</text>
+</g>
+<!-- DiagOK&#45;&gt;C1_Confirm -->
+<g id="edge19" class="edge">
+<title>DiagOK-&gt;C1_Confirm</title>
+<path fill="none" stroke="#aaaaaa" d="M2183.3321,-4113.759C2142.3129,-4100.0482 2095.8584,-4082.9375 2055,-4064 2022.3822,-4048.882 1987.8344,-4029.0317 1959.2215,-4011.4366"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="1960.8846,-4008.3496 1950.5409,-4006.0562 1957.1967,-4014.2994 1960.8846,-4008.3496"/>
+</g>
+<!-- C2_Urgent -->
+<g id="node30" class="node">
+<title>C2_Urgent</title>
+<polygon fill="#d32f2f" stroke="#555555" points="5159.1343,-4328.0406 4748.8657,-4328.0406 4748.8657,-4266.0406 5159.1343,-4266.0406 5159.1343,-4328.0406"/>
+<text text-anchor="middle" x="4954" y="-4315.9406" font-family="Courier New" font-size="9.00" fill="#ffffff">🔴 ALERTE HUMAINE - URGENCE</text>
+<text text-anchor="middle" x="4954" y="-4305.1406" font-family="Courier New" font-size="9.00" fill="#ffffff">✅ CONFIRMATION: Action immédiate requise?</text>
+<text text-anchor="middle" x="4954" y="-4294.3406" font-family="Courier New" font-size="9.00" fill="#ffffff">📋 RAPPORT: Disque défaillant détecté</text>
+<text text-anchor="middle" x="4954" y="-4283.5406" font-family="Courier New" font-size="9.00" fill="#ffffff">⚠️ RISQUE: Perte définitive possible</text>
+<text text-anchor="middle" x="4954" y="-4272.7406" font-family="Courier New" font-size="9.00" fill="#ffffff">✅ Confirmez-vous le lancement de la récupération d'urgence? (oui/non)</text>
+</g>
+<!-- DiagBad&#45;&gt;C2_Urgent -->
+<g id="edge23" class="edge">
+<title>DiagBad-&gt;C2_Urgent</title>
+<path fill="none" stroke="#aaaaaa" d="M3609.959,-4158.3409C3848.3145,-4182.9383 4423.3179,-4242.2763 4738.4851,-4274.8003"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4738.353,-4278.3052 4748.6595,-4275.8503 4739.0716,-4271.3422 4738.353,-4278.3052"/>
+</g>
+<!-- C3_Listen -->
+<g id="node47" class="node">
+<title>C3_Listen</title>
+<g id="a_node47"><a xlink:title="En attente de votre réponse...">
+<polygon fill="#ff8f00" stroke="#555555" points="3858.4595,-3815.6009 3605.5405,-3815.6009 3605.5405,-3720.7991 3864.4595,-3720.7991 3864.4595,-3809.6009 3858.4595,-3815.6009"/>
+<polyline fill="none" stroke="#555555" points="3858.4595,-3815.6009 3858.4595,-3809.6009 "/>
+<polyline fill="none" stroke="#555555" points="3864.4595,-3809.6009 3858.4595,-3809.6009 "/>
+<text text-anchor="middle" x="3735" y="-3803.3" font-family="Courier New" font-size="9.00" fill="#000000">🟠 ÉCOUTEZ LE DISQUE</text>
+<text text-anchor="middle" x="3735" y="-3792.5" font-family="Courier New" font-size="9.00" fill="#000000">🎤 [APPUYEZ SUR ESPACE quand vous écoutez]</text>
+<text text-anchor="middle" x="3735" y="-3781.7" font-family="Courier New" font-size="9.00" fill="#000000">📋 Une fois le bruit identifié, répondez:</text>
+<text text-anchor="middle" x="3735" y="-3770.9" font-family="Courier New" font-size="9.00" fill="#000000">1. Clics réguliers</text>
+<text text-anchor="middle" x="3735" y="-3760.1" font-family="Courier New" font-size="9.00" fill="#000000">2. Grincement métallique</text>
+<text text-anchor="middle" x="3735" y="-3749.3" font-family="Courier New" font-size="9.00" fill="#000000">3. Bip électronique</text>
+<text text-anchor="middle" x="3735" y="-3738.5" font-family="Courier New" font-size="9.00" fill="#000000">4. Silence moteur</text>
+<text text-anchor="middle" x="3735" y="-3727.7" font-family="Courier New" font-size="9.00" fill="#000000">5. Clics puis arrêt</text>
+</a>
+</g>
+</g>
+<!-- DiagNoise&#45;&gt;C3_Listen -->
+<g id="edge49" class="edge">
+<title>DiagNoise-&gt;C3_Listen</title>
+<path fill="none" stroke="#aaaaaa" d="M3298.7854,-4126.8233C3368.1398,-4069.8053 3565.8675,-3907.2482 3669.6249,-3821.9466"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3672.037,-3824.4945 3677.5389,-3815.4403 3667.5915,-3819.0873 3672.037,-3824.4945"/>
+</g>
+<!-- C4_Check1 -->
+<g id="node65" class="node">
+<title>C4_Check1</title>
+<polygon fill="#4caf50" stroke="#555555" points="2898.1614,-3987.6 2655.8386,-3987.6 2655.8386,-3951.6 2904.1614,-3951.6 2904.1614,-3981.6 2898.1614,-3987.6"/>
+<polyline fill="none" stroke="#555555" points="2898.1614,-3987.6 2898.1614,-3981.6 "/>
+<polyline fill="none" stroke="#555555" points="2904.1614,-3981.6 2898.1614,-3981.6 "/>
+<text text-anchor="middle" x="2780" y="-3972.3" font-family="Courier New" font-size="9.00" fill="#000000">✅ ÉTAPE 1: Changer le câble</text>
+<text text-anchor="middle" x="2780" y="-3961.5" font-family="Courier New" font-size="9.00" fill="#000000">🔌 Avez-vous changé le câble? (oui/non)</text>
+</g>
+<!-- DiagDead&#45;&gt;C4_Check1 -->
+<g id="edge74" class="edge">
+<title>DiagDead-&gt;C4_Check1</title>
+<path fill="none" stroke="#aaaaaa" d="M2780,-4121.3754C2780,-4088.4745 2780,-4031.8108 2780,-3997.8076"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2783.5001,-3997.6227 2780,-3987.6227 2776.5001,-3997.6227 2783.5001,-3997.6227"/>
+</g>
+<!-- C5_Principle -->
+<g id="node73" class="node">
+<title>C5_Principle</title>
+<polygon fill="#d32f2f" stroke="#555555" points="2379.4505,-3990.002 2066.5495,-3990.002 2066.5495,-3949.198 2379.4505,-3949.198 2379.4505,-3990.002"/>
+<text text-anchor="middle" x="2223" y="-3977.7" font-family="Courier New" font-size="9.00" fill="#ffffff">🔴 PRINCIPE FONDAMENTAL</text>
+<text text-anchor="middle" x="2223" y="-3966.9" font-family="Courier New" font-size="9.00" fill="#ffffff">📋 RÈGLE: Ne jamais travailler sur disques originaux</text>
+<text text-anchor="middle" x="2223" y="-3956.1" font-family="Courier New" font-size="9.00" fill="#ffffff">✅ Avez-vous bien compris? (oui/non)</text>
+</g>
+<!-- DiagZFS&#45;&gt;C5_Principle -->
+<g id="edge88" class="edge">
+<title>DiagZFS-&gt;C5_Principle</title>
+<path fill="none" stroke="#aaaaaa" d="M2494.676,-4121.5918C2465.0126,-4105.1724 2425.7123,-4083.3792 2391,-4064 2349.1678,-4040.6459 2301.5669,-4013.8807 2267.741,-3994.8285"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2269.4472,-3991.7725 2259.0167,-3989.9136 2266.0113,-3997.8713 2269.4472,-3991.7725"/>
+</g>
+<!-- C6_Type -->
+<g id="node81" class="node">
+<title>C6_Type</title>
+<polygon fill="#ffffff" stroke="#555555" points="4269,-1757.9001 4101.6502,-1674.2 4269,-1590.4999 4436.3498,-1674.2 4269,-1757.9001"/>
+<text text-anchor="middle" x="4269" y="-1703.9" font-family="Courier New" font-size="9.00" fill="#000000">⬜ TYPE DE RAID ?</text>
+<text text-anchor="middle" x="4269" y="-1693.1" font-family="Courier New" font-size="9.00" fill="#000000">📋 DÉTECTION AUTO: [type]</text>
+<text text-anchor="middle" x="4269" y="-1682.3" font-family="Courier New" font-size="9.00" fill="#000000">Options:</text>
+<text text-anchor="middle" x="4269" y="-1671.5" font-family="Courier New" font-size="9.00" fill="#000000">1. mdadm</text>
+<text text-anchor="middle" x="4269" y="-1660.7" font-family="Courier New" font-size="9.00" fill="#000000">2. LVM</text>
+<text text-anchor="middle" x="4269" y="-1649.9" font-family="Courier New" font-size="9.00" fill="#000000">3. FakeRAID</text>
+<text text-anchor="middle" x="4269" y="-1639.1" font-family="Courier New" font-size="9.00" fill="#000000">✅ Choix (1-3):</text>
+</g>
+<!-- DiagRAID&#45;&gt;C6_Type -->
+<g id="edge103" class="edge">
+<title>DiagRAID-&gt;C6_Type</title>
+<path fill="none" stroke="#aaaaaa" d="M3030.7918,-4121.3827C3035.5232,-4086.8763 3043,-4023.7769 3043,-3969.6 3043,-3969.6 3043,-3969.6 3043,-3237.3 3043,-3173.9335 3013.3321,-2996.529 3059,-2952.6 3121.3895,-2892.5862 4554.3755,-2985.3687 4617,-2925.6 4687.3951,-2858.4151 4631,-2804.4102 4631,-2707.1 4631,-2707.1 4631,-2707.1 4631,-1845.4 4631,-1790.6241 4493.838,-1738.4149 4388.3738,-1706.3672"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4389.1787,-1702.9545 4378.5943,-1703.4252 4387.1621,-1709.6577 4389.1787,-1702.9545"/>
+</g>
+<!-- FeedbackTemp -->
+<g id="node22" class="node">
+<title>FeedbackTemp</title>
+<polygon fill="#ffffff" stroke="#555555" points="6714,-2892.9001 6465.6773,-2809.2 6714,-2725.4999 6962.3227,-2809.2 6714,-2892.9001"/>
+<text text-anchor="middle" x="6714" y="-2838.9" font-family="Courier New" font-size="9.00" fill="#000000">⬜ DÉCISION HUMAINE: Température &gt; seuil</text>
+<text text-anchor="middle" x="6714" y="-2828.1" font-family="Courier New" font-size="9.00" fill="#000000">📋 RAPPORT: Température actuelle: XX°C</text>
+<text text-anchor="middle" x="6714" y="-2817.3" font-family="Courier New" font-size="9.00" fill="#000000">Options:</text>
+<text text-anchor="middle" x="6714" y="-2806.5" font-family="Courier New" font-size="9.00" fill="#000000">1. Laisser le script gérer (SIGSTOP auto)</text>
+<text text-anchor="middle" x="6714" y="-2795.7" font-family="Courier New" font-size="9.00" fill="#000000">2. Intervenir manuellement (ventilateur)</text>
+<text text-anchor="middle" x="6714" y="-2784.9" font-family="Courier New" font-size="9.00" fill="#000000">3. Arrêter pour la nuit</text>
+<text text-anchor="middle" x="6714" y="-2774.1" font-family="Courier New" font-size="9.00" fill="#000000">✅ Confirmez votre choix (1-3):</text>
+</g>
+<!-- C2_HDD_Ideal -->
+<g id="node26" class="node">
+<title>C2_HDD_Ideal</title>
+<g id="a_node26"><a xlink:title="Opération en cours...">
+<polygon fill="#0056b3" stroke="#555555" points="5499.1433,-2633.8 5142.8567,-2633.8 5142.8567,-2597.8 5499.1433,-2597.8 5499.1433,-2633.8"/>
+<text text-anchor="middle" x="5321" y="-2618.5" font-family="Courier New" font-size="9.00" fill="#ffffff">🔵 DDRESCUE EN COURS</text>
+<text text-anchor="middle" x="5321" y="-2607.7" font-family="Courier New" font-size="9.00" fill="#ffffff">◉ ddrescue -f -n -v /dev/sdX /backup/disk.img /backup/map.log</text>
+</a>
+</g>
+</g>
+<!-- FeedbackTemp&#45;&gt;C2_HDD_Ideal -->
+<g id="edge15" class="edge">
+<title>FeedbackTemp-&gt;C2_HDD_Ideal</title>
+<path fill="none" stroke="#ffa000" stroke-width="2" d="M6602.7642,-2762.7951C6557.9127,-2745.9187 6505.2195,-2728.364 6456,-2717.6 6280.7185,-2679.2669 5784.0356,-2644.1491 5509.3896,-2626.934"/>
+<polygon fill="#ffa000" stroke="#ffa000" stroke-width="2" points="5509.5091,-2623.4347 5499.3102,-2626.304 5509.0724,-2630.4211 5509.5091,-2623.4347"/>
+</g>
+<!-- FeedbackSpeed -->
+<g id="node23" class="node">
+<title>FeedbackSpeed</title>
+<polygon fill="#ffffff" stroke="#555555" points="7228,-2892.9001 6979.6773,-2809.2 7228,-2725.4999 7476.3227,-2809.2 7228,-2892.9001"/>
+<text text-anchor="middle" x="7228" y="-2838.9" font-family="Courier New" font-size="9.00" fill="#000000">⬜ DÉCISION HUMAINE: Vitesse trop lente</text>
+<text text-anchor="middle" x="7228" y="-2828.1" font-family="Courier New" font-size="9.00" fill="#000000">📋 RAPPORT: Vitesse: XX KB/s depuis X min</text>
+<text text-anchor="middle" x="7228" y="-2817.3" font-family="Courier New" font-size="9.00" fill="#000000">Options:</text>
+<text text-anchor="middle" x="7228" y="-2806.5" font-family="Courier New" font-size="9.00" fill="#000000">1. Lancer reverse mode (--reverse)</text>
+<text text-anchor="middle" x="7228" y="-2795.7" font-family="Courier New" font-size="9.00" fill="#000000">2. Augmenter skip (--skip 10M)</text>
+<text text-anchor="middle" x="7228" y="-2784.9" font-family="Courier New" font-size="9.00" fill="#000000">3. Continuer (accepter lenteur)</text>
+<text text-anchor="middle" x="7228" y="-2774.1" font-family="Courier New" font-size="9.00" fill="#000000">✅ Confirmez votre choix (1-3):</text>
+</g>
+<!-- FeedbackSpeed&#45;&gt;C2_HDD_Ideal -->
+<g id="edge16" class="edge">
+<title>FeedbackSpeed-&gt;C2_HDD_Ideal</title>
+<path fill="none" stroke="#ffa000" stroke-width="2" d="M7118.3066,-2762.4441C7073.4482,-2745.3566 7020.5366,-2727.7448 6971,-2717.6 6696.5518,-2661.3947 5881.1596,-2631.7119 5509.4488,-2620.7855"/>
+<polygon fill="#ffa000" stroke="#ffa000" stroke-width="2" points="5509.4932,-2617.2854 5499.3951,-2620.4914 5509.2884,-2624.2824 5509.4932,-2617.2854"/>
+</g>
+<!-- FeedbackErrors -->
+<g id="node24" class="node">
+<title>FeedbackErrors</title>
+<polygon fill="#ffffff" stroke="#555555" points="5766,-2892.9001 5523.4754,-2809.2 5766,-2725.4999 6008.5246,-2809.2 5766,-2892.9001"/>
+<text text-anchor="middle" x="5766" y="-2838.9" font-family="Courier New" font-size="9.00" fill="#000000">⬜ DÉCISION HUMAINE: Erreurs détectées</text>
+<text text-anchor="middle" x="5766" y="-2828.1" font-family="Courier New" font-size="9.00" fill="#000000">📋 RAPPORT: CRC: X, UNC: Y</text>
+<text text-anchor="middle" x="5766" y="-2817.3" font-family="Courier New" font-size="9.00" fill="#000000">Options:</text>
+<text text-anchor="middle" x="5766" y="-2806.5" font-family="Courier New" font-size="9.00" fill="#000000">1. Changer câble maintenant</text>
+<text text-anchor="middle" x="5766" y="-2795.7" font-family="Courier New" font-size="9.00" fill="#000000">2. Continuer (risqué)</text>
+<text text-anchor="middle" x="5766" y="-2784.9" font-family="Courier New" font-size="9.00" fill="#000000">3. Passer en mode --direct</text>
+<text text-anchor="middle" x="5766" y="-2774.1" font-family="Courier New" font-size="9.00" fill="#000000">✅ Confirmez votre choix (1-3):</text>
+</g>
+<!-- FeedbackErrors&#45;&gt;C2_HDD_Ideal -->
+<g id="edge17" class="edge">
+<title>FeedbackErrors-&gt;C2_HDD_Ideal</title>
+<path fill="none" stroke="#ffa000" stroke-width="2" d="M5658.5616,-2762.5066C5567.672,-2723.0053 5441.4421,-2668.1449 5371.9519,-2637.944"/>
+<polygon fill="#ffa000" stroke="#ffa000" stroke-width="2" points="5373.0991,-2634.6264 5362.5327,-2633.8504 5370.3089,-2641.0463 5373.0991,-2634.6264"/>
+</g>
+<!-- FeedbackSound -->
+<g id="node25" class="node">
+<title>FeedbackSound</title>
+<polygon fill="#ffffff" stroke="#555555" points="6237,-2892.9001 6026.7647,-2809.2 6237,-2725.4999 6447.2353,-2809.2 6237,-2892.9001"/>
+<text text-anchor="middle" x="6237" y="-2838.9" font-family="Courier New" font-size="9.00" fill="#000000">⬜ DÉCISION HUMAINE: Bruit suspect</text>
+<text text-anchor="middle" x="6237" y="-2828.1" font-family="Courier New" font-size="9.00" fill="#000000">📋 RAPPORT SONORE: [description]</text>
+<text text-anchor="middle" x="6237" y="-2817.3" font-family="Courier New" font-size="9.00" fill="#000000">⚠️ Si grincement: STOP IMMÉDIAT</text>
+<text text-anchor="middle" x="6237" y="-2806.5" font-family="Courier New" font-size="9.00" fill="#000000">Options:</text>
+<text text-anchor="middle" x="6237" y="-2795.7" font-family="Courier New" font-size="9.00" fill="#000000">1. Continuer (clics modérés)</text>
+<text text-anchor="middle" x="6237" y="-2784.9" font-family="Courier New" font-size="9.00" fill="#000000">2. STOP (grincement)</text>
+<text text-anchor="middle" x="6237" y="-2774.1" font-family="Courier New" font-size="9.00" fill="#000000">✅ Confirmez votre choix (1-2):</text>
+</g>
+<!-- FeedbackSound&#45;&gt;C2_HDD_Ideal -->
+<g id="edge18" class="edge">
+<title>FeedbackSound-&gt;C2_HDD_Ideal</title>
+<path fill="none" stroke="#ffa000" stroke-width="2" d="M6141.8269,-2763.2613C6104.0334,-2746.6551 6059.6987,-2729.167 6018,-2717.6 5849.2652,-2670.794 5651.2308,-2644.4998 5509.4618,-2630.415"/>
+<polygon fill="#ffa000" stroke="#ffa000" stroke-width="2" points="5509.6471,-2626.9165 5499.3528,-2629.4219 5508.9627,-2633.8829 5509.6471,-2626.9165"/>
+</g>
+<!-- PostImage -->
+<g id="node80" class="node">
+<title>PostImage</title>
+<polygon fill="#0056b3" stroke="#555555" points="4688.8817,-1081.6 4559.1183,-1081.6 4559.1183,-1045.6 4688.8817,-1045.6 4688.8817,-1081.6"/>
+<text text-anchor="middle" x="4624" y="-1066.3" font-family="Courier New" font-size="9.00" fill="#ffffff">🔵 IMAGE DISPONIBLE</text>
+<text text-anchor="middle" x="4624" y="-1055.5" font-family="Courier New" font-size="9.00" fill="#ffffff">/backup/disk.img</text>
+</g>
+<!-- C2_HDD_Ideal&#45;&gt;PostImage -->
+<g id="edge117" class="edge">
+<title>C2_HDD_Ideal-&gt;PostImage</title>
+<path fill="none" stroke="#aaaaaa" d="M5319.1445,-2597.6217C5316.7813,-2572.8595 5313,-2527.1264 5313,-2488 5313,-2488 5313,-2488 5313,-1176.8 5313,-1157.6426 5302.7496,-1152.4982 5286,-1143.2 5186.6311,-1088.0372 4850.2112,-1070.6658 4698.8614,-1065.5659"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4698.8364,-1062.0633 4688.727,-1065.2335 4698.6068,-1069.0595 4698.8364,-1062.0633"/>
+</g>
+<!-- C1_Confirm&#45;&gt;DiagOK -->
+<g id="edge21" class="edge">
+<title>C1_Confirm-&gt;DiagOK</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M1926.9419,-4005.9634C1953.5935,-4033.9809 1994.0353,-4071.4314 2036.9896,-4092.8 2079.0341,-4113.716 2128.8331,-4126.6072 2173.3476,-4134.5452"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2172.9032,-4138.0201 2183.3512,-4136.2626 2174.0877,-4131.121 2172.9032,-4138.0201"/>
+<text text-anchor="middle" x="2065.0052" y="-4084.7" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C1_Ideal -->
+<g id="node28" class="node">
+<title>C1_Ideal</title>
+<g id="a_node28"><a xlink:title="Opération en cours...">
+<polygon fill="#0056b3" stroke="#555555" points="2042.946,-3676.4 1703.054,-3676.4 1703.054,-3640.4 2042.946,-3640.4 2042.946,-3676.4"/>
+<text text-anchor="middle" x="1873" y="-3661.1" font-family="Courier New" font-size="9.00" fill="#ffffff">🔵 BACKUP PRÉVENTIF</text>
+<text text-anchor="middle" x="1873" y="-3650.3" font-family="Courier New" font-size="9.00" fill="#ffffff">◉ ddrescue -f -v /dev/sdX /backup/disk.img /backup/map.log</text>
+</a>
+</g>
+</g>
+<!-- C1_Confirm&#45;&gt;C1_Ideal -->
+<g id="edge20" class="edge">
+<title>C1_Confirm-&gt;C1_Ideal</title>
+<path fill="none" stroke="#aaaaaa" d="M1892.4333,-3933.2924C1888.0035,-3870.6317 1879.0138,-3743.4675 1875.0063,-3686.7799"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="1878.4927,-3686.4621 1874.2961,-3676.7338 1871.5101,-3686.9558 1878.4927,-3686.4621"/>
+<text text-anchor="middle" x="1897.2518" y="-3765.5" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C1_End -->
+<g id="node29" class="node">
+<title>C1_End</title>
+<polygon fill="#2d2d2d" stroke="#555555" points="1972.5699,-3389.8 1773.4301,-3389.8 1773.4301,-3353.8 1972.5699,-3353.8 1972.5699,-3389.8"/>
+<text text-anchor="middle" x="1873" y="-3374.5" font-family="Courier New" font-size="9.00" fill="#ffffff">DISQUE OPÉRATIONNEL</text>
+<text text-anchor="middle" x="1873" y="-3363.7" font-family="Courier New" font-size="9.00" fill="#ffffff">Planifier sauvegardes régulières</text>
+</g>
+<!-- C1_Ideal&#45;&gt;C1_End -->
+<g id="edge22" class="edge">
+<title>C1_Ideal-&gt;C1_End</title>
+<path fill="none" stroke="#aaaaaa" d="M1873,-3640.0359C1873,-3591.3032 1873,-3458.4528 1873,-3400.019"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="1876.5001,-3400.0111 1873,-3390.0112 1869.5001,-3400.0112 1876.5001,-3400.0111"/>
+</g>
+<!-- C2_Urgent&#45;&gt;DiagBad -->
+<g id="edge25" class="edge">
+<title>C2_Urgent-&gt;DiagBad</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M4748.6422,-4282.2715C4598.9007,-4270.9477 4391.1745,-4254.0916 4208.9896,-4235.2 4001.2885,-4213.6625 3760.0646,-4182.2607 3619.8604,-4163.3715"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3620.3203,-4159.9019 3609.9421,-4162.0334 3619.3843,-4166.8391 3620.3203,-4159.9019"/>
+<text text-anchor="middle" x="4237.0052" y="-4227.1" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C2_Storage -->
+<g id="node31" class="node">
+<title>C2_Storage</title>
+<polygon fill="#ffffff" stroke="#555555" points="5124,-4063.9001 4897.3702,-3969.6 5124,-3875.2999 5350.6298,-3969.6 5124,-4063.9001"/>
+<text text-anchor="middle" x="5124" y="-4004.7" font-family="Courier New" font-size="9.00" fill="#000000">⬜ DÉCISION: Stockage disponible ?</text>
+<text text-anchor="middle" x="5124" y="-3993.9" font-family="Courier New" font-size="9.00" fill="#000000">📋 ESPACE LIBRE: /backup: XX Go</text>
+<text text-anchor="middle" x="5124" y="-3983.1" font-family="Courier New" font-size="9.00" fill="#000000">📋 TAILLE DISQUE: YY Go</text>
+<text text-anchor="middle" x="5124" y="-3972.3" font-family="Courier New" font-size="9.00" fill="#000000">Options:</text>
+<text text-anchor="middle" x="5124" y="-3961.5" font-family="Courier New" font-size="9.00" fill="#000000">1. Assez d'espace → méthode standard</text>
+<text text-anchor="middle" x="5124" y="-3950.7" font-family="Courier New" font-size="9.00" fill="#000000">2. Pas assez → streaming</text>
+<text text-anchor="middle" x="5124" y="-3939.9" font-family="Courier New" font-size="9.00" fill="#000000">3. Pas assez → chunking</text>
+<text text-anchor="middle" x="5124" y="-3929.1" font-family="Courier New" font-size="9.00" fill="#000000">✅ Choix (1-3):</text>
+</g>
+<!-- C2_Urgent&#45;&gt;C2_Storage -->
+<g id="edge24" class="edge">
+<title>C2_Urgent-&gt;C2_Storage</title>
+<path fill="none" stroke="#aaaaaa" d="M4970.1464,-4265.9406C4994.8544,-4218.3501 5042.9494,-4125.7132 5078.8205,-4056.6213"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="5082.0734,-4057.9515 5083.5749,-4047.4636 5075.8608,-4054.726 5082.0734,-4057.9515"/>
+<text text-anchor="middle" x="5064.2518" y="-4144.5" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C2_Storage_OK -->
+<g id="node32" class="node">
+<title>C2_Storage_OK</title>
+<polygon fill="#0056b3" stroke="#555555" points="5399.6839,-3614.8 5292.3161,-3614.8 5292.3161,-3578.8 5405.6839,-3578.8 5405.6839,-3608.8 5399.6839,-3614.8"/>
+<polyline fill="none" stroke="#555555" points="5399.6839,-3614.8 5399.6839,-3608.8 "/>
+<polyline fill="none" stroke="#555555" points="5405.6839,-3608.8 5399.6839,-3608.8 "/>
+<text text-anchor="middle" x="5349" y="-3594.1" font-family="Courier New" font-size="9.00" fill="#ffffff">Stockage suffisant</text>
+</g>
+<!-- C2_Storage&#45;&gt;C2_Storage_OK -->
+<g id="edge26" class="edge">
+<title>C2_Storage-&gt;C2_Storage_OK</title>
+<path fill="none" stroke="#aaaaaa" d="M5169.5321,-3894.1584C5220.1335,-3810.3175 5299.1545,-3679.3884 5332.8741,-3623.5188"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="5335.901,-3625.277 5338.0717,-3614.9069 5329.9079,-3621.6599 5335.901,-3625.277"/>
+</g>
+<!-- C2_Storage_KO -->
+<g id="node39" class="node">
+<title>C2_Storage_KO</title>
+<polygon fill="#ff8f00" stroke="#555555" points="5179.982,-3676.4 5062.018,-3676.4 5062.018,-3640.4 5185.982,-3640.4 5185.982,-3670.4 5179.982,-3676.4"/>
+<polyline fill="none" stroke="#555555" points="5179.982,-3676.4 5179.982,-3670.4 "/>
+<polyline fill="none" stroke="#555555" points="5185.982,-3670.4 5179.982,-3670.4 "/>
+<text text-anchor="middle" x="5124" y="-3655.7" font-family="Courier New" font-size="9.00" fill="#000000">Stockage insuffisant</text>
+</g>
+<!-- C2_Storage&#45;&gt;C2_Storage_KO -->
+<g id="edge27" class="edge">
+<title>C2_Storage-&gt;C2_Storage_KO</title>
+<path fill="none" stroke="#aaaaaa" d="M5124,-3874.9622C5124,-3810.3129 5124,-3728.9863 5124,-3686.7682"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="5127.5001,-3686.6689 5124,-3676.6689 5120.5001,-3686.6689 5127.5001,-3686.6689"/>
+</g>
+<!-- C2_Type -->
+<g id="node33" class="node">
+<title>C2_Type</title>
+<polygon fill="#ffffff" stroke="#555555" points="5256,-3119.9001 5013.4754,-3036.2 5256,-2952.4999 5498.5246,-3036.2 5256,-3119.9001"/>
+<text text-anchor="middle" x="5256" y="-3065.9" font-family="Courier New" font-size="9.00" fill="#000000">⬜ DÉCISION: Type de disque ?</text>
+<text text-anchor="middle" x="5256" y="-3055.1" font-family="Courier New" font-size="9.00" fill="#000000">📋 DÉTECTION AUTO: rotational=?</text>
+<text text-anchor="middle" x="5256" y="-3044.3" font-family="Courier New" font-size="9.00" fill="#000000">Options:</text>
+<text text-anchor="middle" x="5256" y="-3033.5" font-family="Courier New" font-size="9.00" fill="#000000">1. HDD mécanique</text>
+<text text-anchor="middle" x="5256" y="-3022.7" font-family="Courier New" font-size="9.00" fill="#000000">2. SSD/NVMe</text>
+<text text-anchor="middle" x="5256" y="-3011.9" font-family="Courier New" font-size="9.00" fill="#000000">3. Je ne sais pas (laisser auto-détecter)</text>
+<text text-anchor="middle" x="5256" y="-3001.1" font-family="Courier New" font-size="9.00" fill="#000000">✅ Choix (1-3):</text>
+</g>
+<!-- C2_Storage_OK&#45;&gt;C2_Type -->
+<g id="edge28" class="edge">
+<title>C2_Storage_OK-&gt;C2_Type</title>
+<path fill="none" stroke="#aaaaaa" d="M5405.7556,-3586.1035C5447.8629,-3574.4989 5498,-3551.2447 5498,-3506.3 5498,-3506.3 5498,-3506.3 5498,-3187.8 5498,-3134.2438 5454.9082,-3098.8919 5405.0921,-3075.9173"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="5406.2819,-3072.6164 5395.721,-3071.7698 5403.4489,-3079.0176 5406.2819,-3072.6164"/>
+</g>
+<!-- C2_HDD -->
+<g id="node34" class="node">
+<title>C2_HDD</title>
+<polygon fill="#0056b3" stroke="#555555" points="5054.5883,-2633.8 4963.4117,-2633.8 4963.4117,-2597.8 5054.5883,-2597.8 5054.5883,-2633.8"/>
+<text text-anchor="middle" x="5009" y="-2613.1" font-family="Courier New" font-size="9.00" fill="#ffffff">HDD MÉCANIQUE</text>
+</g>
+<!-- C2_Type&#45;&gt;C2_HDD -->
+<g id="edge31" class="edge">
+<title>C2_Type-&gt;C2_HDD</title>
+<path fill="none" stroke="#aaaaaa" d="M5137.7013,-2993.1499C5107.4483,-2976.5714 5078.1046,-2954.4644 5059,-2925.6 5033.333,-2886.8208 5044.5402,-2763.313 5036,-2717.6 5031.2819,-2692.3456 5023.6093,-2664.1465 5017.6467,-2643.843"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="5020.9235,-2642.5837 5014.7093,-2634.0027 5014.216,-2644.5861 5020.9235,-2642.5837"/>
+</g>
+<!-- C2_SSD -->
+<g id="node36" class="node">
+<title>C2_SSD</title>
+<polygon fill="#0056b3" stroke="#555555" points="5276.6931,-1194.8 5217.3069,-1194.8 5217.3069,-1158.8 5276.6931,-1158.8 5276.6931,-1194.8"/>
+<text text-anchor="middle" x="5247" y="-1174.1" font-family="Courier New" font-size="9.00" fill="#ffffff">SSD/NVMe</text>
+</g>
+<!-- C2_Type&#45;&gt;C2_SSD -->
+<g id="edge32" class="edge">
+<title>C2_Type-&gt;C2_SSD</title>
+<path fill="none" stroke="#aaaaaa" d="M5222.512,-2963.873C5192.5297,-2894.861 5150.7858,-2787.1118 5134,-2688.6 5123.1303,-2624.8083 5115.3128,-2604.9542 5134,-2543 5150.9441,-2486.8247 5185.3572,-2487.5376 5207,-2433 5245.8369,-2335.1349 5247,-2304.7895 5247,-2199.5 5247,-2199.5 5247,-2199.5 5247,-1244.8 5247,-1231.7429 5247,-1217.2755 5247,-1205.0535"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="5250.5001,-1204.983 5247,-1194.983 5243.5001,-1204.983 5250.5001,-1204.983"/>
+</g>
+<!-- C2_Crypto -->
+<g id="node42" class="node">
+<title>C2_Crypto</title>
+<polygon fill="#ffffff" stroke="#555555" points="5009,-2433.1001 4820.4573,-2349.4 5009,-2265.6999 5197.5427,-2349.4 5009,-2433.1001"/>
+<text text-anchor="middle" x="5009" y="-2379.1" font-family="Courier New" font-size="9.00" fill="#000000">⬜ DÉCISION: Disque chiffré ?</text>
+<text text-anchor="middle" x="5009" y="-2368.3" font-family="Courier New" font-size="9.00" fill="#000000">📋 DÉTECTION AUTO: [LUKS/non]</text>
+<text text-anchor="middle" x="5009" y="-2357.5" font-family="Courier New" font-size="9.00" fill="#000000">Options:</text>
+<text text-anchor="middle" x="5009" y="-2346.7" font-family="Courier New" font-size="9.00" fill="#000000">1. Oui (LUKS détecté)</text>
+<text text-anchor="middle" x="5009" y="-2335.9" font-family="Courier New" font-size="9.00" fill="#000000">2. Non (pas de chiffrement)</text>
+<text text-anchor="middle" x="5009" y="-2325.1" font-family="Courier New" font-size="9.00" fill="#000000">3. Je ne sais pas</text>
+<text text-anchor="middle" x="5009" y="-2314.3" font-family="Courier New" font-size="9.00" fill="#000000">✅ Choix (1-3):</text>
+</g>
+<!-- C2_HDD&#45;&gt;C2_Crypto -->
+<g id="edge33" class="edge">
+<title>C2_HDD-&gt;C2_Crypto</title>
+<path fill="none" stroke="#aaaaaa" d="M5009,-2597.4892C5009,-2565.9396 5009,-2499.297 5009,-2443.0214"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="5012.5001,-2443.0067 5009,-2433.0068 5005.5001,-2443.0068 5012.5001,-2443.0067"/>
+</g>
+<!-- C2_HDD_Confirm -->
+<g id="node35" class="node">
+<title>C2_HDD_Confirm</title>
+<polygon fill="#4caf50" stroke="#555555" points="4989.8634,-3072.5003 4758.1366,-3072.5003 4758.1366,-2999.8997 4995.8634,-2999.8997 4995.8634,-3066.5003 4989.8634,-3072.5003"/>
+<polyline fill="none" stroke="#555555" points="4989.8634,-3072.5003 4989.8634,-3066.5003 "/>
+<polyline fill="none" stroke="#555555" points="4995.8634,-3066.5003 4989.8634,-3066.5003 "/>
+<text text-anchor="middle" x="4877" y="-3060.5" font-family="Courier New" font-size="9.00" fill="#000000">✅ CONFIRMATION HDD</text>
+<text text-anchor="middle" x="4877" y="-3049.7" font-family="Courier New" font-size="9.00" fill="#000000">📋 ACTION: ddrescue standard</text>
+<text text-anchor="middle" x="4877" y="-3038.9" font-family="Courier New" font-size="9.00" fill="#000000">⚙️ PARAMÈTRES: -f -n -v --direct</text>
+<text text-anchor="middle" x="4877" y="-3028.1" font-family="Courier New" font-size="9.00" fill="#000000">⚠️ SURVEILLANCE: Température, bruits</text>
+<text text-anchor="middle" x="4877" y="-3017.3" font-family="Courier New" font-size="9.00" fill="#000000">⏱️ ESTIMATION: X heures</text>
+<text text-anchor="middle" x="4877" y="-3006.5" font-family="Courier New" font-size="9.00" fill="#000000">✅ Lancer ddrescue? (oui/non)</text>
+</g>
+<!-- C2_HDD_Confirm&#45;&gt;C2_HDD_Ideal -->
+<g id="edge43" class="edge">
+<title>C2_HDD_Confirm-&gt;C2_HDD_Ideal</title>
+<path fill="none" stroke="#aaaaaa" d="M4932.7244,-2999.8813C4971.6183,-2974.1639 5019.7114,-2941.5193 5038,-2925.6 5146.7091,-2830.9741 5256.4166,-2697.5754 5300.6515,-2641.8497"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="5303.4819,-2643.9131 5306.9373,-2633.8975 5297.9903,-2639.5723 5303.4819,-2643.9131"/>
+<text text-anchor="middle" x="5248.2518" y="-2806.5" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C2_HDD_Confirm&#45;&gt;C2_HDD -->
+<g id="edge44" class="edge">
+<title>C2_HDD_Confirm-&gt;C2_HDD</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M4888.4832,-2999.6277C4914.3697,-2917.1832 4976.8279,-2718.2634 5000.0804,-2644.2076"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="5003.5611,-2644.8053 5003.2176,-2634.216 4996.8826,-2642.7083 5003.5611,-2644.8053"/>
+<text text-anchor="middle" x="5005.0052" y="-2806.5" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C2_SSD&#45;&gt;C2_Crypto -->
+<g id="edge34" class="edge">
+<title>C2_SSD-&gt;C2_Crypto</title>
+<path fill="none" stroke="#aaaaaa" d="M5238.6341,-1194.8487C5233.1536,-1208.3152 5227,-1227.3261 5227,-1244.8 5227,-2223.4 5227,-2223.4 5227,-2223.4 5227,-2269.8228 5189.4858,-2299.413 5145.5815,-2318.1474"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="5144.078,-2314.9802 5136.1269,-2321.9825 5146.7092,-2321.4669 5144.078,-2314.9802"/>
+</g>
+<!-- C2_SSD_Confirm -->
+<g id="node37" class="node">
+<title>C2_SSD_Confirm</title>
+<polygon fill="#4caf50" stroke="#555555" points="5090.8634,-1359.9003 4859.1366,-1359.9003 4859.1366,-1287.2997 5096.8634,-1287.2997 5096.8634,-1353.9003 5090.8634,-1359.9003"/>
+<polyline fill="none" stroke="#555555" points="5090.8634,-1359.9003 5090.8634,-1353.9003 "/>
+<polyline fill="none" stroke="#555555" points="5096.8634,-1353.9003 5090.8634,-1353.9003 "/>
+<text text-anchor="middle" x="4978" y="-1347.9" font-family="Courier New" font-size="9.00" fill="#000000">✅ CONFIRMATION SSD</text>
+<text text-anchor="middle" x="4978" y="-1337.1" font-family="Courier New" font-size="9.00" fill="#000000">📋 ACTION: dd bypass cache</text>
+<text text-anchor="middle" x="4978" y="-1326.3" font-family="Courier New" font-size="9.00" fill="#000000">⚙️ PARAMÈTRES: iflag=nocache,noatime</text>
+<text text-anchor="middle" x="4978" y="-1315.5" font-family="Courier New" font-size="9.00" fill="#000000">⚠️ VÉRIFIER: freeze lock</text>
+<text text-anchor="middle" x="4978" y="-1304.7" font-family="Courier New" font-size="9.00" fill="#000000">⏱️ ESTIMATION: X heures</text>
+<text text-anchor="middle" x="4978" y="-1293.9" font-family="Courier New" font-size="9.00" fill="#000000">✅ Lancer la lecture SSD? (oui/non)</text>
+</g>
+<!-- C2_SSD_Confirm&#45;&gt;C2_SSD -->
+<g id="edge46" class="edge">
+<title>C2_SSD_Confirm-&gt;C2_SSD</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M5051.2323,-1287.2766C5096.9115,-1264.0651 5156.5862,-1232.7265 5208,-1202.4 5209.0987,-1201.7519 5210.2099,-1201.0867 5211.3278,-1200.4088"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="5213.3017,-1203.3027 5219.9353,-1195.0416 5209.5979,-1197.3628 5213.3017,-1203.3027"/>
+<text text-anchor="middle" x="5171.0052" y="-1242.1" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C2_SSD_Ideal -->
+<g id="node38" class="node">
+<title>C2_SSD_Ideal</title>
+<g id="a_node38"><a xlink:title="Opération en cours...">
+<polygon fill="#0056b3" stroke="#555555" points="5199.0292,-1194.8 4756.9708,-1194.8 4756.9708,-1158.8 5199.0292,-1158.8 5199.0292,-1194.8"/>
+<text text-anchor="middle" x="4978" y="-1179.5" font-family="Courier New" font-size="9.00" fill="#ffffff">🔵 LECTURE SSD EN COURS</text>
+<text text-anchor="middle" x="4978" y="-1168.7" font-family="Courier New" font-size="9.00" fill="#ffffff">◉ dd if=/dev/sdX of=/backup/disk.img bs=1M iflag=nocache,noatime conv=noerror</text>
+</a>
+</g>
+</g>
+<!-- C2_SSD_Confirm&#45;&gt;C2_SSD_Ideal -->
+<g id="edge45" class="edge">
+<title>C2_SSD_Confirm-&gt;C2_SSD_Ideal</title>
+<path fill="none" stroke="#aaaaaa" d="M4978,-1286.9348C4978,-1261.715 4978,-1228.6995 4978,-1205.416"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4981.5001,-1205.1556 4978,-1195.1556 4974.5001,-1205.1557 4981.5001,-1205.1556"/>
+<text text-anchor="middle" x="4989.2518" y="-1242.1" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C2_SSD_Ideal&#45;&gt;PostImage -->
+<g id="edge118" class="edge">
+<title>C2_SSD_Ideal-&gt;PostImage</title>
+<path fill="none" stroke="#aaaaaa" d="M4921.5162,-1158.738C4858.5374,-1138.599 4756.7923,-1106.0635 4690.145,-1084.7515"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4691.1662,-1081.4035 4680.5753,-1081.6913 4689.0341,-1088.0709 4691.1662,-1081.4035"/>
+</g>
+<!-- C2_Streaming -->
+<g id="node40" class="node">
+<title>C2_Streaming</title>
+<polygon fill="#ffffff" stroke="#555555" points="4938,-3477.2004 4749.4573,-3371.8 4938,-3266.3996 5126.5427,-3371.8 4938,-3477.2004"/>
+<text text-anchor="middle" x="4938" y="-3412.3" font-family="Courier New" font-size="9.00" fill="#000000">⬜ STREAMING CLOUD</text>
+<text text-anchor="middle" x="4938" y="-3401.5" font-family="Courier New" font-size="9.00" fill="#000000">📋 DESTINATION: user@remote</text>
+<text text-anchor="middle" x="4938" y="-3390.7" font-family="Courier New" font-size="9.00" fill="#000000">📋 DÉBIT NÉCESSAIRE: &gt;10Mb/s</text>
+<text text-anchor="middle" x="4938" y="-3379.9" font-family="Courier New" font-size="9.00" fill="#000000">⚠️ RISQUE: Coupure réseau</text>
+<text text-anchor="middle" x="4938" y="-3369.1" font-family="Courier New" font-size="9.00" fill="#000000">Options:</text>
+<text text-anchor="middle" x="4938" y="-3358.3" font-family="Courier New" font-size="9.00" fill="#000000">1. Configurer streaming SSH</text>
+<text text-anchor="middle" x="4938" y="-3347.5" font-family="Courier New" font-size="9.00" fill="#000000">2. Configurer rclone</text>
+<text text-anchor="middle" x="4938" y="-3336.7" font-family="Courier New" font-size="9.00" fill="#000000">3. Annuler</text>
+<text text-anchor="middle" x="4938" y="-3325.9" font-family="Courier New" font-size="9.00" fill="#000000">✅ Choix (1-3):</text>
+</g>
+<!-- C2_Storage_KO&#45;&gt;C2_Streaming -->
+<g id="edge29" class="edge">
+<title>C2_Storage_KO-&gt;C2_Streaming</title>
+<path fill="none" stroke="#aaaaaa" d="M5112.0819,-3640.0359C5088.6778,-3603.9735 5035.379,-3521.8475 4993.8787,-3457.9012"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4996.7438,-3455.8868 4988.364,-3449.4038 4990.872,-3459.6976 4996.7438,-3455.8868"/>
+</g>
+<!-- C2_Chunking -->
+<g id="node41" class="node">
+<title>C2_Chunking</title>
+<polygon fill="#ffffff" stroke="#555555" points="5312,-3487.8 5144.6502,-3371.8 5312,-3255.8 5479.3498,-3371.8 5312,-3487.8"/>
+<text text-anchor="middle" x="5312" y="-3417.7" font-family="Courier New" font-size="9.00" fill="#000000">⬜ CHUNKING MULTI-DISQUES</text>
+<text text-anchor="middle" x="5312" y="-3406.9" font-family="Courier New" font-size="9.00" fill="#000000">📋 DISQUES DISPONIBLES:</text>
+<text text-anchor="middle" x="5312" y="-3396.1" font-family="Courier New" font-size="9.00" fill="#000000">• /media/disk1: XX Go</text>
+<text text-anchor="middle" x="5312" y="-3385.3" font-family="Courier New" font-size="9.00" fill="#000000">• /media/disk2: YY Go</text>
+<text text-anchor="middle" x="5312" y="-3374.5" font-family="Courier New" font-size="9.00" fill="#000000">• /media/disk3: ZZ Go</text>
+<text text-anchor="middle" x="5312" y="-3363.7" font-family="Courier New" font-size="9.00" fill="#000000">Options:</text>
+<text text-anchor="middle" x="5312" y="-3352.9" font-family="Courier New" font-size="9.00" fill="#000000">1. Utiliser tous les disques</text>
+<text text-anchor="middle" x="5312" y="-3342.1" font-family="Courier New" font-size="9.00" fill="#000000">2. Sélectionner disques</text>
+<text text-anchor="middle" x="5312" y="-3331.3" font-family="Courier New" font-size="9.00" fill="#000000">3. Annuler</text>
+<text text-anchor="middle" x="5312" y="-3320.5" font-family="Courier New" font-size="9.00" fill="#000000">✅ Choix (1-3):</text>
+</g>
+<!-- C2_Storage_KO&#45;&gt;C2_Chunking -->
+<g id="edge30" class="edge">
+<title>C2_Storage_KO-&gt;C2_Chunking</title>
+<path fill="none" stroke="#aaaaaa" d="M5136.0462,-3640.0359C5159.4305,-3604.3873 5212.3415,-3523.7263 5254.0718,-3460.1098"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="5257.0629,-3461.931 5259.6213,-3451.6497 5251.2098,-3458.0915 5257.0629,-3461.931"/>
+</g>
+<!-- C2_Streaming&#45;&gt;C2_Type -->
+<g id="edge47" class="edge">
+<title>C2_Streaming-&gt;C2_Type</title>
+<path fill="none" stroke="#aaaaaa" d="M5003.5042,-3302.6704C5057.8173,-3245.3513 5134.7045,-3164.2087 5189.3357,-3106.5538"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="5191.8822,-3108.955 5196.2198,-3099.2888 5186.801,-3104.1403 5191.8822,-3108.955"/>
+</g>
+<!-- C2_Streaming&#45;&gt;PostImage -->
+<g id="edge119" class="edge">
+<title>C2_Streaming-&gt;PostImage</title>
+<path fill="none" stroke="#aaaaaa" d="M4810.9834,-3337.1493C4741.3338,-3309.602 4669,-3262.912 4669,-3187.8 4669,-3187.8 4669,-3187.8 4669,-2934.1 4669,-2752.0556 4669,-2706.5444 4669,-2524.5 4669,-2524.5 4669,-2524.5 4669,-1176.8 4669,-1145.7114 4654.1623,-1113.001 4641.527,-1090.7821"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4644.3994,-1088.7633 4636.2964,-1081.9374 4638.3741,-1092.3265 4644.3994,-1088.7633"/>
+</g>
+<!-- C2_Chunking&#45;&gt;C2_Type -->
+<g id="edge48" class="edge">
+<title>C2_Chunking-&gt;C2_Type</title>
+<path fill="none" stroke="#aaaaaa" d="M5294.5882,-3267.4537C5286.9925,-3221.9338 5278.1777,-3169.1078 5270.892,-3125.4456"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="5274.3168,-3124.7046 5269.2186,-3115.417 5267.4123,-3125.8568 5274.3168,-3124.7046"/>
+</g>
+<!-- C2_Chunking&#45;&gt;PostImage -->
+<g id="edge120" class="edge">
+<title>C2_Chunking-&gt;PostImage</title>
+<path fill="none" stroke="#aaaaaa" d="M5233.53,-3309.9795C5204.3673,-3289.8089 5170.061,-3269.1815 5136,-3255.8 5050.8562,-3222.3497 4730,-3279.2789 4730,-3187.8 4730,-3187.8 4730,-3187.8 4730,-2934.1 4730,-2674.233 4729,-2609.267 4729,-2349.4 4729,-2349.4 4729,-2349.4 4729,-1176.8 4729,-1138.0085 4695.4467,-1106.9004 4666.2749,-1087.185"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4668.0939,-1084.193 4657.8006,-1081.6831 4664.2821,-1090.0642 4668.0939,-1084.193"/>
+</g>
+<!-- C2_Crypto_Yes -->
+<g id="node43" class="node">
+<title>C2_Crypto_Yes</title>
+<polygon fill="#ff8f00" stroke="#555555" points="5006.5883,-2137 4915.4117,-2137 4915.4117,-2101 5006.5883,-2101 5006.5883,-2137"/>
+<text text-anchor="middle" x="4961" y="-2116.3" font-family="Courier New" font-size="9.00" fill="#000000">LUKS détecté</text>
+</g>
+<!-- C2_Crypto&#45;&gt;C2_Crypto_Yes -->
+<g id="edge35" class="edge">
+<title>C2_Crypto-&gt;C2_Crypto_Yes</title>
+<path fill="none" stroke="#aaaaaa" d="M4993.0167,-2272.6801C4984.0391,-2229.5878 4973.3707,-2178.3795 4966.8968,-2147.3049"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4970.2576,-2146.2753 4964.7915,-2137.1994 4963.4047,-2147.703 4970.2576,-2146.2753"/>
+</g>
+<!-- C2_Crypto_No -->
+<g id="node46" class="node">
+<title>C2_Crypto_No</title>
+<polygon fill="#0056b3" stroke="#555555" points="4897.2895,-1488.4 4816.7105,-1488.4 4816.7105,-1452.4 4897.2895,-1452.4 4897.2895,-1488.4"/>
+<text text-anchor="middle" x="4857" y="-1467.7" font-family="Courier New" font-size="9.00" fill="#ffffff">Non chiffré</text>
+</g>
+<!-- C2_Crypto&#45;&gt;C2_Crypto_No -->
+<g id="edge36" class="edge">
+<title>C2_Crypto-&gt;C2_Crypto_No</title>
+<path fill="none" stroke="#aaaaaa" d="M4876.5407,-2324.4865C4825.4134,-2306.5035 4779,-2275.7593 4779,-2223.4 4779,-2223.4 4779,-2223.4 4779,-1548.2 4779,-1525.643 4795.5546,-1507.3575 4813.4106,-1494.1954"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4815.4068,-1497.0704 4821.6515,-1488.5115 4811.4324,-1491.308 4815.4068,-1497.0704"/>
+</g>
+<!-- C2_Crypto_Confirm -->
+<g id="node44" class="node">
+<title>C2_Crypto_Confirm</title>
+<polygon fill="#4caf50" stroke="#555555" points="5131.7578,-1962.4 4868.2422,-1962.4 4868.2422,-1900.4 5137.7578,-1900.4 5137.7578,-1956.4 5131.7578,-1962.4"/>
+<polyline fill="none" stroke="#555555" points="5131.7578,-1962.4 5131.7578,-1956.4 "/>
+<polyline fill="none" stroke="#555555" points="5137.7578,-1956.4 5131.7578,-1956.4 "/>
+<text text-anchor="middle" x="5003" y="-1950.3" font-family="Courier New" font-size="9.00" fill="#000000">✅ CONFIRMATION LUKS</text>
+<text text-anchor="middle" x="5003" y="-1939.5" font-family="Courier New" font-size="9.00" fill="#000000">📋 ACTION: Sauver header d'abord</text>
+<text text-anchor="middle" x="5003" y="-1928.7" font-family="Courier New" font-size="9.00" fill="#000000">🔐 FICHIER: header.luks</text>
+<text text-anchor="middle" x="5003" y="-1917.9" font-family="Courier New" font-size="9.00" fill="#000000">⚠️ IMPORTANT: Sans header, données perdues</text>
+<text text-anchor="middle" x="5003" y="-1907.1" font-family="Courier New" font-size="9.00" fill="#000000">✅ Sauvegarder le header LUKS? (oui/non)</text>
+</g>
+<!-- C2_Crypto_Yes&#45;&gt;C2_Crypto_Confirm -->
+<g id="edge37" class="edge">
+<title>C2_Crypto_Yes-&gt;C2_Crypto_Confirm</title>
+<path fill="none" stroke="#aaaaaa" d="M4965.1036,-2100.6705C4971.7115,-2071.1552 4984.8717,-2012.3731 4993.807,-1972.4619"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4997.268,-1973.0231 4996.0373,-1962.5 4990.4371,-1971.4938 4997.268,-1973.0231"/>
+</g>
+<!-- C2_Crypto_Confirm&#45;&gt;C2_Crypto -->
+<g id="edge39" class="edge">
+<title>C2_Crypto_Confirm-&gt;C2_Crypto</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M5028.7849,-1962.6975C5036.5248,-1975.0507 5043,-1989.8522 5043,-2004.8 5043,-2223.4 5043,-2223.4 5043,-2223.4 5043,-2237.8512 5040.8895,-2252.9227 5037.7201,-2267.4085"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="5034.2696,-2266.7911 5035.3697,-2277.3287 5041.081,-2268.405 5034.2696,-2266.7911"/>
+<text text-anchor="middle" x="5072.0052" y="-2116.3" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C2_Crypto_Ideal -->
+<g id="node45" class="node">
+<title>C2_Crypto_Ideal</title>
+<polygon fill="#2e7d32" stroke="#555555" points="5208.1343,-1692.2 4797.8657,-1692.2 4797.8657,-1656.2 5208.1343,-1656.2 5208.1343,-1692.2"/>
+<text text-anchor="middle" x="5003" y="-1676.9" font-family="Courier New" font-size="9.00" fill="#ffffff">🟢 SAUVEGARDE HEADER</text>
+<text text-anchor="middle" x="5003" y="-1666.1" font-family="Courier New" font-size="9.00" fill="#ffffff">◉ cryptsetup luksHeaderBackup /dev/sdX --header-backup-file header.luks</text>
+</g>
+<!-- C2_Crypto_Confirm&#45;&gt;C2_Crypto_Ideal -->
+<g id="edge38" class="edge">
+<title>C2_Crypto_Confirm-&gt;C2_Crypto_Ideal</title>
+<path fill="none" stroke="#aaaaaa" d="M5003,-1900.3757C5003,-1849.9449 5003,-1750.9479 5003,-1702.4003"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="5006.5001,-1702.2938 5003,-1692.2938 4999.5001,-1702.2938 5006.5001,-1702.2938"/>
+<text text-anchor="middle" x="5014.2518" y="-1842.7" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C2_Crypto_Ideal&#45;&gt;C2_Crypto_No -->
+<g id="edge40" class="edge">
+<title>C2_Crypto_Ideal-&gt;C2_Crypto_No</title>
+<path fill="none" stroke="#aaaaaa" d="M4990.0435,-1656.1141C4964.1773,-1620.0078 4906.0413,-1538.8562 4875.9103,-1496.7968"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4878.5965,-1494.5363 4869.9275,-1488.4454 4872.906,-1498.6129 4878.5965,-1494.5363"/>
+<text text-anchor="middle" x="4968.2661" y="-1545.5" font-family="Arial" font-size="9.00" fill="#000000">Après sauvegarde header</text>
+</g>
+<!-- C2_Crypto_No&#45;&gt;C2_HDD_Confirm -->
+<g id="edge41" class="edge">
+<title>C2_Crypto_No-&gt;C2_HDD_Confirm</title>
+<path fill="none" stroke="#aaaaaa" d="M4816.5739,-1484.3356C4789.5786,-1496.5001 4759,-1517.1354 4759,-1548.2 4759,-2809.2 4759,-2809.2 4759,-2809.2 4759,-2879.029 4803.503,-2948.7028 4837.8486,-2992.0765"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4835.1275,-2994.2779 4844.1304,-2999.8634 4840.5757,-2989.8827 4835.1275,-2994.2779"/>
+</g>
+<!-- C2_Crypto_No&#45;&gt;C2_SSD_Confirm -->
+<g id="edge42" class="edge">
+<title>C2_Crypto_No-&gt;C2_SSD_Confirm</title>
+<path fill="none" stroke="#aaaaaa" d="M4871.837,-1452.3994C4889.0843,-1431.4746 4918.1685,-1396.1889 4941.5383,-1367.8362"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4944.304,-1369.9836 4947.9636,-1360.0409 4938.9024,-1365.5313 4944.304,-1369.9836"/>
+</g>
+<!-- C3_Click -->
+<g id="node48" class="node">
+<title>C3_Click</title>
+<polygon fill="#2d2d2d" stroke="#555555" points="4108.3863,-3560.8 4005.6137,-3560.8 4005.6137,-3524.8 4108.3863,-3524.8 4108.3863,-3560.8"/>
+<text text-anchor="middle" x="4057" y="-3540.1" font-family="Courier New" font-size="9.00" fill="#ffffff">CLICS RÉGULIERS</text>
+</g>
+<!-- C3_Listen&#45;&gt;C3_Click -->
+<g id="edge50" class="edge">
+<title>C3_Listen-&gt;C3_Click</title>
+<path fill="none" stroke="#aaaaaa" d="M3864.7021,-3736.1783C3887.2456,-3727.4521 3909.6388,-3716.5447 3929,-3703 3980.1451,-3667.2199 4021.2743,-3605.3049 4042.1162,-3569.8376"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4045.2484,-3571.4121 4047.2103,-3561.0005 4039.1838,-3567.9162 4045.2484,-3571.4121"/>
+</g>
+<!-- C3_Scratch -->
+<g id="node51" class="node">
+<title>C3_Scratch</title>
+<polygon fill="#2d2d2d" stroke="#555555" points="3875.2804,-3560.8 3740.7196,-3560.8 3740.7196,-3524.8 3875.2804,-3524.8 3875.2804,-3560.8"/>
+<text text-anchor="middle" x="3808" y="-3540.1" font-family="Courier New" font-size="9.00" fill="#ffffff">GRINCEMENT MÉTALLIQUE</text>
+</g>
+<!-- C3_Listen&#45;&gt;C3_Scratch -->
+<g id="edge51" class="edge">
+<title>C3_Listen-&gt;C3_Scratch</title>
+<path fill="none" stroke="#aaaaaa" d="M3750.3032,-3720.9488C3765.0544,-3675.4019 3786.8742,-3608.0295 3799.0153,-3570.5417"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3802.4177,-3571.3956 3802.1692,-3560.8037 3795.7582,-3569.2388 3802.4177,-3571.3956"/>
+</g>
+<!-- C3_Beep -->
+<g id="node54" class="node">
+<title>C3_Beep</title>
+<polygon fill="#2d2d2d" stroke="#555555" points="3295.7849,-3560.8 3188.2151,-3560.8 3188.2151,-3524.8 3295.7849,-3524.8 3295.7849,-3560.8"/>
+<text text-anchor="middle" x="3242" y="-3540.1" font-family="Courier New" font-size="9.00" fill="#ffffff">BIP ÉLECTRONIQUE</text>
+</g>
+<!-- C3_Listen&#45;&gt;C3_Beep -->
+<g id="edge52" class="edge">
+<title>C3_Listen-&gt;C3_Beep</title>
+<path fill="none" stroke="#aaaaaa" d="M3605.3022,-3753.4172C3520.5619,-3742.043 3418.8453,-3724.6255 3381,-3703 3324.2641,-3670.5801 3279.3932,-3606.1258 3257.2011,-3569.6289"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3260.179,-3567.7889 3252.0542,-3560.9889 3254.1651,-3571.3714 3260.179,-3567.7889"/>
+</g>
+<!-- C3_Silent -->
+<g id="node57" class="node">
+<title>C3_Silent</title>
+<polygon fill="#2d2d2d" stroke="#555555" points="3706.5883,-3560.8 3615.4117,-3560.8 3615.4117,-3524.8 3706.5883,-3524.8 3706.5883,-3560.8"/>
+<text text-anchor="middle" x="3661" y="-3540.1" font-family="Courier New" font-size="9.00" fill="#ffffff">SILENCE MOTEUR</text>
+</g>
+<!-- C3_Listen&#45;&gt;C3_Silent -->
+<g id="edge53" class="edge">
+<title>C3_Listen-&gt;C3_Silent</title>
+<path fill="none" stroke="#aaaaaa" d="M3719.4872,-3720.9488C3704.5339,-3675.4019 3682.4152,-3608.0295 3670.1078,-3570.5417"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3673.3554,-3569.213 3666.9107,-3560.8037 3666.7047,-3571.3965 3673.3554,-3569.213"/>
+</g>
+<!-- C3_ClickStop -->
+<g id="node60" class="node">
+<title>C3_ClickStop</title>
+<polygon fill="#2d2d2d" stroke="#555555" points="4414.7849,-3560.8 4307.2151,-3560.8 4307.2151,-3524.8 4414.7849,-3524.8 4414.7849,-3560.8"/>
+<text text-anchor="middle" x="4361" y="-3540.1" font-family="Courier New" font-size="9.00" fill="#ffffff">CLICS PUIS ARRÊT</text>
+</g>
+<!-- C3_Listen&#45;&gt;C3_ClickStop -->
+<g id="edge54" class="edge">
+<title>C3_Listen-&gt;C3_ClickStop</title>
+<path fill="none" stroke="#aaaaaa" d="M3864.5473,-3755.0181C3967.2211,-3743.2665 4101.5215,-3724.6127 4152,-3703 4227.7268,-3670.5771 4300.3915,-3604.4333 4336.79,-3568.0991"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4339.4468,-3570.3903 4343.9946,-3560.8211 4334.472,-3565.4656 4339.4468,-3570.3903"/>
+</g>
+<!-- C3_Click_Confirm -->
+<g id="node49" class="node">
+<title>C3_Click_Confirm</title>
+<polygon fill="#4caf50" stroke="#555555" points="4246.4595,-3218.8 3993.5405,-3218.8 3993.5405,-3156.8 4252.4595,-3156.8 4252.4595,-3212.8 4246.4595,-3218.8"/>
+<polyline fill="none" stroke="#555555" points="4246.4595,-3218.8 4246.4595,-3212.8 "/>
+<polyline fill="none" stroke="#555555" points="4252.4595,-3212.8 4246.4595,-3212.8 "/>
+<text text-anchor="middle" x="4123" y="-3206.7" font-family="Courier New" font-size="9.00" fill="#000000">✅ CONFIRMATION: Clics réguliers</text>
+<text text-anchor="middle" x="4123" y="-3195.9" font-family="Courier New" font-size="9.00" fill="#000000">📋 ACTION PRÉVUE: ddrescue urgent</text>
+<text text-anchor="middle" x="4123" y="-3185.1" font-family="Courier New" font-size="9.00" fill="#000000">⚠️ SURVEILLANCE: Écouter si bruit change</text>
+<text text-anchor="middle" x="4123" y="-3174.3" font-family="Courier New" font-size="9.00" fill="#000000">⏱️ ESTIMATION: X heures</text>
+<text text-anchor="middle" x="4123" y="-3163.5" font-family="Courier New" font-size="9.00" fill="#000000">✅ Lancer ddrescue? (oui/non)</text>
+</g>
+<!-- C3_Click&#45;&gt;C3_Click_Confirm -->
+<g id="edge55" class="edge">
+<title>C3_Click-&gt;C3_Click_Confirm</title>
+<path fill="none" stroke="#aaaaaa" d="M4060.3637,-3524.7074C4070.5202,-3470.0778 4101.0563,-3305.8303 4115.4006,-3228.6757"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4118.8445,-3229.2993 4117.2314,-3218.828 4111.9625,-3228.0197 4118.8445,-3229.2993"/>
+</g>
+<!-- C3_Click_Confirm&#45;&gt;C3_Listen -->
+<g id="edge57" class="edge">
+<title>C3_Click_Confirm-&gt;C3_Listen</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M4051.1564,-3218.8166C3994.1553,-3248.8214 3924,-3300.2783 3924,-3371.8 3924,-3658.4 3924,-3658.4 3924,-3658.4 3924,-3691.2427 3902.3985,-3714.4283 3873.8012,-3730.7328"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3871.8958,-3727.7822 3864.7178,-3735.575 3875.1887,-3733.9594 3871.8958,-3727.7822"/>
+<text text-anchor="middle" x="3953.0052" y="-3540.1" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C3_Click_Ideal -->
+<g id="node50" class="node">
+<title>C3_Click_Ideal</title>
+<polygon fill="#0056b3" stroke="#555555" points="4345.982,-2827.2 4222.018,-2827.2 4222.018,-2791.2 4345.982,-2791.2 4345.982,-2827.2"/>
+<text text-anchor="middle" x="4284" y="-2806.5" font-family="Courier New" font-size="9.00" fill="#ffffff">🔵 DDRESCUE URGENT</text>
+</g>
+<!-- C3_Click_Confirm&#45;&gt;C3_Click_Ideal -->
+<g id="edge56" class="edge">
+<title>C3_Click_Confirm-&gt;C3_Click_Ideal</title>
+<path fill="none" stroke="#aaaaaa" d="M4136.3123,-3156.4955C4167.1895,-3083.8861 4243.2664,-2904.9871 4272.3956,-2836.4885"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4275.6491,-2837.7811 4276.3417,-2827.2089 4269.2074,-2835.0417 4275.6491,-2837.7811"/>
+<text text-anchor="middle" x="4233.2518" y="-3033.5" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C3_Click_Ideal&#45;&gt;C2_HDD_Ideal -->
+<g id="edge58" class="edge">
+<title>C3_Click_Ideal-&gt;C2_HDD_Ideal</title>
+<path fill="none" stroke="#aaaaaa" d="M4302.6271,-2791.0437C4326.5829,-2769.0237 4370.5445,-2732.9508 4416,-2717.6 4552.5667,-2671.4799 4921.7057,-2711.6189 5064,-2688.6 5132.8108,-2677.4685 5209.4179,-2654.3108 5260.9432,-2637.087"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="5262.2269,-2640.3478 5270.5841,-2633.8356 5259.9899,-2633.7149 5262.2269,-2640.3478"/>
+</g>
+<!-- C3_Scratch_Confirm -->
+<g id="node52" class="node">
+<title>C3_Scratch_Confirm</title>
+<polygon fill="#d32f2f" stroke="#555555" points="3969.3498,-3213.5004 3656.6502,-3213.5004 3656.6502,-3162.0996 3975.3498,-3162.0996 3975.3498,-3207.5004 3969.3498,-3213.5004"/>
+<polyline fill="none" stroke="#555555" points="3969.3498,-3213.5004 3969.3498,-3207.5004 "/>
+<polyline fill="none" stroke="#555555" points="3975.3498,-3207.5004 3969.3498,-3207.5004 "/>
+<text text-anchor="middle" x="3816" y="-3201.3" font-family="Courier New" font-size="9.00" fill="#ffffff">🔴 ALERTE: Grincement détecté</text>
+<text text-anchor="middle" x="3816" y="-3190.5" font-family="Courier New" font-size="9.00" fill="#ffffff">⚠️ ACTION REQUISE: STOP IMMÉDIAT</text>
+<text text-anchor="middle" x="3816" y="-3179.7" font-family="Courier New" font-size="9.00" fill="#ffffff">📋 COUPER L'ALIMENTATION MAINTENANT</text>
+<text text-anchor="middle" x="3816" y="-3168.9" font-family="Courier New" font-size="9.00" fill="#ffffff">✅ Confirmez-vous que l'alimentation est coupée? (oui)</text>
+</g>
+<!-- C3_Scratch&#45;&gt;C3_Scratch_Confirm -->
+<g id="edge59" class="edge">
+<title>C3_Scratch-&gt;C3_Scratch_Confirm</title>
+<path fill="none" stroke="#aaaaaa" d="M3808.4077,-3524.7074C3809.6641,-3468.9541 3813.4935,-3299.0269 3815.1836,-3224.0268"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3818.6906,-3223.7513 3815.4169,-3213.6749 3811.6924,-3223.5935 3818.6906,-3223.7513"/>
+</g>
+<!-- C3_Scratch_Ideal -->
+<g id="node53" class="node">
+<title>C3_Scratch_Ideal</title>
+<polygon fill="#ff8f00" stroke="#555555" points="3584.1794,-2827.2 3443.8206,-2827.2 3443.8206,-2791.2 3584.1794,-2791.2 3584.1794,-2827.2"/>
+<text text-anchor="middle" x="3514" y="-2806.5" font-family="Courier New" font-size="9.00" fill="#000000">🟠 PASSER EN MODE PRO</text>
+</g>
+<!-- C3_Scratch_Confirm&#45;&gt;C3_Scratch_Ideal -->
+<g id="edge60" class="edge">
+<title>C3_Scratch_Confirm-&gt;C3_Scratch_Ideal</title>
+<path fill="none" stroke="#aaaaaa" d="M3795.4797,-3162.0749C3740.4961,-3093.1451 3590.2825,-2904.831 3534.8828,-2835.3795"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3537.5816,-2833.1501 3528.6095,-2827.5151 3532.1093,-2837.5152 3537.5816,-2833.1501"/>
+<text text-anchor="middle" x="3772.2518" y="-3033.5" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- DeadPro -->
+<g id="node63" class="node">
+<title>DeadPro</title>
+<polygon fill="#ff8f00" stroke="#555555" points="3521.4595,-1863.4 3262.5405,-1863.4 3262.5405,-1827.4 3521.4595,-1827.4 3521.4595,-1863.4"/>
+<text text-anchor="middle" x="3392" y="-1848.1" font-family="Courier New" font-size="9.00" fill="#000000">🟠 RÉCUPÉRATION PROFESSIONNELLE</text>
+<text text-anchor="middle" x="3392" y="-1837.3" font-family="Courier New" font-size="9.00" fill="#000000">✅ Confirmez-vous l'envoi en labo? (oui/non)</text>
+</g>
+<!-- C3_Scratch_Ideal&#45;&gt;DeadPro -->
+<g id="edge61" class="edge">
+<title>C3_Scratch_Ideal-&gt;DeadPro</title>
+<path fill="none" stroke="#aaaaaa" d="M3494.3319,-2791.1843C3457.4629,-2751.2102 3383,-2655.4987 3383,-2615.8 3383,-2615.8 3383,-2615.8 3383,-1931.4 3383,-1912.1711 3383,-1890.5237 3384.1459,-1873.758"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3387.6568,-1873.7955 3385.076,-1863.5199 3380.6856,-1873.1622 3387.6568,-1873.7955"/>
+</g>
+<!-- C3_Scratch_Ideal&#45;&gt;DeadPro -->
+<g id="edge134" class="edge">
+<title>C3_Scratch_Ideal-&gt;DeadPro</title>
+<path fill="none" stroke="#aaaaaa" d="M3503.7489,-2791.1843C3475.4629,-2751.2102 3401,-2655.4987 3401,-2615.8 3401,-2615.8 3401,-2615.8 3401,-1931.4 3401,-1912.1711 3401,-1890.5237 3399.8541,-1873.758"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3403.3144,-1873.1622 3398.924,-1863.5199 3396.3432,-1873.7955 3403.3144,-1873.1622"/>
+</g>
+<!-- C3_Beep_Confirm -->
+<g id="node55" class="node">
+<title>C3_Beep_Confirm</title>
+<polygon fill="#4caf50" stroke="#555555" points="3334.7578,-3218.8 3071.2422,-3218.8 3071.2422,-3156.8 3340.7578,-3156.8 3340.7578,-3212.8 3334.7578,-3218.8"/>
+<polyline fill="none" stroke="#555555" points="3334.7578,-3218.8 3334.7578,-3212.8 "/>
+<polyline fill="none" stroke="#555555" points="3340.7578,-3212.8 3334.7578,-3212.8 "/>
+<text text-anchor="middle" x="3206" y="-3206.7" font-family="Courier New" font-size="9.00" fill="#000000">✅ CONFIRMATION: Bip électronique</text>
+<text text-anchor="middle" x="3206" y="-3195.9" font-family="Courier New" font-size="9.00" fill="#000000">📋 ACTION PRÉVUE: Changement PCB</text>
+<text text-anchor="middle" x="3206" y="-3185.1" font-family="Courier New" font-size="9.00" fill="#000000">🔍 RECHERCHE: PCB identique (même firmware)</text>
+<text text-anchor="middle" x="3206" y="-3174.3" font-family="Courier New" font-size="9.00" fill="#000000">⚠️ TRANSFERT: ROM à conserver</text>
+<text text-anchor="middle" x="3206" y="-3163.5" font-family="Courier New" font-size="9.00" fill="#000000">✅ Procéder à la recherche de PCB? (oui/non)</text>
+</g>
+<!-- C3_Beep&#45;&gt;C3_Beep_Confirm -->
+<g id="edge62" class="edge">
+<title>C3_Beep-&gt;C3_Beep_Confirm</title>
+<path fill="none" stroke="#aaaaaa" d="M3240.1653,-3524.7074C3234.6367,-3470.1893 3218.0372,-3306.5003 3210.1932,-3229.1492"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3213.6376,-3228.4238 3209.1465,-3218.828 3206.6734,-3229.1301 3213.6376,-3228.4238"/>
+</g>
+<!-- C3_Beep_Confirm&#45;&gt;C3_Listen -->
+<g id="edge64" class="edge">
+<title>C3_Beep_Confirm-&gt;C3_Listen</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M3268.1978,-3218.9272C3320.2261,-3249.8621 3386,-3302.6454 3386,-3371.8 3386,-3658.4 3386,-3658.4 3386,-3658.4 3386,-3704.4569 3497.995,-3733.568 3595.0985,-3750.1526"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3594.6047,-3753.6185 3605.0453,-3751.8171 3595.7601,-3746.7145 3594.6047,-3753.6185"/>
+<text text-anchor="middle" x="3415.0052" y="-3540.1" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C3_Beep_Ideal -->
+<g id="node56" class="node">
+<title>C3_Beep_Ideal</title>
+<polygon fill="#ff8f00" stroke="#555555" points="3258.6839,-2506 3145.3161,-2506 3145.3161,-2470 3258.6839,-2470 3258.6839,-2506"/>
+<text text-anchor="middle" x="3202" y="-2485.3" font-family="Courier New" font-size="9.00" fill="#000000">🟠 RECHERCHE PCB</text>
+</g>
+<!-- C3_Beep_Confirm&#45;&gt;C3_Beep_Ideal -->
+<g id="edge63" class="edge">
+<title>C3_Beep_Confirm-&gt;C3_Beep_Ideal</title>
+<path fill="none" stroke="#aaaaaa" d="M3204.7013,-3156.7395C3203.5333,-3126.1008 3202,-3077.9308 3202,-3036.2 3202,-3036.2 3202,-3036.2 3202,-2615.8 3202,-2581.6313 3202,-2542.3238 3202,-2516.4251"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3205.5001,-2516.2006 3202,-2506.2007 3198.5001,-2516.2007 3205.5001,-2516.2006"/>
+<text text-anchor="middle" x="3213.2518" y="-2806.5" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- DeadPCB -->
+<g id="node64" class="node">
+<title>DeadPCB</title>
+<polygon fill="#ff8f00" stroke="#555555" points="3325.955,-2367.4 3040.045,-2367.4 3040.045,-2331.4 3325.955,-2331.4 3325.955,-2367.4"/>
+<text text-anchor="middle" x="3183" y="-2352.1" font-family="Courier New" font-size="9.00" fill="#000000">🟠 RECHERCHE PCB</text>
+<text text-anchor="middle" x="3183" y="-2341.3" font-family="Courier New" font-size="9.00" fill="#000000">✅ Avez-vous trouvé un PCB compatible? (oui/non)</text>
+</g>
+<!-- C3_Beep_Ideal&#45;&gt;DeadPCB -->
+<g id="edge65" class="edge">
+<title>C3_Beep_Ideal-&gt;DeadPCB</title>
+<path fill="none" stroke="#aaaaaa" d="M3199.5161,-2469.8805C3196.3015,-2446.4307 3190.6652,-2405.3158 3186.8828,-2377.724"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3190.3103,-2376.9559 3185.4845,-2367.524 3183.3752,-2377.9067 3190.3103,-2376.9559"/>
+</g>
+<!-- C3_Silent_Confirm -->
+<g id="node58" class="node">
+<title>C3_Silent_Confirm</title>
+<polygon fill="#4caf50" stroke="#555555" points="3633.0563,-3213.5004 3358.9437,-3213.5004 3358.9437,-3162.0996 3639.0563,-3162.0996 3639.0563,-3207.5004 3633.0563,-3213.5004"/>
+<polyline fill="none" stroke="#555555" points="3633.0563,-3213.5004 3633.0563,-3207.5004 "/>
+<polyline fill="none" stroke="#555555" points="3639.0563,-3207.5004 3633.0563,-3207.5004 "/>
+<text text-anchor="middle" x="3499" y="-3201.3" font-family="Courier New" font-size="9.00" fill="#000000">✅ CONFIRMATION: Silence moteur</text>
+<text text-anchor="middle" x="3499" y="-3190.5" font-family="Courier New" font-size="9.00" fill="#000000">📋 ACTION PRÉVUE: Vérifier alimentation</text>
+<text text-anchor="middle" x="3499" y="-3179.7" font-family="Courier New" font-size="9.00" fill="#000000">🔌 VÉRIFIER: Câble, alimentation, connecteurs</text>
+<text text-anchor="middle" x="3499" y="-3168.9" font-family="Courier New" font-size="9.00" fill="#000000">✅ Avez-vous vérifié l'alimentation? (oui/non)</text>
+</g>
+<!-- C3_Silent&#45;&gt;C3_Silent_Confirm -->
+<g id="edge66" class="edge">
+<title>C3_Silent-&gt;C3_Silent_Confirm</title>
+<path fill="none" stroke="#aaaaaa" d="M3652.7437,-3524.7074C3627.197,-3468.7256 3549.1206,-3297.6321 3515.1131,-3223.1095"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3518.1434,-3221.3194 3510.8077,-3213.6749 3511.7752,-3224.2255 3518.1434,-3221.3194"/>
+</g>
+<!-- C3_Silent_Confirm&#45;&gt;C3_Listen -->
+<g id="edge68" class="edge">
+<title>C3_Silent_Confirm-&gt;C3_Listen</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M3500.8354,-3213.6856C3503.1972,-3249.2849 3507,-3315.3648 3507,-3371.8 3507,-3658.4 3507,-3658.4 3507,-3658.4 3507,-3682.3407 3548.3222,-3705.7973 3595.7832,-3724.8429"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3594.7592,-3728.2008 3605.3468,-3728.592 3597.3141,-3721.6836 3594.7592,-3728.2008"/>
+<text text-anchor="middle" x="3536.0052" y="-3540.1" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C3_Silent_Ideal -->
+<g id="node59" class="node">
+<title>C3_Silent_Ideal</title>
+<polygon fill="#ff8f00" stroke="#555555" points="3425.8725,-2827.2 3242.1275,-2827.2 3242.1275,-2791.2 3425.8725,-2791.2 3425.8725,-2827.2"/>
+<text text-anchor="middle" x="3334" y="-2806.5" font-family="Courier New" font-size="9.00" fill="#000000">🟠 VÉRIFICATION ALIMENTATION</text>
+</g>
+<!-- C3_Silent_Confirm&#45;&gt;C3_Silent_Ideal -->
+<g id="edge67" class="edge">
+<title>C3_Silent_Confirm-&gt;C3_Silent_Ideal</title>
+<path fill="none" stroke="#aaaaaa" d="M3487.7886,-3162.0749C3457.9921,-3093.7055 3377.0086,-2907.8851 3346.1579,-2837.0969"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3349.1858,-2835.284 3341.982,-2827.5151 3342.7688,-2838.0807 3349.1858,-2835.284"/>
+<text text-anchor="middle" x="3480.2518" y="-3033.5" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C3_Silent_Ideal&#45;&gt;C3_Beep_Ideal -->
+<g id="edge69" class="edge">
+<title>C3_Silent_Ideal-&gt;C3_Beep_Ideal</title>
+<path fill="none" stroke="#aaaaaa" d="M3326.5249,-2791.0106C3304.523,-2737.4727 3239.8844,-2580.1855 3213.4576,-2515.8802"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3216.5952,-2514.307 3209.5567,-2506.388 3210.1206,-2516.9679 3216.5952,-2514.307"/>
+</g>
+<!-- C3_ClickStop_Confirm -->
+<g id="node61" class="node">
+<title>C3_ClickStop_Confirm</title>
+<polygon fill="#4caf50" stroke="#555555" points="4599.0472,-3213.5004 4270.9528,-3213.5004 4270.9528,-3162.0996 4605.0472,-3162.0996 4605.0472,-3207.5004 4599.0472,-3213.5004"/>
+<polyline fill="none" stroke="#555555" points="4599.0472,-3213.5004 4599.0472,-3207.5004 "/>
+<polyline fill="none" stroke="#555555" points="4605.0472,-3207.5004 4599.0472,-3207.5004 "/>
+<text text-anchor="middle" x="4438" y="-3201.3" font-family="Courier New" font-size="9.00" fill="#000000">✅ CONFIRMATION: Clics puis arrêt</text>
+<text text-anchor="middle" x="4438" y="-3190.5" font-family="Courier New" font-size="9.00" fill="#000000">📋 ACTION PRÉVUE: Alimentation dédiée</text>
+<text text-anchor="middle" x="4438" y="-3179.7" font-family="Courier New" font-size="9.00" fill="#000000">🔌 UTILISER: Alimentation secteur 12V+5V</text>
+<text text-anchor="middle" x="4438" y="-3168.9" font-family="Courier New" font-size="9.00" fill="#000000">✅ Avez-vous branché une alimentation dédiée? (oui/non)</text>
+</g>
+<!-- C3_ClickStop&#45;&gt;C3_ClickStop_Confirm -->
+<g id="edge70" class="edge">
+<title>C3_ClickStop-&gt;C3_ClickStop_Confirm</title>
+<path fill="none" stroke="#aaaaaa" d="M4364.9243,-3524.7074C4377.0421,-3468.8398 4414.0259,-3298.33 4430.2421,-3223.567"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4433.6884,-3224.1896 4432.3877,-3213.6749 4426.8474,-3222.7058 4433.6884,-3224.1896"/>
+</g>
+<!-- C3_ClickStop_Confirm&#45;&gt;C3_Listen -->
+<g id="edge72" class="edge">
+<title>C3_ClickStop_Confirm-&gt;C3_Listen</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M4318.7995,-3213.4769C4238.4359,-3238.5974 4147,-3286.0259 4147,-3371.8 4147,-3658.4 4147,-3658.4 4147,-3658.4 4147,-3716.1352 3994.0289,-3744.2778 3874.508,-3757.4549"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3874.0792,-3753.9808 3864.5113,-3758.5311 3874.8286,-3760.9406 3874.0792,-3753.9808"/>
+<text text-anchor="middle" x="4176.0052" y="-3540.1" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C3_ClickStop_Ideal -->
+<g id="node62" class="node">
+<title>C3_ClickStop_Ideal</title>
+<polygon fill="#ff8f00" stroke="#555555" points="4581.3771,-2827.2 4424.6229,-2827.2 4424.6229,-2791.2 4581.3771,-2791.2 4581.3771,-2827.2"/>
+<text text-anchor="middle" x="4503" y="-2806.5" font-family="Courier New" font-size="9.00" fill="#000000">🟠 ALIMENTATION DÉDIÉE</text>
+</g>
+<!-- C3_ClickStop_Confirm&#45;&gt;C3_ClickStop_Ideal -->
+<g id="edge71" class="edge">
+<title>C3_ClickStop_Confirm-&gt;C3_ClickStop_Ideal</title>
+<path fill="none" stroke="#aaaaaa" d="M4442.4166,-3162.0749C4454.1306,-3093.8456 4485.9266,-2908.6462 4498.1356,-2837.5335"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4501.6129,-2837.9632 4499.8556,-2827.5151 4494.7139,-2836.7786 4501.6129,-2837.9632"/>
+<text text-anchor="middle" x="4489.2518" y="-3033.5" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C3_ClickStop_Ideal&#45;&gt;C2_HDD_Ideal -->
+<g id="edge73" class="edge">
+<title>C3_ClickStop_Ideal-&gt;C2_HDD_Ideal</title>
+<path fill="none" stroke="#aaaaaa" d="M4539.6384,-2791.066C4584.8345,-2769.5969 4664.5886,-2734.6146 4737,-2717.6 4879.0354,-2684.2257 4920.5125,-2715.0433 5064,-2688.6 5131.4799,-2676.1641 5206.81,-2653.7838 5258.373,-2637.1088"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="5259.614,-2640.3856 5268.038,-2633.96 5257.4456,-2633.7299 5259.614,-2640.3856"/>
+</g>
+<!-- EndDead -->
+<g id="node95" class="node">
+<title>EndDead</title>
+<polygon fill="#b71c1c" stroke="#555555" points="3507.6046,-1664.7612 3507.6046,-1683.6388 3439.885,-1696.9872 3344.115,-1696.9872 3276.3954,-1683.6388 3276.3954,-1664.7612 3344.115,-1651.4128 3439.885,-1651.4128 3507.6046,-1664.7612"/>
+<polygon fill="none" stroke="#555555" points="3511.6064,-1661.45 3511.6064,-1686.95 3440.2736,-1701.0106 3343.7264,-1701.0106 3272.3936,-1686.95 3272.3936,-1661.45 3343.7264,-1647.3894 3440.2736,-1647.3894 3511.6064,-1661.45"/>
+<text text-anchor="middle" x="3392" y="-1676.9" font-family="Courier New" font-size="9.00" fill="#ffffff">❌ ÉCHEC RÉCUPÉRATION</text>
+<text text-anchor="middle" x="3392" y="-1666.1" font-family="Courier New" font-size="9.00" fill="#ffffff">Consulter professionnel</text>
+</g>
+<!-- DeadPro&#45;&gt;EndDead -->
+<g id="edge139" class="edge">
+<title>DeadPro-&gt;EndDead</title>
+<path fill="none" stroke="#aaaaaa" d="M3392,-1827.0786C3392,-1799.5217 3392,-1746.8347 3392,-1711.1061"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3395.5001,-1711.0617 3392,-1701.0618 3388.5001,-1711.0618 3395.5001,-1711.0617"/>
+<text text-anchor="middle" x="3420.0058" y="-1801.3" font-family="Arial" font-size="9.00" fill="#000000">Si oui, rapport</text>
+</g>
+<!-- DeadPCB&#45;&gt;DeadPro -->
+<g id="edge137" class="edge">
+<title>DeadPCB-&gt;DeadPro</title>
+<path fill="none" stroke="#aaaaaa" d="M3204.2818,-2331.2624C3228.2807,-2308.6661 3264,-2267.6088 3264,-2223.4 3264,-2223.4 3264,-2223.4 3264,-1931.4 3264,-1901.0821 3289.0473,-1880.7584 3316.9821,-1867.5194"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3318.4017,-1870.7187 3326.1252,-1863.4663 3315.5648,-1864.3193 3318.4017,-1870.7187"/>
+<text text-anchor="middle" x="3275.2518" y="-2030.9" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C4_StillDead -->
+<g id="node69" class="node">
+<title>C4_StillDead</title>
+<polygon fill="#ffffff" stroke="#555555" points="2796,-2688.4005 2574.6683,-2615.8 2796,-2543.1995 3017.3317,-2615.8 2796,-2688.4005"/>
+<text text-anchor="middle" x="2796" y="-2640.1" font-family="Courier New" font-size="9.00" fill="#000000">⬜ TOUJOURS PAS DÉTECTÉ ?</text>
+<text text-anchor="middle" x="2796" y="-2629.3" font-family="Courier New" font-size="9.00" fill="#000000">📋 Après toutes ces vérifications:</text>
+<text text-anchor="middle" x="2796" y="-2618.5" font-family="Courier New" font-size="9.00" fill="#000000">Options:</text>
+<text text-anchor="middle" x="2796" y="-2607.7" font-family="Courier New" font-size="9.00" fill="#000000">1. PCB probablement mort</text>
+<text text-anchor="middle" x="2796" y="-2596.9" font-family="Courier New" font-size="9.00" fill="#000000">2. Envoyer en récupération pro</text>
+<text text-anchor="middle" x="2796" y="-2586.1" font-family="Courier New" font-size="9.00" fill="#000000">✅ Choix (1-2):</text>
+</g>
+<!-- DeadPCB&#45;&gt;C4_StillDead -->
+<g id="edge138" class="edge">
+<title>DeadPCB-&gt;C4_StillDead</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M3152.0506,-2367.4895C3119.6269,-2387.5499 3068.6198,-2422.3601 3033.4904,-2462 3012.0293,-2486.2166 3021.0028,-2503.3001 2997,-2525 2973.9967,-2545.7963 2945.4321,-2562.5218 2917.1269,-2575.6708"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2915.6258,-2572.5083 2907.9535,-2579.8149 2918.5076,-2578.8876 2915.6258,-2572.5083"/>
+<text text-anchor="middle" x="3045.7548" y="-2485.3" font-family="Arial" font-size="9.00" fill="#000000">Si non</text>
+</g>
+<!-- C4_Check1&#45;&gt;C4_Check1 -->
+<g id="edge76" class="edge">
+<title>C4_Check1-&gt;C4_Check1</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M2833.9393,-3987.6469C2877.3104,-3994.8656 2922.0807,-3988.85 2922.0807,-3969.6 2922.0807,-3951.8163 2883.8711,-3945.3276 2843.8542,-3950.1339"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2843.3424,-3946.6714 2833.9393,-3951.5531 2844.3344,-3953.6008 2843.3424,-3946.6714"/>
+<text text-anchor="middle" x="2951.0859" y="-3966.9" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C4_Check2 -->
+<g id="node66" class="node">
+<title>C4_Check2</title>
+<polygon fill="#4caf50" stroke="#555555" points="2906.3588,-3676.4 2647.6412,-3676.4 2647.6412,-3640.4 2912.3588,-3640.4 2912.3588,-3670.4 2906.3588,-3676.4"/>
+<polyline fill="none" stroke="#555555" points="2906.3588,-3676.4 2906.3588,-3670.4 "/>
+<polyline fill="none" stroke="#555555" points="2912.3588,-3670.4 2906.3588,-3670.4 "/>
+<text text-anchor="middle" x="2780" y="-3661.1" font-family="Courier New" font-size="9.00" fill="#000000">✅ ÉTAPE 2: Changer le port</text>
+<text text-anchor="middle" x="2780" y="-3650.3" font-family="Courier New" font-size="9.00" fill="#000000">🔌 Avez-vous testé un autre port? (oui/non)</text>
+</g>
+<!-- C4_Check1&#45;&gt;C4_Check2 -->
+<g id="edge75" class="edge">
+<title>C4_Check1-&gt;C4_Check2</title>
+<path fill="none" stroke="#aaaaaa" d="M2780,-3951.5235C2780,-3899.6367 2780,-3749.9254 2780,-3686.9012"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2783.5001,-3686.5264 2780,-3676.5264 2776.5001,-3686.5265 2783.5001,-3686.5264"/>
+<text text-anchor="middle" x="2791.2518" y="-3765.5" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C4_Check2&#45;&gt;C4_Check2 -->
+<g id="edge78" class="edge">
+<title>C4_Check2-&gt;C4_Check2</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M2912.298,-3664.7763C2923.3214,-3663.4043 2930.1793,-3661.2789 2930.1793,-3658.4 2930.1793,-3656.5557 2927.3648,-3655.0206 2922.4437,-3653.7948"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2922.7509,-3650.2955 2912.298,-3652.0237 2921.5471,-3657.1913 2922.7509,-3650.2955"/>
+<text text-anchor="middle" x="2959.1845" y="-3655.7" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C4_Check3 -->
+<g id="node67" class="node">
+<title>C4_Check3</title>
+<polygon fill="#4caf50" stroke="#555555" points="2933.3498,-3389.8 2620.6502,-3389.8 2620.6502,-3353.8 2939.3498,-3353.8 2939.3498,-3383.8 2933.3498,-3389.8"/>
+<polyline fill="none" stroke="#555555" points="2933.3498,-3389.8 2933.3498,-3383.8 "/>
+<polyline fill="none" stroke="#555555" points="2939.3498,-3383.8 2933.3498,-3383.8 "/>
+<text text-anchor="middle" x="2780" y="-3374.5" font-family="Courier New" font-size="9.00" fill="#000000">✅ ÉTAPE 3: Tester autre PC</text>
+<text text-anchor="middle" x="2780" y="-3363.7" font-family="Courier New" font-size="9.00" fill="#000000">💻 Avez-vous testé sur un autre ordinateur? (oui/non)</text>
+</g>
+<!-- C4_Check2&#45;&gt;C4_Check3 -->
+<g id="edge77" class="edge">
+<title>C4_Check2-&gt;C4_Check3</title>
+<path fill="none" stroke="#aaaaaa" d="M2780,-3640.0359C2780,-3591.3032 2780,-3458.4528 2780,-3400.019"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2783.5001,-3400.0111 2780,-3390.0112 2776.5001,-3400.0112 2783.5001,-3400.0111"/>
+<text text-anchor="middle" x="2791.2518" y="-3540.1" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C4_Check3&#45;&gt;C4_Check3 -->
+<g id="edge80" class="edge">
+<title>C4_Check3-&gt;C4_Check3</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M2828.9768,-3389.8341C2887.9371,-3403.4598 2957.1748,-3397.4484 2957.1748,-3371.8 2957.1748,-3347.6043 2895.5583,-3340.8842 2839.0799,-3351.6396"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2838.0416,-3348.2814 2828.9768,-3353.7659 2839.4833,-3355.1313 2838.0416,-3348.2814"/>
+<text text-anchor="middle" x="2986.18" y="-3369.1" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C4_USB -->
+<g id="node68" class="node">
+<title>C4_USB</title>
+<polygon fill="#4caf50" stroke="#555555" points="2932.1523,-3054.2 2635.8477,-3054.2 2635.8477,-3018.2 2938.1523,-3018.2 2938.1523,-3048.2 2932.1523,-3054.2"/>
+<polyline fill="none" stroke="#555555" points="2932.1523,-3054.2 2932.1523,-3048.2 "/>
+<polyline fill="none" stroke="#555555" points="2938.1523,-3048.2 2932.1523,-3048.2 "/>
+<text text-anchor="middle" x="2787" y="-3038.9" font-family="Courier New" font-size="9.00" fill="#000000">✅ ÉTAPE 4: Boîtier USB ?</text>
+<text text-anchor="middle" x="2787" y="-3028.1" font-family="Courier New" font-size="9.00" fill="#000000">📦 Avez-vous sorti le disque du boîtier? (oui/non)</text>
+</g>
+<!-- C4_Check3&#45;&gt;C4_USB -->
+<g id="edge79" class="edge">
+<title>C4_Check3-&gt;C4_USB</title>
+<path fill="none" stroke="#aaaaaa" d="M2780.3764,-3353.7567C2781.5277,-3298.5584 2785.0089,-3131.6593 2786.4082,-3064.5723"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2789.9124,-3064.4034 2786.6218,-3054.3325 2782.9139,-3064.2573 2789.9124,-3064.4034"/>
+<text text-anchor="middle" x="2795.2518" y="-3185.1" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C4_USB&#45;&gt;C4_USB -->
+<g id="edge82" class="edge">
+<title>C4_USB-&gt;C4_USB</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M2866.1406,-3054.2032C2912.5946,-3058.039 2956.0762,-3052.0379 2956.0762,-3036.2 2956.0762,-3021.5066 2918.6519,-3015.2797 2876.1498,-3017.5193"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2875.8814,-3014.0294 2866.1406,-3018.1968 2876.3542,-3021.0134 2875.8814,-3014.0294"/>
+<text text-anchor="middle" x="2985.0814" y="-3033.5" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C4_USB&#45;&gt;C4_StillDead -->
+<g id="edge81" class="edge">
+<title>C4_USB-&gt;C4_StillDead</title>
+<path fill="none" stroke="#aaaaaa" d="M2787.3867,-3018.1359C2788.5496,-2963.8159 2792.0676,-2799.4882 2794.231,-2698.4299"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2797.7341,-2698.3214 2794.449,-2688.2488 2790.7357,-2698.1715 2797.7341,-2698.3214"/>
+<text text-anchor="middle" x="2804.2518" y="-2806.5" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C4_PCB -->
+<g id="node70" class="node">
+<title>C4_PCB</title>
+<polygon fill="#4caf50" stroke="#555555" points="2955.955,-2380.4 2676.045,-2380.4 2676.045,-2318.4 2961.955,-2318.4 2961.955,-2374.4 2955.955,-2380.4"/>
+<polyline fill="none" stroke="#555555" points="2955.955,-2380.4 2955.955,-2374.4 "/>
+<polyline fill="none" stroke="#555555" points="2961.955,-2374.4 2955.955,-2374.4 "/>
+<text text-anchor="middle" x="2819" y="-2368.3" font-family="Courier New" font-size="9.00" fill="#000000">✅ RECHERCHE PCB</text>
+<text text-anchor="middle" x="2819" y="-2357.5" font-family="Courier New" font-size="9.00" fill="#000000">🔍 Modèle exact: [à entrer]</text>
+<text text-anchor="middle" x="2819" y="-2346.7" font-family="Courier New" font-size="9.00" fill="#000000">🔍 Firmware: [à vérifier]</text>
+<text text-anchor="middle" x="2819" y="-2335.9" font-family="Courier New" font-size="9.00" fill="#000000">⚠️ La ROM doit être transférée</text>
+<text text-anchor="middle" x="2819" y="-2325.1" font-family="Courier New" font-size="9.00" fill="#000000">✅ Avez-vous trouvé un PCB compatible? (oui/non)</text>
+</g>
+<!-- C4_StillDead&#45;&gt;C4_PCB -->
+<g id="edge83" class="edge">
+<title>C4_StillDead-&gt;C4_PCB</title>
+<path fill="none" stroke="#aaaaaa" d="M2820.2897,-2550.987C2824.735,-2536.3911 2828.694,-2520.8274 2831,-2506 2837.0425,-2467.148 2832.4704,-2422.3785 2827.3244,-2390.685"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2830.7118,-2389.73 2825.5718,-2380.4655 2823.8126,-2390.9133 2830.7118,-2389.73"/>
+</g>
+<!-- C4_Pro -->
+<g id="node71" class="node">
+<title>C4_Pro</title>
+<polygon fill="#4caf50" stroke="#555555" points="3011.4595,-1962.4 2758.5405,-1962.4 2758.5405,-1900.4 3017.4595,-1900.4 3017.4595,-1956.4 3011.4595,-1962.4"/>
+<polyline fill="none" stroke="#555555" points="3011.4595,-1962.4 3011.4595,-1956.4 "/>
+<polyline fill="none" stroke="#555555" points="3017.4595,-1956.4 3011.4595,-1956.4 "/>
+<text text-anchor="middle" x="2888" y="-1950.3" font-family="Courier New" font-size="9.00" fill="#000000">✅ CONFIRMATION PRO</text>
+<text text-anchor="middle" x="2888" y="-1939.5" font-family="Courier New" font-size="9.00" fill="#000000">💰 Coût estimé: 500-3000€</text>
+<text text-anchor="middle" x="2888" y="-1928.7" font-family="Courier New" font-size="9.00" fill="#000000">⏱️ Délai: 1-4 semaines</text>
+<text text-anchor="middle" x="2888" y="-1917.9" font-family="Courier New" font-size="9.00" fill="#000000">📋 Taux réussite: 60-80%</text>
+<text text-anchor="middle" x="2888" y="-1907.1" font-family="Courier New" font-size="9.00" fill="#000000">✅ Confirmez-vous l'envoi en labo? (oui/non)</text>
+</g>
+<!-- C4_StillDead&#45;&gt;C4_Pro -->
+<g id="edge84" class="edge">
+<title>C4_StillDead-&gt;C4_Pro</title>
+<path fill="none" stroke="#aaaaaa" d="M2862.4888,-2564.6661C2900.6871,-2531.4575 2945.9242,-2484.8044 2971,-2433 3007.5616,-2357.4668 3036.9007,-2135.0203 3006,-2057 2992.2716,-2022.3374 2963.9501,-1991.6607 2938.4947,-1969.3023"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2940.579,-1966.4793 2930.7061,-1962.6353 2936.027,-1971.7971 2940.579,-1966.4793"/>
+</g>
+<!-- C4_PCB&#45;&gt;DeadPCB -->
+<g id="edge136" class="edge">
+<title>C4_PCB-&gt;DeadPCB</title>
+<path fill="none" stroke="#aaaaaa" d="M2962.2539,-2349.4C2984.788,-2349.4 3007.322,-2349.4 3029.8561,-2349.4"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3029.86,-2352.9001 3039.86,-2349.4 3029.8599,-2345.9001 3029.86,-2352.9001"/>
+</g>
+<!-- C4_PCB&#45;&gt;C4_StillDead -->
+<g id="edge86" class="edge">
+<title>C4_PCB-&gt;C4_StillDead</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M2800.8226,-2380.7105C2789.1677,-2402.6598 2775.1137,-2433.1241 2768.9896,-2462 2763.5774,-2487.5194 2766.0502,-2515.5845 2771.245,-2540.6757"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2767.8439,-2541.5048 2773.4455,-2550.4977 2774.6746,-2539.9744 2767.8439,-2541.5048"/>
+<text text-anchor="middle" x="2797.0052" y="-2485.3" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C4_Last -->
+<g id="node72" class="node">
+<title>C4_Last</title>
+<polygon fill="#ffffff" stroke="#555555" points="2700,-2181 2403.4934,-2119 2700,-2057 2996.5066,-2119 2700,-2181"/>
+<text text-anchor="middle" x="2700" y="-2137.9" font-family="Courier New" font-size="9.00" fill="#000000">⬜ DERNIER RECOURS</text>
+<text text-anchor="middle" x="2700" y="-2127.1" font-family="Courier New" font-size="9.00" fill="#000000">⚠️ ACTIONS RISQUÉES:</text>
+<text text-anchor="middle" x="2700" y="-2116.3" font-family="Courier New" font-size="9.00" fill="#000000">1. ddrescue -d (direct I/O)</text>
+<text text-anchor="middle" x="2700" y="-2105.5" font-family="Courier New" font-size="9.00" fill="#000000">2. Congélation (⚠️ très risqué)</text>
+<text text-anchor="middle" x="2700" y="-2094.7" font-family="Courier New" font-size="9.00" fill="#000000">✅ Voulez-vous tenter un dernier recours? (oui/non)</text>
+</g>
+<!-- C4_PCB&#45;&gt;C4_Last -->
+<g id="edge85" class="edge">
+<title>C4_PCB-&gt;C4_Last</title>
+<path fill="none" stroke="#aaaaaa" d="M2802.9511,-2318.3272C2785.2642,-2284.0829 2756.314,-2228.0314 2733.6108,-2184.075"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2736.7119,-2182.4521 2729.0132,-2175.1734 2730.4925,-2185.6644 2736.7119,-2182.4521"/>
+<text text-anchor="middle" x="2767.2518" y="-2220.7" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C4_Pro&#45;&gt;DeadPro -->
+<g id="edge135" class="edge">
+<title>C4_Pro-&gt;DeadPro</title>
+<path fill="none" stroke="#aaaaaa" d="M3017.4652,-1909.3087C3097.2958,-1895.6868 3198.8105,-1878.3649 3276.0104,-1865.1919"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="3276.9887,-1868.5756 3286.2575,-1863.4434 3275.8113,-1861.6753 3276.9887,-1868.5756"/>
+</g>
+<!-- C4_Last&#45;&gt;C4_Pro -->
+<g id="edge87" class="edge">
+<title>C4_Last-&gt;C4_Pro</title>
+<path fill="none" stroke="#aaaaaa" d="M2751.3718,-2067.7375C2782.3096,-2036.8655 2821.0634,-1998.1942 2849.3877,-1969.9301"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2852.1118,-1972.1564 2856.7182,-1962.6153 2847.1673,-1967.2013 2852.1118,-1972.1564"/>
+<text text-anchor="middle" x="2836.1104" y="-2002.1" font-family="Arial" font-size="9.00" fill="#000000">Si échec</text>
+</g>
+<!-- C5_Principle&#45;&gt;DiagZFS -->
+<g id="edge90" class="edge">
+<title>C5_Principle-&gt;DiagZFS</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M2254.5557,-3989.8058C2287.6204,-4010.3795 2341.5359,-4042.2591 2391,-4064 2414.5462,-4074.3492 2422.9406,-4070.6073 2446,-4082 2464.7848,-4091.2808 2484.1013,-4103.8818 2500.3698,-4115.5325"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2498.4373,-4118.455 2508.5804,-4121.5158 2502.5599,-4112.7977 2498.4373,-4118.455"/>
+<text text-anchor="middle" x="2494.0052" y="-4084.7" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C5_Export -->
+<g id="node74" class="node">
+<title>C5_Export</title>
+<polygon fill="#4caf50" stroke="#555555" points="2312.964,-3684.1004 2087.036,-3684.1004 2087.036,-3632.6996 2318.964,-3632.6996 2318.964,-3678.1004 2312.964,-3684.1004"/>
+<polyline fill="none" stroke="#555555" points="2312.964,-3684.1004 2312.964,-3678.1004 "/>
+<polyline fill="none" stroke="#555555" points="2318.964,-3678.1004 2312.964,-3678.1004 "/>
+<text text-anchor="middle" x="2203" y="-3671.9" font-family="Courier New" font-size="9.00" fill="#000000">✅ EXPORTER LE POOL</text>
+<text text-anchor="middle" x="2203" y="-3661.1" font-family="Courier New" font-size="9.00" fill="#000000">📋 POOL: [nom]</text>
+<text text-anchor="middle" x="2203" y="-3650.3" font-family="Courier New" font-size="9.00" fill="#000000">⚠️ Cette opération démonte le pool</text>
+<text text-anchor="middle" x="2203" y="-3639.5" font-family="Courier New" font-size="9.00" fill="#000000">✅ Exporter maintenant? (oui/non)</text>
+</g>
+<!-- C5_Principle&#45;&gt;C5_Export -->
+<g id="edge89" class="edge">
+<title>C5_Principle-&gt;C5_Export</title>
+<path fill="none" stroke="#aaaaaa" d="M2217.3566,-3949.1842C2211.0507,-3925.224 2201.2357,-3884.1875 2197.4964,-3848.2 2191.6537,-3791.9694 2195.0184,-3777.479 2197.4964,-3721 2197.8738,-3712.3988 2198.5415,-3703.1519 2199.2846,-3694.4747"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2202.7939,-3694.5307 2200.2141,-3684.2548 2195.8226,-3693.8966 2202.7939,-3694.5307"/>
+<text text-anchor="middle" x="2208.2518" y="-3765.5" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C5_Export&#45;&gt;C5_Principle -->
+<g id="edge92" class="edge">
+<title>C5_Export-&gt;C5_Principle</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M2211.6109,-3684.2871C2214.9089,-3695.4477 2218.2883,-3708.731 2220,-3721 2230.8724,-3798.931 2227.7815,-3891.9361 2225.1006,-3939.0277"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2221.5975,-3938.975 2224.4884,-3949.1677 2228.5848,-3939.3969 2221.5975,-3938.975"/>
+<text text-anchor="middle" x="2256.0052" y="-3765.5" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C5_DD -->
+<g id="node75" class="node">
+<title>C5_DD</title>
+<polygon fill="#4caf50" stroke="#555555" points="2369.5517,-3402.8 2068.4483,-3402.8 2068.4483,-3340.8 2375.5517,-3340.8 2375.5517,-3396.8 2369.5517,-3402.8"/>
+<polyline fill="none" stroke="#555555" points="2369.5517,-3402.8 2369.5517,-3396.8 "/>
+<polyline fill="none" stroke="#555555" points="2375.5517,-3396.8 2369.5517,-3396.8 "/>
+<text text-anchor="middle" x="2222" y="-3390.7" font-family="Courier New" font-size="9.00" fill="#000000">✅ DDRESCUE CHAQUE DISQUE</text>
+<text text-anchor="middle" x="2222" y="-3379.9" font-family="Courier New" font-size="9.00" fill="#000000">📋 DISQUES: /dev/sdX, /dev/sdY...</text>
+<text text-anchor="middle" x="2222" y="-3369.1" font-family="Courier New" font-size="9.00" fill="#000000">📋 DESTINATION: /backup/disk1.img, /backup/disk2.img</text>
+<text text-anchor="middle" x="2222" y="-3358.3" font-family="Courier New" font-size="9.00" fill="#000000">⏱️ ESTIMATION: X heures par disque</text>
+<text text-anchor="middle" x="2222" y="-3347.5" font-family="Courier New" font-size="9.00" fill="#000000">✅ Lancer ddrescue sur tous les disques? (oui/non)</text>
+</g>
+<!-- C5_Export&#45;&gt;C5_DD -->
+<g id="edge91" class="edge">
+<title>C5_Export-&gt;C5_DD</title>
+<path fill="none" stroke="#aaaaaa" d="M2194.3452,-3632.6582C2188.272,-3613.1828 2180.6882,-3585.6399 2177.4964,-3560.8 2170.8313,-3508.9301 2188.5878,-3450.5185 2203.6145,-3412.5425"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2207.0234,-3413.4519 2207.5582,-3402.8706 2200.5415,-3410.8089 2207.0234,-3413.4519"/>
+<text text-anchor="middle" x="2188.2518" y="-3540.1" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C5_DD&#45;&gt;C5_Export -->
+<g id="edge94" class="edge">
+<title>C5_DD-&gt;C5_Export</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M2219.9236,-3403.1211C2216.3689,-3456.7408 2209.1386,-3565.8034 2205.3836,-3622.4446"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2201.8721,-3622.5043 2204.7028,-3632.7139 2208.8568,-3622.9674 2201.8721,-3622.5043"/>
+<text text-anchor="middle" x="2240.0052" y="-3540.1" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C5_Loop -->
+<g id="node76" class="node">
+<title>C5_Loop</title>
+<polygon fill="#4caf50" stroke="#555555" points="2347.0563,-3061.9004 2072.9437,-3061.9004 2072.9437,-3010.4996 2353.0563,-3010.4996 2353.0563,-3055.9004 2347.0563,-3061.9004"/>
+<polyline fill="none" stroke="#555555" points="2347.0563,-3061.9004 2347.0563,-3055.9004 "/>
+<polyline fill="none" stroke="#555555" points="2353.0563,-3055.9004 2347.0563,-3055.9004 "/>
+<text text-anchor="middle" x="2213" y="-3049.7" font-family="Courier New" font-size="9.00" fill="#000000">✅ MONTER IMAGES EN LOOP</text>
+<text text-anchor="middle" x="2213" y="-3038.9" font-family="Courier New" font-size="9.00" fill="#000000">📋 IMAGES: /backup/disk1.img, /backup/disk2.img</text>
+<text text-anchor="middle" x="2213" y="-3028.1" font-family="Courier New" font-size="9.00" fill="#000000">📋 LOOP: /dev/loop0, /dev/loop1</text>
+<text text-anchor="middle" x="2213" y="-3017.3" font-family="Courier New" font-size="9.00" fill="#000000">✅ Monter les images? (oui/non)</text>
+</g>
+<!-- C5_DD&#45;&gt;C5_Loop -->
+<g id="edge93" class="edge">
+<title>C5_DD-&gt;C5_Loop</title>
+<path fill="none" stroke="#aaaaaa" d="M2216.8378,-3340.5574C2212.021,-3309.7144 2205.1852,-3261.157 2202.4964,-3218.8 2200.7507,-3191.2998 2201.2998,-3184.3296 2202.4964,-3156.8 2203.7366,-3128.2671 2206.6198,-3096.0443 2209.0522,-3072.0886"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2212.5445,-3072.3434 2210.0957,-3062.0355 2205.5819,-3071.6207 2212.5445,-3072.3434"/>
+<text text-anchor="middle" x="2213.2518" y="-3185.1" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C5_Loop&#45;&gt;C5_DD -->
+<g id="edge96" class="edge">
+<title>C5_Loop-&gt;C5_DD</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M2216.3179,-3062.0226C2219.2729,-3086.4046 2223.373,-3124.0166 2225,-3156.8 2227.9915,-3217.0772 2226.0081,-3286.9681 2224.1403,-3330.2904"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2220.6366,-3330.297 2223.6835,-3340.4443 2227.6295,-3330.6117 2220.6366,-3330.297"/>
+<text text-anchor="middle" x="2255.0052" y="-3185.1" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C5_Import -->
+<g id="node77" class="node">
+<title>C5_Import</title>
+<polygon fill="#4caf50" stroke="#555555" points="2261.2713,-2641.5004 2078.7287,-2641.5004 2078.7287,-2590.0996 2267.2713,-2590.0996 2267.2713,-2635.5004 2261.2713,-2641.5004"/>
+<polyline fill="none" stroke="#555555" points="2261.2713,-2641.5004 2261.2713,-2635.5004 "/>
+<polyline fill="none" stroke="#555555" points="2267.2713,-2635.5004 2261.2713,-2635.5004 "/>
+<text text-anchor="middle" x="2173" y="-2629.3" font-family="Courier New" font-size="9.00" fill="#000000">✅ IMPORTER DEPUIS IMAGES</text>
+<text text-anchor="middle" x="2173" y="-2618.5" font-family="Courier New" font-size="9.00" fill="#000000">📋 POOL: [nom]</text>
+<text text-anchor="middle" x="2173" y="-2607.7" font-family="Courier New" font-size="9.00" fill="#000000">⚙️ OPTIONS: -f -N (no mount)</text>
+<text text-anchor="middle" x="2173" y="-2596.9" font-family="Courier New" font-size="9.00" fill="#000000">✅ Importer le pool? (oui/non)</text>
+</g>
+<!-- C5_Loop&#45;&gt;C5_Import -->
+<g id="edge95" class="edge">
+<title>C5_Loop-&gt;C5_Import</title>
+<path fill="none" stroke="#aaaaaa" d="M2202.298,-3010.3702C2193.74,-2988.2917 2182.3923,-2955.4509 2177.4964,-2925.6 2161.4325,-2827.6569 2166.1893,-2709.9602 2170.0984,-2651.8667"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2173.6009,-2651.9527 2170.8132,-2641.7312 2166.6182,-2651.4602 2173.6009,-2651.9527"/>
+<text text-anchor="middle" x="2188.2518" y="-2806.5" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C5_Import&#45;&gt;C5_Loop -->
+<g id="edge98" class="edge">
+<title>C5_Import-&gt;C5_Loop</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M2181.4612,-2641.4136C2187.7893,-2661.805 2196.0102,-2691.2042 2200,-2717.6 2215.3442,-2819.1132 2215.279,-2940.7518 2214.078,-3000.0808"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2210.5714,-3000.3381 2213.844,-3010.4149 2217.5696,-3000.4967 2210.5714,-3000.3381"/>
+<text text-anchor="middle" x="2243.0052" y="-2806.5" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C5_Extract -->
+<g id="node78" class="node">
+<title>C5_Extract</title>
+<polygon fill="#4caf50" stroke="#555555" points="2336.4685,-2385.7003 2137.5315,-2385.7003 2137.5315,-2313.0997 2342.4685,-2313.0997 2342.4685,-2379.7003 2336.4685,-2385.7003"/>
+<polyline fill="none" stroke="#555555" points="2336.4685,-2385.7003 2336.4685,-2379.7003 "/>
+<polyline fill="none" stroke="#555555" points="2342.4685,-2379.7003 2336.4685,-2379.7003 "/>
+<text text-anchor="middle" x="2240" y="-2373.7" font-family="Courier New" font-size="9.00" fill="#000000">✅ EXTRAIRE DONNÉES</text>
+<text text-anchor="middle" x="2240" y="-2362.9" font-family="Courier New" font-size="9.00" fill="#000000">📋 DESTINATION: /backup/recovery/</text>
+<text text-anchor="middle" x="2240" y="-2352.1" font-family="Courier New" font-size="9.00" fill="#000000">Options:</text>
+<text text-anchor="middle" x="2240" y="-2341.3" font-family="Courier New" font-size="9.00" fill="#000000">1. zfs send (recommandé)</text>
+<text text-anchor="middle" x="2240" y="-2330.5" font-family="Courier New" font-size="9.00" fill="#000000">2. cp depuis .zfs/snapshot/</text>
+<text text-anchor="middle" x="2240" y="-2319.7" font-family="Courier New" font-size="9.00" fill="#000000">✅ Lancer l'extraction? (oui/non)</text>
+</g>
+<!-- C5_Import&#45;&gt;C5_Extract -->
+<g id="edge97" class="edge">
+<title>C5_Import-&gt;C5_Extract</title>
+<path fill="none" stroke="#aaaaaa" d="M2186.8693,-2589.9623C2197.9169,-2568.1945 2212.8384,-2535.9048 2221,-2506 2230.8795,-2469.8007 2235.6263,-2427.4926 2237.9046,-2395.9835"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2241.4147,-2395.9466 2238.5865,-2385.7363 2234.4302,-2395.4818 2241.4147,-2395.9466"/>
+<text text-anchor="middle" x="2241.2518" y="-2485.3" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C5_Extract&#45;&gt;C5_Import -->
+<g id="edge100" class="edge">
+<title>C5_Extract-&gt;C5_Import</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M2204.6929,-2385.9183C2187.2888,-2406.4921 2168.1144,-2433.6928 2158.9896,-2462 2146.3711,-2501.1456 2153.9054,-2548.6009 2161.9717,-2580.3519"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2158.61,-2581.3288 2164.5844,-2590.0784 2165.3703,-2579.5128 2158.61,-2581.3288"/>
+<text text-anchor="middle" x="2187.0052" y="-2485.3" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C5_Verify -->
+<g id="node79" class="node">
+<title>C5_Verify</title>
+<polygon fill="#ff8f00" stroke="#555555" points="2378.7578,-2155.3003 2109.2422,-2155.3003 2109.2422,-2082.6997 2378.7578,-2082.6997 2378.7578,-2155.3003"/>
+<text text-anchor="middle" x="2244" y="-2143.3" font-family="Courier New" font-size="9.00" fill="#000000">🟠 VÉRIFIER DONNÉES</text>
+<text text-anchor="middle" x="2244" y="-2132.5" font-family="Courier New" font-size="9.00" fill="#000000">📋 Tester quelques fichiers:</text>
+<text text-anchor="middle" x="2244" y="-2121.7" font-family="Courier New" font-size="9.00" fill="#000000">• Documents importants</text>
+<text text-anchor="middle" x="2244" y="-2110.9" font-family="Courier New" font-size="9.00" fill="#000000">• Photos</text>
+<text text-anchor="middle" x="2244" y="-2100.1" font-family="Courier New" font-size="9.00" fill="#000000">• Bases de données</text>
+<text text-anchor="middle" x="2244" y="-2089.3" font-family="Courier New" font-size="9.00" fill="#000000">✅ Les données sont-elles lisibles? (oui/non)</text>
+</g>
+<!-- C5_Extract&#45;&gt;C5_Verify -->
+<g id="edge99" class="edge">
+<title>C5_Extract-&gt;C5_Verify</title>
+<path fill="none" stroke="#aaaaaa" d="M2233.5636,-2312.8819C2229.7088,-2286.5239 2225.9999,-2250.0772 2228.4964,-2218 2229.8378,-2200.7639 2232.474,-2181.9913 2235.1976,-2165.4725"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2238.6652,-2165.958 2236.8939,-2155.5123 2231.7646,-2164.7827 2238.6652,-2165.958"/>
+<text text-anchor="middle" x="2239.2518" y="-2220.7" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C5_Verify&#45;&gt;C5_Extract -->
+<g id="edge102" class="edge">
+<title>C5_Verify-&gt;C5_Extract</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M2247.2099,-2155.6391C2248.6867,-2174.292 2250.2704,-2197.3364 2251,-2218 2251.9975,-2246.2512 2249.4732,-2277.8215 2246.5926,-2302.9354"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="2243.1107,-2302.5758 2245.39,-2312.9225 2250.0605,-2303.4127 2243.1107,-2302.5758"/>
+<text text-anchor="middle" x="2285.8638" y="-2220.7" font-family="Arial" font-size="9.00" fill="#000000">Si non, réessayer</text>
+</g>
+<!-- C5_Verify&#45;&gt;PostImage -->
+<g id="edge101" class="edge">
+<title>C5_Verify-&gt;PostImage</title>
+<path fill="none" stroke="#aaaaaa" d="M2290.2726,-2082.5264C2310.6282,-2062.211 2330,-2034.9557 2330,-2004.8 2330,-2004.8 2330,-2004.8 2330,-1176.8 2330,-1119.9219 4153.2446,-1074.4884 4548.8556,-1065.2997"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4549.124,-1068.7945 4559.0403,-1065.0638 4548.9619,-1061.7964 4549.124,-1068.7945"/>
+<text text-anchor="middle" x="2341.2518" y="-1516.7" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C5_Verify&#45;&gt;PostImage -->
+<g id="edge121" class="edge">
+<title>C5_Verify-&gt;PostImage</title>
+<path fill="none" stroke="#aaaaaa" d="M2255.6485,-2082.6346C2261.7633,-2060.3984 2268,-2031.2386 2268,-2004.8 2268,-2004.8 2268,-2004.8 2268,-1176.8 2268,-1041.0144 1863.002,-1157.7633 2710,-1122.4 3425.4354,-1092.5296 4291.8971,-1071.2988 4548.7956,-1065.3146"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4549.2092,-1068.806 4559.1251,-1065.0745 4549.0465,-1061.8079 4549.2092,-1068.806"/>
+</g>
+<!-- PostAnalyse -->
+<g id="node87" class="node">
+<title>PostAnalyse</title>
+<polygon fill="#ffffff" stroke="#555555" points="4624,-970.4005 4478.3432,-897.8 4624,-825.1995 4769.6568,-897.8 4624,-970.4005"/>
+<text text-anchor="middle" x="4624" y="-922.1" font-family="Courier New" font-size="9.00" fill="#000000">⬜ ANALYSER L'IMAGE ?</text>
+<text text-anchor="middle" x="4624" y="-911.3" font-family="Courier New" font-size="9.00" fill="#000000">Options:</text>
+<text text-anchor="middle" x="4624" y="-900.5" font-family="Courier New" font-size="9.00" fill="#000000">1. Testdisk (partitions)</text>
+<text text-anchor="middle" x="4624" y="-889.7" font-family="Courier New" font-size="9.00" fill="#000000">2. Photorec (carving)</text>
+<text text-anchor="middle" x="4624" y="-878.9" font-family="Courier New" font-size="9.00" fill="#000000">3. Montage direct</text>
+<text text-anchor="middle" x="4624" y="-868.1" font-family="Courier New" font-size="9.00" fill="#000000">✅ Choix (1-3):</text>
+</g>
+<!-- PostImage&#45;&gt;PostAnalyse -->
+<g id="edge123" class="edge">
+<title>PostImage-&gt;PostAnalyse</title>
+<path fill="none" stroke="#aaaaaa" d="M4624,-1045.5409C4624,-1029.6074 4624,-1005.1779 4624,-980.7433"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4627.5001,-980.6655 4624,-970.6655 4620.5001,-980.6656 4627.5001,-980.6655"/>
+</g>
+<!-- C6_mdadm -->
+<g id="node82" class="node">
+<title>C6_mdadm</title>
+<polygon fill="#4caf50" stroke="#555555" points="4634.6659,-1496.1004 4419.3341,-1496.1004 4419.3341,-1444.6996 4640.6659,-1444.6996 4640.6659,-1490.1004 4634.6659,-1496.1004"/>
+<polyline fill="none" stroke="#555555" points="4634.6659,-1496.1004 4634.6659,-1490.1004 "/>
+<polyline fill="none" stroke="#555555" points="4640.6659,-1490.1004 4634.6659,-1490.1004 "/>
+<text text-anchor="middle" x="4530" y="-1483.9" font-family="Courier New" font-size="9.00" fill="#000000">✅ ASSEMBLER MDADM</text>
+<text text-anchor="middle" x="4530" y="-1473.1" font-family="Courier New" font-size="9.00" fill="#000000">📋 COMMANDE: mdadm --assemble --scan</text>
+<text text-anchor="middle" x="4530" y="-1462.3" font-family="Courier New" font-size="9.00" fill="#000000">📋 MEMBRES: [disques]</text>
+<text text-anchor="middle" x="4530" y="-1451.5" font-family="Courier New" font-size="9.00" fill="#000000">✅ Assembler maintenant? (oui/non)</text>
+</g>
+<!-- C6_Type&#45;&gt;C6_mdadm -->
+<g id="edge104" class="edge">
+<title>C6_Type-&gt;C6_mdadm</title>
+<path fill="none" stroke="#aaaaaa" d="M4353.2992,-1632.6347C4390.7266,-1611.8749 4433.9168,-1584.572 4468,-1553.6 4483.6356,-1539.3916 4497.9577,-1520.7396 4508.8881,-1504.6975"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4511.9821,-1506.3652 4514.5985,-1496.0985 4506.1507,-1502.4928 4511.9821,-1506.3652"/>
+</g>
+<!-- C6_LVM -->
+<g id="node83" class="node">
+<title>C6_LVM</title>
+<polygon fill="#4caf50" stroke="#555555" points="4395.6659,-1496.1004 4180.3341,-1496.1004 4180.3341,-1444.6996 4401.6659,-1444.6996 4401.6659,-1490.1004 4395.6659,-1496.1004"/>
+<polyline fill="none" stroke="#555555" points="4395.6659,-1496.1004 4395.6659,-1490.1004 "/>
+<polyline fill="none" stroke="#555555" points="4401.6659,-1490.1004 4395.6659,-1490.1004 "/>
+<text text-anchor="middle" x="4291" y="-1483.9" font-family="Courier New" font-size="9.00" fill="#000000">✅ ACTIVER LVM</text>
+<text text-anchor="middle" x="4291" y="-1473.1" font-family="Courier New" font-size="9.00" fill="#000000">📋 COMMANDES: pvscan, vgscan, lvscan</text>
+<text text-anchor="middle" x="4291" y="-1462.3" font-family="Courier New" font-size="9.00" fill="#000000">📋 VOLUMES: [LV trouvés]</text>
+<text text-anchor="middle" x="4291" y="-1451.5" font-family="Courier New" font-size="9.00" fill="#000000">✅ Activer LVM? (oui/non)</text>
+</g>
+<!-- C6_Type&#45;&gt;C6_LVM -->
+<g id="edge105" class="edge">
+<title>C6_Type-&gt;C6_LVM</title>
+<path fill="none" stroke="#aaaaaa" d="M4285.673,-1598.5991C4288.3076,-1583.7523 4290.6163,-1568.242 4292,-1553.6 4292.4516,-1548.8213 4292.0331,-1547.5999 4292,-1542.8 4291.9183,-1530.9623 4291.7613,-1518.0366 4291.5956,-1506.4253"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4295.0919,-1506.1468 4291.4428,-1496.2002 4288.0927,-1506.2514 4295.0919,-1506.1468"/>
+</g>
+<!-- C6_Fake -->
+<g id="node84" class="node">
+<title>C6_Fake</title>
+<polygon fill="#4caf50" stroke="#555555" points="4061.8725,-1496.1004 3884.1275,-1496.1004 3884.1275,-1444.6996 4067.8725,-1444.6996 4067.8725,-1490.1004 4061.8725,-1496.1004"/>
+<polyline fill="none" stroke="#555555" points="4061.8725,-1496.1004 4061.8725,-1490.1004 "/>
+<polyline fill="none" stroke="#555555" points="4067.8725,-1490.1004 4061.8725,-1490.1004 "/>
+<text text-anchor="middle" x="3976" y="-1483.9" font-family="Courier New" font-size="9.00" fill="#000000">✅ ACTIVER FAKERAID</text>
+<text text-anchor="middle" x="3976" y="-1473.1" font-family="Courier New" font-size="9.00" fill="#000000">📋 COMMANDE: dmraid -ay</text>
+<text text-anchor="middle" x="3976" y="-1462.3" font-family="Courier New" font-size="9.00" fill="#000000">📋 DISPOSITIFS: /dev/mapper/</text>
+<text text-anchor="middle" x="3976" y="-1451.5" font-family="Courier New" font-size="9.00" fill="#000000">✅ Activer FakeRAID? (oui/non)</text>
+</g>
+<!-- C6_Type&#45;&gt;C6_Fake -->
+<g id="edge106" class="edge">
+<title>C6_Type-&gt;C6_Fake</title>
+<path fill="none" stroke="#aaaaaa" d="M4189.5338,-1630.1327C4160.4271,-1613.1079 4127.6248,-1592.8628 4099,-1572.6 4068.4612,-1550.9823 4035.9888,-1523.8026 4012.0817,-1502.9077"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4014.1383,-1500.0554 4004.3176,-1496.0797 4009.5155,-1505.3119 4014.1383,-1500.0554"/>
+</g>
+<!-- C6_mdadm&#45;&gt;C6_Type -->
+<g id="edge108" class="edge">
+<title>C6_mdadm-&gt;C6_Type</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M4480.0113,-1496.0454C4456.6987,-1508.8806 4429.0725,-1525.3791 4405.9896,-1542.8 4379.5243,-1562.7736 4352.7021,-1587.3433 4329.8913,-1609.8115"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4327.259,-1607.493 4322.6317,-1617.024 4332.1926,-1612.4588 4327.259,-1607.493"/>
+<text text-anchor="middle" x="4434.0052" y="-1545.5" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C6_DD -->
+<g id="node85" class="node">
+<title>C6_DD</title>
+<polygon fill="#4caf50" stroke="#555555" points="4390.5699,-1354.6 4197.4301,-1354.6 4197.4301,-1292.6 4396.5699,-1292.6 4396.5699,-1348.6 4390.5699,-1354.6"/>
+<polyline fill="none" stroke="#555555" points="4390.5699,-1354.6 4390.5699,-1348.6 "/>
+<polyline fill="none" stroke="#555555" points="4396.5699,-1348.6 4390.5699,-1348.6 "/>
+<text text-anchor="middle" x="4297" y="-1342.5" font-family="Courier New" font-size="9.00" fill="#000000">✅ DDRESCUE RAID</text>
+<text text-anchor="middle" x="4297" y="-1331.7" font-family="Courier New" font-size="9.00" fill="#000000">📋 DISPOSITIF: /dev/mdX</text>
+<text text-anchor="middle" x="4297" y="-1320.9" font-family="Courier New" font-size="9.00" fill="#000000">📋 DESTINATION: /backup/raid.img</text>
+<text text-anchor="middle" x="4297" y="-1310.1" font-family="Courier New" font-size="9.00" fill="#000000">⏱️ ESTIMATION: X heures</text>
+<text text-anchor="middle" x="4297" y="-1299.3" font-family="Courier New" font-size="9.00" fill="#000000">✅ Lancer ddrescue? (oui/non)</text>
+</g>
+<!-- C6_mdadm&#45;&gt;C6_DD -->
+<g id="edge107" class="edge">
+<title>C6_mdadm-&gt;C6_DD</title>
+<path fill="none" stroke="#aaaaaa" d="M4489.1479,-1444.6614C4451.9844,-1421.2468 4396.7267,-1386.4321 4354.9954,-1360.1396"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4356.6335,-1357.035 4346.307,-1354.6655 4352.9021,-1362.9575 4356.6335,-1357.035"/>
+<text text-anchor="middle" x="4439.2518" y="-1399.7" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C6_LVM&#45;&gt;C6_Type -->
+<g id="edge110" class="edge">
+<title>C6_LVM-&gt;C6_Type</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M4261.4427,-1496.2684C4249.2186,-1508.916 4236.417,-1525.1983 4229.9896,-1542.8 4223.4512,-1560.7055 4224.8241,-1580.2708 4229.7975,-1598.7042"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4226.5278,-1599.9803 4232.8028,-1608.517 4233.2209,-1597.9304 4226.5278,-1599.9803"/>
+<text text-anchor="middle" x="4258.0052" y="-1545.5" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C6_LVM&#45;&gt;C6_DD -->
+<g id="edge109" class="edge">
+<title>C6_LVM-&gt;C6_DD</title>
+<path fill="none" stroke="#aaaaaa" d="M4292.0589,-1444.493C4292.9577,-1422.5005 4294.2641,-1390.539 4295.3078,-1365.0024"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4298.8111,-1364.9906 4295.7225,-1354.856 4291.817,-1364.7047 4298.8111,-1364.9906"/>
+<text text-anchor="middle" x="4305.2518" y="-1399.7" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C6_Fake&#45;&gt;C6_Type -->
+<g id="edge112" class="edge">
+<title>C6_Fake-&gt;C6_Type</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M3977.1015,-1496.3567C3979.1256,-1514.2834 3984.431,-1537.673 3997.9896,-1553.6 4035.5445,-1597.7147 4092.4281,-1626.3467 4144.4004,-1644.5846"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4143.4474,-1647.9574 4154.0419,-1647.8704 4145.7055,-1641.3316 4143.4474,-1647.9574"/>
+<text text-anchor="middle" x="4026.0052" y="-1545.5" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C6_Fake&#45;&gt;C6_DD -->
+<g id="edge111" class="edge">
+<title>C6_Fake-&gt;C6_DD</title>
+<path fill="none" stroke="#aaaaaa" d="M4003.7775,-1444.6558C4027.4681,-1423.9569 4063.2744,-1395.5317 4099,-1378 4126.5307,-1364.4898 4157.9171,-1353.9165 4187.459,-1345.832"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4188.6361,-1349.1406 4197.3986,-1343.185 4186.8347,-1342.3763 4188.6361,-1349.1406"/>
+<text text-anchor="middle" x="4075.2518" y="-1399.7" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C6_DD&#45;&gt;C6_Type -->
+<g id="edge114" class="edge">
+<title>C6_DD-&gt;C6_Type</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M4197.3906,-1346.5323C4150.199,-1360.3851 4104,-1379.7347 4104,-1402.4 4104,-1548.2 4104,-1548.2 4104,-1548.2 4104,-1585.753 4131.3307,-1613.6094 4163.7456,-1633.4417"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4162.1392,-1636.5564 4172.5414,-1638.5674 4165.6636,-1630.5084 4162.1392,-1636.5564"/>
+<text text-anchor="middle" x="4133.0052" y="-1467.7" font-family="Arial" font-size="9.00" fill="#000000">Si non, revenir</text>
+</g>
+<!-- C6_Verify -->
+<g id="node86" class="node">
+<title>C6_Verify</title>
+<polygon fill="#ff8f00" stroke="#555555" points="4536.1614,-1202.5004 4287.8386,-1202.5004 4287.8386,-1151.0996 4536.1614,-1151.0996 4536.1614,-1202.5004"/>
+<text text-anchor="middle" x="4412" y="-1190.3" font-family="Courier New" font-size="9.00" fill="#000000">🟠 VÉRIFIER ASSEMBLAGE</text>
+<text text-anchor="middle" x="4412" y="-1179.5" font-family="Courier New" font-size="9.00" fill="#000000">📋 Le RAID est-il correctement assemblé?</text>
+<text text-anchor="middle" x="4412" y="-1168.7" font-family="Courier New" font-size="9.00" fill="#000000">📋 Les fichiers sont-ils visibles?</text>
+<text text-anchor="middle" x="4412" y="-1157.9" font-family="Courier New" font-size="9.00" fill="#000000">✅ Confirmez-vous? (oui/non)</text>
+</g>
+<!-- C6_DD&#45;&gt;C6_Verify -->
+<g id="edge113" class="edge">
+<title>C6_DD-&gt;C6_Verify</title>
+<path fill="none" stroke="#aaaaaa" d="M4307.2861,-1292.5187C4313.7609,-1275.7579 4323.2267,-1255.3102 4335.4964,-1239.4 4344.0985,-1228.2457 4355.0488,-1217.8089 4365.9574,-1208.7761"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4368.2354,-1211.436 4373.859,-1202.4569 4363.8633,-1205.9693 4368.2354,-1211.436"/>
+<text text-anchor="middle" x="4346.2518" y="-1242.1" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C6_Verify&#45;&gt;PostImage -->
+<g id="edge115" class="edge">
+<title>C6_Verify-&gt;PostImage</title>
+<path fill="none" stroke="#aaaaaa" d="M4460.1061,-1151.1132C4496.553,-1131.6519 4546.1725,-1105.1569 4581.2385,-1086.433"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4583.098,-1089.4079 4590.2707,-1081.6102 4579.8009,-1083.233 4583.098,-1089.4079"/>
+<text text-anchor="middle" x="4522.2518" y="-1125.1" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- C6_Verify&#45;&gt;PostImage -->
+<g id="edge122" class="edge">
+<title>C6_Verify-&gt;PostImage</title>
+<path fill="none" stroke="#aaaaaa" d="M4499.1261,-1151.1164C4512.4845,-1145.9169 4525.8569,-1139.9408 4538,-1133.2 4559.9365,-1121.0227 4581.8776,-1103.1514 4598.1071,-1088.5674"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4600.5814,-1091.0474 4605.5905,-1081.7114 4595.8527,-1085.886 4600.5814,-1091.0474"/>
+</g>
+<!-- C6_Verify&#45;&gt;C6_DD -->
+<g id="edge116" class="edge">
+<title>C6_Verify-&gt;C6_DD</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M4393.6226,-1202.5543C4383.3445,-1216.7595 4370.1844,-1234.6245 4358,-1250.2 4349.1277,-1261.5417 4339.2493,-1273.6418 4330.0705,-1284.6784"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4327.2607,-1282.5827 4323.5349,-1292.5008 4332.6325,-1287.0709 4327.2607,-1282.5827"/>
+<text text-anchor="middle" x="4399.8638" y="-1242.1" font-family="Arial" font-size="9.00" fill="#000000">Si non, réessayer</text>
+</g>
+<!-- PostPart_OK -->
+<g id="node88" class="node">
+<title>PostPart_OK</title>
+<polygon fill="#4caf50" stroke="#555555" points="4717.5699,-750.1004 4524.4301,-750.1004 4524.4301,-698.6996 4723.5699,-698.6996 4723.5699,-744.1004 4717.5699,-750.1004"/>
+<polyline fill="none" stroke="#555555" points="4717.5699,-750.1004 4717.5699,-744.1004 "/>
+<polyline fill="none" stroke="#555555" points="4723.5699,-744.1004 4717.5699,-744.1004 "/>
+<text text-anchor="middle" x="4624" y="-737.9" font-family="Courier New" font-size="9.00" fill="#000000">✅ TESTDISK</text>
+<text text-anchor="middle" x="4624" y="-727.1" font-family="Courier New" font-size="9.00" fill="#000000">📋 ANALYSE: Recherche partitions</text>
+<text text-anchor="middle" x="4624" y="-716.3" font-family="Courier New" font-size="9.00" fill="#000000">📋 RAPPORT: Partitions trouvées</text>
+<text text-anchor="middle" x="4624" y="-705.5" font-family="Courier New" font-size="9.00" fill="#000000">✅ Restaurer la table? (oui/non)</text>
+</g>
+<!-- PostAnalyse&#45;&gt;PostPart_OK -->
+<g id="edge124" class="edge">
+<title>PostAnalyse-&gt;PostPart_OK</title>
+<path fill="none" stroke="#aaaaaa" d="M4624,-825.0165C4624,-802.7549 4624,-779.2364 4624,-760.5398"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4627.5001,-760.4117 4624,-750.4118 4620.5001,-760.4118 4627.5001,-760.4117"/>
+</g>
+<!-- PostPart_KO -->
+<g id="node89" class="node">
+<title>PostPart_KO</title>
+<polygon fill="#4caf50" stroke="#555555" points="4831.2713,-680.8 4648.7287,-680.8 4648.7287,-618.8 4837.2713,-618.8 4837.2713,-674.8 4831.2713,-680.8"/>
+<polyline fill="none" stroke="#555555" points="4831.2713,-680.8 4831.2713,-674.8 "/>
+<polyline fill="none" stroke="#555555" points="4837.2713,-674.8 4831.2713,-674.8 "/>
+<text text-anchor="middle" x="4743" y="-668.7" font-family="Courier New" font-size="9.00" fill="#000000">✅ PHOTOREC</text>
+<text text-anchor="middle" x="4743" y="-657.9" font-family="Courier New" font-size="9.00" fill="#000000">📋 ACTION: File carving</text>
+<text text-anchor="middle" x="4743" y="-647.1" font-family="Courier New" font-size="9.00" fill="#000000">📋 TYPES: JPEG, PDF, DOC, etc.</text>
+<text text-anchor="middle" x="4743" y="-636.3" font-family="Courier New" font-size="9.00" fill="#000000">📋 DESTINATION: /recovery/</text>
+<text text-anchor="middle" x="4743" y="-625.5" font-family="Courier New" font-size="9.00" fill="#000000">✅ Lancer photorec? (oui/non)</text>
+</g>
+<!-- PostAnalyse&#45;&gt;PostPart_KO -->
+<g id="edge125" class="edge">
+<title>PostAnalyse-&gt;PostPart_KO</title>
+<path fill="none" stroke="#aaaaaa" d="M4670.8435,-848.5454C4693.6162,-821.5693 4719.0264,-786.3006 4733,-750 4740.1206,-731.502 4742.8955,-709.735 4743.7772,-691.2229"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4747.2815,-691.1359 4744.0921,-681.0326 4740.2848,-690.9196 4747.2815,-691.1359"/>
+</g>
+<!-- PostMount -->
+<g id="node90" class="node">
+<title>PostMount</title>
+<polygon fill="#4caf50" stroke="#555555" points="4760.1523,-563.002 4463.8477,-563.002 4463.8477,-522.198 4766.1523,-522.198 4766.1523,-557.002 4760.1523,-563.002"/>
+<polyline fill="none" stroke="#555555" points="4760.1523,-563.002 4760.1523,-557.002 "/>
+<polyline fill="none" stroke="#555555" points="4766.1523,-557.002 4760.1523,-557.002 "/>
+<text text-anchor="middle" x="4615" y="-550.7" font-family="Courier New" font-size="9.00" fill="#000000">✅ MONTAGE IMAGE</text>
+<text text-anchor="middle" x="4615" y="-539.9" font-family="Courier New" font-size="9.00" fill="#000000">📋 COMMANDE: mount -o ro,loop /backup/disk.img /mnt</text>
+<text text-anchor="middle" x="4615" y="-529.1" font-family="Courier New" font-size="9.00" fill="#000000">✅ Monter l'image? (oui/non)</text>
+</g>
+<!-- PostAnalyse&#45;&gt;PostMount -->
+<g id="edge126" class="edge">
+<title>PostAnalyse-&gt;PostMount</title>
+<path fill="none" stroke="#aaaaaa" d="M4551.6904,-861.0816C4526.7718,-842.9839 4505,-818.3456 4505,-787.5 4505,-787.5 4505,-787.5 4505,-600.3 4505,-586.9423 4511.4398,-576.6706 4521.2032,-568.7736"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4523.4325,-571.4882 4529.6861,-562.9359 4519.4641,-565.7217 4523.4325,-571.4882"/>
+</g>
+<!-- PostPart_OK&#45;&gt;PostMount -->
+<g id="edge127" class="edge">
+<title>PostPart_OK-&gt;PostMount</title>
+<path fill="none" stroke="#aaaaaa" d="M4622.7296,-698.7381C4621.0917,-665.6524 4618.2473,-608.1957 4616.5035,-572.9699"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4619.9904,-572.6177 4616.0001,-562.803 4612.999,-572.9639 4619.9904,-572.6177"/>
+</g>
+<!-- PostCopy -->
+<g id="node91" class="node">
+<title>PostCopy</title>
+<polygon fill="#4caf50" stroke="#555555" points="4709.8725,-447.4 4532.1275,-447.4 4532.1275,-385.4 4715.8725,-385.4 4715.8725,-441.4 4709.8725,-447.4"/>
+<polyline fill="none" stroke="#555555" points="4709.8725,-447.4 4709.8725,-441.4 "/>
+<polyline fill="none" stroke="#555555" points="4715.8725,-441.4 4709.8725,-441.4 "/>
+<text text-anchor="middle" x="4624" y="-435.3" font-family="Courier New" font-size="9.00" fill="#000000">✅ COPIER FICHIERS</text>
+<text text-anchor="middle" x="4624" y="-424.5" font-family="Courier New" font-size="9.00" fill="#000000">📋 SOURCE: /mnt/</text>
+<text text-anchor="middle" x="4624" y="-413.7" font-family="Courier New" font-size="9.00" fill="#000000">📋 DESTINATION: /destination/</text>
+<text text-anchor="middle" x="4624" y="-402.9" font-family="Courier New" font-size="9.00" fill="#000000">📋 ESTIMATION: X Go à copier</text>
+<text text-anchor="middle" x="4624" y="-392.1" font-family="Courier New" font-size="9.00" fill="#000000">✅ Lancer rsync? (oui/non)</text>
+</g>
+<!-- PostPart_KO&#45;&gt;PostCopy -->
+<g id="edge128" class="edge">
+<title>PostPart_KO-&gt;PostCopy</title>
+<path fill="none" stroke="#aaaaaa" d="M4785.2508,-618.5648C4794.7078,-608.0859 4802,-595.4259 4802,-581.3 4802,-581.3 4802,-581.3 4802,-484.9 4802,-465.7026 4765.4816,-449.8425 4725.5264,-438.235"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4726.4414,-434.8567 4715.8677,-435.5258 4724.5509,-441.5965 4726.4414,-434.8567"/>
+<text text-anchor="middle" x="4819.5064" y="-539.9" font-family="Arial" font-size="9.00" fill="#000000">photorec</text>
+</g>
+<!-- PostMount&#45;&gt;PostCopy -->
+<g id="edge129" class="edge">
+<title>PostMount-&gt;PostCopy</title>
+<path fill="none" stroke="#aaaaaa" d="M4616.446,-522.3238C4617.6844,-504.9594 4619.5069,-479.4028 4621.0516,-457.7434"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4624.5635,-457.7003 4621.7838,-447.4766 4617.5812,-457.2023 4624.5635,-457.7003"/>
+</g>
+<!-- PostVerify -->
+<g id="node92" class="node">
+<title>PostVerify</title>
+<polygon fill="#ff8f00" stroke="#555555" points="4733.4595,-300.5003 4474.5405,-300.5003 4474.5405,-227.8997 4733.4595,-227.8997 4733.4595,-300.5003"/>
+<text text-anchor="middle" x="4604" y="-288.5" font-family="Courier New" font-size="9.00" fill="#000000">🟠 VÉRIFIER FICHIERS</text>
+<text text-anchor="middle" x="4604" y="-277.7" font-family="Courier New" font-size="9.00" fill="#000000">📋 Tester 5-10 fichiers aléatoires:</text>
+<text text-anchor="middle" x="4604" y="-266.9" font-family="Courier New" font-size="9.00" fill="#000000">• [fichier1] OK?</text>
+<text text-anchor="middle" x="4604" y="-256.1" font-family="Courier New" font-size="9.00" fill="#000000">• [fichier2] OK?</text>
+<text text-anchor="middle" x="4604" y="-245.3" font-family="Courier New" font-size="9.00" fill="#000000">• [fichier3] OK?</text>
+<text text-anchor="middle" x="4604" y="-234.5" font-family="Courier New" font-size="9.00" fill="#000000">✅ Les fichiers sont-ils lisibles? (oui/non)</text>
+</g>
+<!-- PostCopy&#45;&gt;PostVerify -->
+<g id="edge130" class="edge">
+<title>PostCopy-&gt;PostVerify</title>
+<path fill="none" stroke="#aaaaaa" d="M4619.867,-385.2574C4618.3341,-373.6844 4616.5836,-360.443 4615,-348.4 4613.3933,-336.1816 4611.663,-322.9647 4610.0612,-310.7043"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4613.5167,-310.136 4608.7513,-300.6734 4606.5757,-311.0424 4613.5167,-310.136"/>
+</g>
+<!-- PostVerify&#45;&gt;PostCopy -->
+<g id="edge132" class="edge">
+<title>PostVerify-&gt;PostCopy</title>
+<path fill="none" stroke="#aaaaaa" stroke-dasharray="1,5" d="M4612.5333,-300.6864C4613.7893,-306.6547 4614.9961,-312.7864 4616,-318.6 4619.6433,-339.6989 4620.2372,-345.0615 4622,-366.4 4622.2347,-369.2409 4622.4421,-372.175 4622.6253,-375.1317"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4619.1329,-375.3691 4623.1597,-385.1688 4626.123,-374.9968 4619.1329,-375.3691"/>
+<text text-anchor="middle" x="4654.8638" y="-340.3" font-family="Arial" font-size="9.00" fill="#000000">Si non, réessayer</text>
+</g>
+<!-- PostArchive -->
+<g id="node93" class="node">
+<title>PostArchive</title>
+<polygon fill="#4caf50" stroke="#555555" points="4697.5699,-143 4504.4301,-143 4504.4301,-81 4703.5699,-81 4703.5699,-137 4697.5699,-143"/>
+<polyline fill="none" stroke="#555555" points="4697.5699,-143 4697.5699,-137 "/>
+<polyline fill="none" stroke="#555555" points="4703.5699,-137 4697.5699,-137 "/>
+<text text-anchor="middle" x="4604" y="-130.9" font-family="Courier New" font-size="9.00" fill="#000000">✅ ARCHIVER IMAGE</text>
+<text text-anchor="middle" x="4604" y="-120.1" font-family="Courier New" font-size="9.00" fill="#000000">📋 COMPRESSION: gzip / xz / zstd</text>
+<text text-anchor="middle" x="4604" y="-109.3" font-family="Courier New" font-size="9.00" fill="#000000">📋 MÉTADONNÉES: rapport.txt</text>
+<text text-anchor="middle" x="4604" y="-98.5" font-family="Courier New" font-size="9.00" fill="#000000">📋 CORRECTION: par2</text>
+<text text-anchor="middle" x="4604" y="-87.7" font-family="Courier New" font-size="9.00" fill="#000000">✅ Archiver maintenant? (oui/non)</text>
+</g>
+<!-- PostVerify&#45;&gt;PostArchive -->
+<g id="edge131" class="edge">
+<title>PostVerify-&gt;PostArchive</title>
+<path fill="none" stroke="#aaaaaa" d="M4604,-227.7443C4604,-205.3229 4604,-176.5313 4604,-153.2732"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4607.5001,-153.0192 4604,-143.0193 4600.5001,-153.0193 4607.5001,-153.0192"/>
+<text text-anchor="middle" x="4615.2518" y="-182.7" font-family="Arial" font-size="9.00" fill="#000000">Si oui</text>
+</g>
+<!-- End -->
+<g id="node94" class="node">
+<title>End</title>
+<polygon fill="#1b5e20" stroke="#555555" points="4710.1763,-14.5442 4710.1763,-29.4558 4647.9797,-40 4560.0203,-40 4497.8237,-29.4558 4497.8237,-14.5442 4560.0203,-4 4647.9797,-4 4710.1763,-14.5442"/>
+<polygon fill="none" stroke="#555555" points="4714.1796,-11.1657 4714.1796,-32.8343 4648.3169,-44 4559.6831,-44 4493.8204,-32.8343 4493.8204,-11.1657 4559.6831,0 4648.3169,0 4714.1796,-11.1657"/>
+<text text-anchor="middle" x="4604" y="-19.3" font-family="Courier New" font-size="9.00" fill="#ffffff">✅ DONNÉES RÉCUPÉRÉES !</text>
+</g>
+<!-- PostArchive&#45;&gt;End -->
+<g id="edge133" class="edge">
+<title>PostArchive-&gt;End</title>
+<path fill="none" stroke="#aaaaaa" d="M4604,-80.7749C4604,-72.1845 4604,-62.8529 4604,-54.2082"/>
+<polygon fill="#aaaaaa" stroke="#aaaaaa" points="4607.5001,-54.1002 4604,-44.1002 4600.5001,-54.1002 4607.5001,-54.1002"/>
+</g>
+</g>
+</svg>

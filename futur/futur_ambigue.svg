@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg width="1107pt" height="1036pt" viewBox="0.00 0.00 1106.61 1035.60" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 1031.6)">
+<title>SauvetageExpert</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-1031.6 1102.6077,-1031.6 1102.6077,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster_legend</title>
+<polygon fill="none" stroke="#dddddd" points="27.8297,-942.8 27.8297,-1019.6 431.8297,-1019.6 431.8297,-942.8 27.8297,-942.8"/>
+<text text-anchor="middle" x="229.8297" y="-1003" font-family="Times,serif" font-size="14.00" fill="#000000">LÉGENDE</text>
+</g>
+<!-- LegendAuto -->
+<g id="node1" class="node">
+<title>LegendAuto</title>
+<polygon fill="#0056b3" stroke="#000000" points="423.8297,-986.8 369.8297,-986.8 369.8297,-950.8 423.8297,-950.8 423.8297,-986.8"/>
+<text text-anchor="middle" x="396.8297" y="-965.8" font-family="Arial" font-size="10.00" fill="#ffffff">AUTO</text>
+</g>
+<!-- LegendHuman -->
+<g id="node2" class="node">
+<title>LegendHuman</title>
+<polygon fill="#ff8f00" stroke="#000000" points="351.7654,-986.8 295.894,-986.8 295.894,-950.8 351.7654,-950.8 351.7654,-986.8"/>
+<text text-anchor="middle" x="323.8297" y="-965.8" font-family="Arial" font-size="10.00" fill="#000000">HUMAIN</text>
+</g>
+<!-- LegendMixed -->
+<g id="node3" class="node">
+<title>LegendMixed</title>
+<polygon fill="#2e7d32" stroke="#000000" points="277.8297,-986.8 223.8297,-986.8 223.8297,-950.8 277.8297,-950.8 277.8297,-986.8"/>
+<text text-anchor="middle" x="250.8297" y="-965.8" font-family="Arial" font-size="10.00" fill="#ffffff">MIXTE</text>
+</g>
+<!-- LegendUrgent -->
+<g id="node4" class="node">
+<title>LegendUrgent</title>
+<polygon fill="#d32f2f" stroke="#000000" points="206.0441,-986.8 147.6153,-986.8 147.6153,-950.8 206.0441,-950.8 206.0441,-986.8"/>
+<text text-anchor="middle" x="176.8297" y="-965.8" font-family="Arial" font-size="10.00" fill="#ffffff">URGENT</text>
+</g>
+<!-- LegendConfirm -->
+<g id="node5" class="node">
+<title>LegendConfirm</title>
+<polygon fill="#4caf50" stroke="#000000" points="129.5379,-986.8 36.1214,-986.8 36.1214,-950.8 129.5379,-950.8 129.5379,-986.8"/>
+<text text-anchor="middle" x="82.8297" y="-965.8" font-family="Arial" font-size="10.00" fill="#000000">CONFIRMATION</text>
+</g>
+<!-- Start -->
+<g id="node6" class="node">
+<title>Start</title>
+<ellipse fill="#2e7d32" stroke="#000000" cx="488.8297" cy="-968.8" rx="47.0733" ry="18"/>
+<text text-anchor="middle" x="488.8297" y="-965.8" font-family="Arial" font-size="10.00" fill="#ffffff">DIAGNOSTIC</text>
+</g>
+<!-- DiagOK -->
+<g id="node7" class="node">
+<title>DiagOK</title>
+<polygon fill="#0056b3" stroke="#000000" points="194.0142,-913.8 91.6452,-913.8 91.6452,-877.8 194.0142,-877.8 194.0142,-913.8"/>
+<text text-anchor="middle" x="142.8297" y="-892.8" font-family="Arial" font-size="10.00" fill="#ffffff">CAS 1: Disque sain</text>
+</g>
+<!-- Start&#45;&gt;DiagOK -->
+<g id="edge1" class="edge">
+<title>Start-&gt;DiagOK</title>
+<path fill="none" stroke="#000000" d="M462.5601,-953.8098C454.2418,-949.6437 444.8577,-945.5206 435.8297,-942.8 387.9822,-928.3811 261.8984,-923.2626 212.8297,-913.8 209.9997,-913.2543 207.114,-912.6615 204.2054,-912.0347"/>
+<polygon fill="#000000" stroke="#000000" points="204.8013,-908.5811 194.2757,-909.7904 203.2581,-915.4089 204.8013,-908.5811"/>
+</g>
+<!-- DiagBad -->
+<g id="node8" class="node">
+<title>DiagBad</title>
+<polygon fill="#ff6b6b" stroke="#000000" points="629.8657,-913.8 505.7937,-913.8 505.7937,-877.8 629.8657,-877.8 629.8657,-913.8"/>
+<text text-anchor="middle" x="567.8297" y="-892.8" font-family="Arial" font-size="10.00" fill="#ffffff">CAS 2: Disque défaillant</text>
+</g>
+<!-- Start&#45;&gt;DiagBad -->
+<g id="edge2" class="edge">
+<title>Start-&gt;DiagBad</title>
+<path fill="none" stroke="#000000" d="M507.1524,-951.8688C517.1517,-942.629 529.7217,-931.0137 540.8236,-920.7549"/>
+<polygon fill="#000000" stroke="#000000" points="543.2563,-923.2725 548.2255,-913.9153 538.5056,-918.1314 543.2563,-923.2725"/>
+</g>
+<!-- DiagNoise -->
+<g id="node9" class="node">
+<title>DiagNoise</title>
+<polygon fill="#ff8f00" stroke="#000000" points="471.5699,-913.8 348.0894,-913.8 348.0894,-877.8 471.5699,-877.8 471.5699,-913.8"/>
+<text text-anchor="middle" x="409.8297" y="-892.8" font-family="Arial" font-size="10.00" fill="#000000">CAS 3: Bruits anormaux</text>
+</g>
+<!-- Start&#45;&gt;DiagNoise -->
+<g id="edge3" class="edge">
+<title>Start-&gt;DiagNoise</title>
+<path fill="none" stroke="#000000" d="M470.5069,-951.8688C460.5076,-942.629 447.9377,-931.0137 436.8357,-920.7549"/>
+<polygon fill="#000000" stroke="#000000" points="439.1537,-918.1314 429.4339,-913.9153 434.403,-923.2725 439.1537,-918.1314"/>
+</g>
+<!-- DiagDead -->
+<g id="node10" class="node">
+<title>DiagDead</title>
+<polygon fill="#b71c1c" stroke="#000000" points="325.551,-913.8 222.1083,-913.8 222.1083,-877.8 325.551,-877.8 325.551,-913.8"/>
+<text text-anchor="middle" x="273.8297" y="-892.8" font-family="Arial" font-size="10.00" fill="#ffffff">CAS 4: Non détecté</text>
+</g>
+<!-- Start&#45;&gt;DiagDead -->
+<g id="edge4" class="edge">
+<title>Start-&gt;DiagDead</title>
+<path fill="none" stroke="#000000" d="M461.1794,-954.1099C453.1321,-950.1443 444.2409,-946.0549 435.8297,-942.8 426.1269,-939.0453 377.2769,-924.9764 335.7314,-913.2012"/>
+<polygon fill="#000000" stroke="#000000" points="336.4795,-909.7755 325.9043,-910.4199 334.5732,-916.5109 336.4795,-909.7755"/>
+</g>
+<!-- DiagZFS -->
+<g id="node11" class="node">
+<title>DiagZFS</title>
+<polygon fill="#6a1b9a" stroke="#000000" points="768.9548,-913.8 676.7046,-913.8 676.7046,-877.8 768.9548,-877.8 768.9548,-913.8"/>
+<text text-anchor="middle" x="722.8297" y="-892.8" font-family="Arial" font-size="10.00" fill="#ffffff">CAS 5: Pool ZFS</text>
+</g>
+<!-- Start&#45;&gt;DiagZFS -->
+<g id="edge5" class="edge">
+<title>Start-&gt;DiagZFS</title>
+<path fill="none" stroke="#000000" d="M525.3922,-957.3937C563.2743,-945.5758 622.9617,-926.9554 666.8006,-913.2792"/>
+<polygon fill="#000000" stroke="#000000" points="667.9551,-916.5854 676.459,-910.2661 665.8704,-909.9031 667.9551,-916.5854"/>
+</g>
+<!-- DiagRAID -->
+<g id="node12" class="node">
+<title>DiagRAID</title>
+<polygon fill="#00796b" stroke="#000000" points="929.5012,-913.8 822.1582,-913.8 822.1582,-877.8 929.5012,-877.8 929.5012,-913.8"/>
+<text text-anchor="middle" x="875.8297" y="-892.8" font-family="Arial" font-size="10.00" fill="#ffffff">CAS 6: RAID logiciel</text>
+</g>
+<!-- Start&#45;&gt;DiagRAID -->
+<g id="edge6" class="edge">
+<title>Start-&gt;DiagRAID</title>
+<path fill="none" stroke="#000000" d="M531.3525,-960.7789C599.3281,-947.9566 732.8709,-922.7664 812.2354,-907.7958"/>
+<polygon fill="#000000" stroke="#000000" points="812.934,-911.2258 822.1119,-905.9328 811.6364,-904.3472 812.934,-911.2258"/>
+</g>
+<!-- C1_Confirm -->
+<g id="node13" class="node">
+<title>C1_Confirm</title>
+<polygon fill="#4caf50" stroke="#000000" points="180.1861,-831 33.4733,-831 33.4733,-795 186.1861,-795 186.1861,-825 180.1861,-831"/>
+<polyline fill="none" stroke="#000000" points="180.1861,-831 180.1861,-825 "/>
+<polyline fill="none" stroke="#000000" points="186.1861,-825 180.1861,-825 "/>
+<text text-anchor="middle" x="109.8297" y="-810" font-family="Arial" font-size="10.00" fill="#000000">CONFIRMER backup préventif</text>
+</g>
+<!-- DiagOK&#45;&gt;C1_Confirm -->
+<g id="edge7" class="edge">
+<title>DiagOK-&gt;C1_Confirm</title>
+<path fill="none" stroke="#000000" d="M132.26,-877.4461C129.2999,-871.8844 126.2369,-865.6872 123.8297,-859.8 121.3441,-853.7212 119.0813,-847.0378 117.1338,-840.6717"/>
+<polygon fill="#000000" stroke="#000000" points="120.4937,-839.6908 114.3465,-831.0616 113.7707,-841.6407 120.4937,-839.6908"/>
+</g>
+<!-- C2_Urgent -->
+<g id="node16" class="node">
+<title>C2_Urgent</title>
+<polygon fill="#d32f2f" stroke="#000000" points="638.1982,-831 507.4612,-831 507.4612,-795 638.1982,-795 638.1982,-831"/>
+<text text-anchor="middle" x="572.8297" y="-810" font-family="Arial" font-size="10.00" fill="#ffffff">URGENCE: Récupération</text>
+</g>
+<!-- DiagBad&#45;&gt;C2_Urgent -->
+<g id="edge11" class="edge">
+<title>DiagBad-&gt;C2_Urgent</title>
+<path fill="none" stroke="#000000" d="M568.9393,-877.424C569.5846,-866.7377 570.4112,-853.0504 571.1363,-841.0424"/>
+<polygon fill="#000000" stroke="#000000" points="574.6311,-841.2326 571.7403,-831.0398 567.6438,-840.8106 574.6311,-841.2326"/>
+</g>
+<!-- C3_Listen -->
+<g id="node24" class="node">
+<title>C3_Listen</title>
+<polygon fill="#ff8f00" stroke="#000000" points="437.0043,-831 360.655,-831 360.655,-795 443.0043,-795 443.0043,-825 437.0043,-831"/>
+<polyline fill="none" stroke="#000000" points="437.0043,-831 437.0043,-825 "/>
+<polyline fill="none" stroke="#000000" points="443.0043,-825 437.0043,-825 "/>
+<text text-anchor="middle" x="401.8297" y="-810" font-family="Arial" font-size="10.00" fill="#000000">Écouter le bruit</text>
+</g>
+<!-- DiagNoise&#45;&gt;C3_Listen -->
+<g id="edge21" class="edge">
+<title>DiagNoise-&gt;C3_Listen</title>
+<path fill="none" stroke="#000000" d="M408.0542,-877.424C407.0217,-866.7377 405.6993,-853.0504 404.5391,-841.0424"/>
+<polygon fill="#000000" stroke="#000000" points="408.0182,-840.6568 403.5726,-831.0398 401.0507,-841.33 408.0182,-840.6568"/>
+</g>
+<!-- C4_Check -->
+<g id="node32" class="node">
+<title>C4_Check</title>
+<polygon fill="#4caf50" stroke="#000000" points="306.1823,-831 207.4771,-831 207.4771,-795 312.1823,-795 312.1823,-825 306.1823,-831"/>
+<polyline fill="none" stroke="#000000" points="306.1823,-831 306.1823,-825 "/>
+<polyline fill="none" stroke="#000000" points="312.1823,-825 306.1823,-825 "/>
+<text text-anchor="middle" x="259.8297" y="-810" font-family="Arial" font-size="10.00" fill="#000000">Changer câble/port</text>
+</g>
+<!-- DiagDead&#45;&gt;C4_Check -->
+<g id="edge31" class="edge">
+<title>DiagDead-&gt;C4_Check</title>
+<path fill="none" stroke="#000000" d="M270.7226,-877.424C268.9158,-866.7377 266.6015,-853.0504 264.5711,-841.0424"/>
+<polygon fill="#000000" stroke="#000000" points="267.9981,-840.3163 262.8799,-831.0398 261.0961,-841.4833 267.9981,-840.3163"/>
+</g>
+<!-- C5_Principle -->
+<g id="node37" class="node">
+<title>C5_Principle</title>
+<polygon fill="#d32f2f" stroke="#000000" points="796.3417,-831 675.3177,-831 675.3177,-795 796.3417,-795 796.3417,-831"/>
+<text text-anchor="middle" x="735.8297" y="-810" font-family="Arial" font-size="10.00" fill="#ffffff">D'abord sauver disques</text>
+</g>
+<!-- DiagZFS&#45;&gt;C5_Principle -->
+<g id="edge38" class="edge">
+<title>DiagZFS-&gt;C5_Principle</title>
+<path fill="none" stroke="#000000" d="M725.7148,-877.424C727.3926,-866.7377 729.5416,-853.0504 731.4269,-841.0424"/>
+<polygon fill="#000000" stroke="#000000" points="734.9039,-841.4616 732.9973,-831.0398 727.9886,-840.3758 734.9039,-841.4616"/>
+</g>
+<!-- C6_Type -->
+<g id="node41" class="node">
+<title>C6_Type</title>
+<polygon fill="#ffffff" stroke="#000000" points="911.8297,-831 852.0037,-813 911.8297,-795 971.6557,-813 911.8297,-831"/>
+<text text-anchor="middle" x="911.8297" y="-810" font-family="Arial" font-size="10.00" fill="#000000">Type RAID?</text>
+</g>
+<!-- DiagRAID&#45;&gt;C6_Type -->
+<g id="edge43" class="edge">
+<title>DiagRAID-&gt;C6_Type</title>
+<path fill="none" stroke="#000000" d="M883.8192,-877.424C888.7882,-865.9955 895.2494,-851.1347 900.7139,-838.5662"/>
+<polygon fill="#000000" stroke="#000000" points="904.0576,-839.6537 904.8351,-829.0874 897.6381,-836.8626 904.0576,-839.6537"/>
+</g>
+<!-- C1_Confirm&#45;&gt;DiagOK -->
+<g id="edge9" class="edge">
+<title>C1_Confirm-&gt;DiagOK</title>
+<path fill="none" stroke="#000000" stroke-dasharray="1,5" d="M117.0194,-831.0398C121.3386,-841.877 126.9231,-855.8889 131.7922,-868.1059"/>
+<polygon fill="#000000" stroke="#000000" points="128.5523,-869.4304 135.5059,-877.424 135.0548,-866.8388 128.5523,-869.4304"/>
+<text text-anchor="middle" x="136.3343" y="-851.7" font-family="Arial" font-size="9.00" fill="#000000">non</text>
+</g>
+<!-- C1_Ideal -->
+<g id="node14" class="node">
+<title>C1_Ideal</title>
+<polygon fill="#0056b3" stroke="#000000" points="104.9688,-748.2 12.6906,-748.2 12.6906,-712.2 104.9688,-712.2 104.9688,-748.2"/>
+<text text-anchor="middle" x="58.8297" y="-727.2" font-family="Arial" font-size="10.00" fill="#ffffff">ddrescue backup</text>
+</g>
+<!-- C1_Confirm&#45;&gt;C1_Ideal -->
+<g id="edge8" class="edge">
+<title>C1_Confirm-&gt;C1_Ideal</title>
+<path fill="none" stroke="#000000" d="M98.5111,-794.624C91.663,-783.5059 82.8141,-769.1395 75.2109,-756.7954"/>
+<polygon fill="#000000" stroke="#000000" points="78.1656,-754.9187 69.9411,-748.2398 72.2055,-758.5898 78.1656,-754.9187"/>
+<text text-anchor="middle" x="93.8313" y="-768.9" font-family="Arial" font-size="9.00" fill="#000000">oui</text>
+</g>
+<!-- EndOK -->
+<g id="node15" class="node">
+<title>EndOK</title>
+<polygon fill="#1b5e20" stroke="#000000" points="103.5022,-14.5442 103.5022,-29.4558 74.4047,-40 33.2547,-40 4.1572,-29.4558 4.1572,-14.5442 33.2547,-4 74.4047,-4 103.5022,-14.5442"/>
+<polygon fill="none" stroke="#000000" points="107.4896,-11.7361 107.4896,-32.2639 75.1028,-44 32.5565,-44 .1698,-32.2639 .1698,-11.7361 32.5565,0 75.1028,0 107.4896,-11.7361"/>
+<text text-anchor="middle" x="53.8297" y="-19" font-family="Arial" font-size="10.00" fill="#ffffff">✅ RÉUSSITE</text>
+</g>
+<!-- C1_Ideal&#45;&gt;EndOK -->
+<g id="edge10" class="edge">
+<title>C1_Ideal-&gt;EndOK</title>
+<path fill="none" stroke="#000000" d="M52.8839,-712.0036C47.9816,-695.3722 41.8297,-669.9993 41.8297,-647.4 41.8297,-647.4 41.8297,-647.4 41.8297,-99 41.8297,-84.1219 44.044,-67.8175 46.5702,-54.0575"/>
+<polygon fill="#000000" stroke="#000000" points="50.0336,-54.5848 48.5314,-44.097 43.1654,-53.2325 50.0336,-54.5848"/>
+</g>
+<!-- C2_Storage -->
+<g id="node17" class="node">
+<title>C2_Storage</title>
+<polygon fill="#ffffff" stroke="#000000" points="573.8297,-748.2 486.209,-730.2 573.8297,-712.2 661.4503,-730.2 573.8297,-748.2"/>
+<text text-anchor="middle" x="573.8297" y="-727.2" font-family="Arial" font-size="10.00" fill="#000000">Stockage suffisant?</text>
+</g>
+<!-- C2_Urgent&#45;&gt;C2_Storage -->
+<g id="edge12" class="edge">
+<title>C2_Urgent-&gt;C2_Storage</title>
+<path fill="none" stroke="#000000" d="M573.0516,-794.624C573.1807,-783.9377 573.346,-770.2504 573.491,-758.2424"/>
+<polygon fill="#000000" stroke="#000000" points="576.9907,-758.2813 573.6118,-748.2398 569.9912,-758.1967 576.9907,-758.2813"/>
+</g>
+<!-- C2_OK -->
+<g id="node18" class="node">
+<title>C2_OK</title>
+<polygon fill="#0056b3" stroke="#000000" points="781.094,-665.4 684.5653,-665.4 684.5653,-629.4 781.094,-629.4 781.094,-665.4"/>
+<text text-anchor="middle" x="732.8297" y="-644.4" font-family="Arial" font-size="10.00" fill="#ffffff">Méthode standard</text>
+</g>
+<!-- C2_Storage&#45;&gt;C2_OK -->
+<g id="edge13" class="edge">
+<title>C2_Storage-&gt;C2_OK</title>
+<path fill="none" stroke="#000000" d="M598.6734,-717.2625C622.7899,-704.7038 659.9121,-685.3722 688.9984,-670.2254"/>
+<polygon fill="#000000" stroke="#000000" points="690.8801,-673.1916 698.1329,-665.4685 687.6469,-666.983 690.8801,-673.1916"/>
+<text text-anchor="middle" x="668.8313" y="-686.1" font-family="Arial" font-size="9.00" fill="#000000">oui</text>
+</g>
+<!-- C2_KO -->
+<g id="node19" class="node">
+<title>C2_KO</title>
+<polygon fill="#ff8f00" stroke="#000000" points="666.9035,-665.4 560.7558,-665.4 560.7558,-629.4 666.9035,-629.4 666.9035,-665.4"/>
+<text text-anchor="middle" x="613.8297" y="-644.4" font-family="Arial" font-size="10.00" fill="#000000">Streaming/Chunking</text>
+</g>
+<!-- C2_Storage&#45;&gt;C2_KO -->
+<g id="edge14" class="edge">
+<title>C2_Storage-&gt;C2_KO</title>
+<path fill="none" stroke="#000000" d="M581.9243,-713.4442C587.2725,-702.3733 594.4066,-687.6057 600.5724,-674.8426"/>
+<polygon fill="#000000" stroke="#000000" points="603.8546,-676.0945 605.0531,-665.5676 597.5516,-673.0495 603.8546,-676.0945"/>
+<text text-anchor="middle" x="603.3343" y="-686.1" font-family="Arial" font-size="9.00" fill="#000000">non</text>
+</g>
+<!-- C2_Type -->
+<g id="node20" class="node">
+<title>C2_Type</title>
+<polygon fill="#ffffff" stroke="#000000" points="652.8297,-582.6 588.0315,-564.6 652.8297,-546.6 717.6279,-564.6 652.8297,-582.6"/>
+<text text-anchor="middle" x="652.8297" y="-561.6" font-family="Arial" font-size="10.00" fill="#000000">Type disque?</text>
+</g>
+<!-- C2_OK&#45;&gt;C2_Type -->
+<g id="edge15" class="edge">
+<title>C2_OK-&gt;C2_Type</title>
+<path fill="none" stroke="#000000" d="M715.0751,-629.024C702.8383,-616.359 686.529,-599.4788 673.6746,-586.1745"/>
+<polygon fill="#000000" stroke="#000000" points="676.0278,-583.5729 666.5623,-578.8132 670.9936,-588.4368 676.0278,-583.5729"/>
+</g>
+<!-- C2_KO&#45;&gt;C2_Type -->
+<g id="edge16" class="edge">
+<title>C2_KO-&gt;C2_Type</title>
+<path fill="none" stroke="#000000" d="M622.485,-629.024C627.9213,-617.4823 635.0064,-602.4401 640.9631,-589.7936"/>
+<polygon fill="#000000" stroke="#000000" points="644.1574,-591.2256 645.2523,-580.6874 637.8247,-588.2427 644.1574,-591.2256"/>
+</g>
+<!-- C2_HDD -->
+<g id="node21" class="node">
+<title>C2_HDD</title>
+<polygon fill="#0056b3" stroke="#000000" points="611.3909,-499.8 530.2685,-499.8 530.2685,-463.8 611.3909,-463.8 611.3909,-499.8"/>
+<text text-anchor="middle" x="570.8297" y="-478.8" font-family="Arial" font-size="10.00" fill="#ffffff">ddrescue HDD</text>
+</g>
+<!-- C2_Type&#45;&gt;C2_HDD -->
+<g id="edge17" class="edge">
+<title>C2_Type-&gt;C2_HDD</title>
+<path fill="none" stroke="#000000" d="M638.5464,-550.1773C626.8541,-538.371 610.0274,-521.3801 596.0728,-507.2894"/>
+<polygon fill="#000000" stroke="#000000" points="598.1902,-504.4535 588.6667,-499.811 593.2165,-509.3792 598.1902,-504.4535"/>
+<text text-anchor="middle" x="625.5753" y="-520.5" font-family="Arial" font-size="9.00" fill="#000000">HDD</text>
+</g>
+<!-- C2_SSD -->
+<g id="node22" class="node">
+<title>C2_SSD</title>
+<polygon fill="#0056b3" stroke="#000000" points="720.3597,-499.8 629.2997,-499.8 629.2997,-463.8 720.3597,-463.8 720.3597,-499.8"/>
+<text text-anchor="middle" x="674.8297" y="-478.8" font-family="Arial" font-size="10.00" fill="#ffffff">dd bypass cache</text>
+</g>
+<!-- C2_Type&#45;&gt;C2_SSD -->
+<g id="edge18" class="edge">
+<title>C2_Type-&gt;C2_SSD</title>
+<path fill="none" stroke="#000000" d="M657.3881,-547.4438C660.2592,-536.6379 664.0344,-522.4296 667.338,-509.996"/>
+<polygon fill="#000000" stroke="#000000" points="670.7865,-510.6464 669.9719,-500.0829 664.0213,-508.8488 670.7865,-510.6464"/>
+<text text-anchor="middle" x="674.0803" y="-520.5" font-family="Arial" font-size="9.00" fill="#000000">SSD</text>
+</g>
+<!-- PostImage -->
+<g id="node23" class="node">
+<title>PostImage</title>
+<polygon fill="#0056b3" stroke="#000000" points="724.6672,-422.8 624.9921,-422.8 624.9921,-386.8 724.6672,-386.8 724.6672,-422.8"/>
+<text text-anchor="middle" x="674.8297" y="-401.8" font-family="Arial" font-size="10.00" fill="#ffffff">IMAGE OBTENUE</text>
+</g>
+<!-- C2_HDD&#45;&gt;PostImage -->
+<g id="edge19" class="edge">
+<title>C2_HDD-&gt;PostImage</title>
+<path fill="none" stroke="#000000" d="M595.2131,-463.7469C609.1943,-453.3954 626.9279,-440.2658 642.108,-429.0266"/>
+<polygon fill="#000000" stroke="#000000" points="644.2844,-431.7702 650.2387,-423.0068 640.1191,-426.1443 644.2844,-431.7702"/>
+</g>
+<!-- C2_SSD&#45;&gt;PostImage -->
+<g id="edge20" class="edge">
+<title>C2_SSD-&gt;PostImage</title>
+<path fill="none" stroke="#000000" d="M674.8297,-463.5521C674.8297,-454.4422 674.8297,-443.2174 674.8297,-433.0282"/>
+<polygon fill="#000000" stroke="#000000" points="678.3298,-432.9169 674.8297,-422.9169 671.3298,-432.917 678.3298,-432.9169"/>
+</g>
+<!-- PostAnalyse -->
+<g id="node46" class="node">
+<title>PostAnalyse</title>
+<polygon fill="#ffffff" stroke="#000000" points="424.8297,-345.8 347.9767,-327.8 424.8297,-309.8 501.6826,-327.8 424.8297,-345.8"/>
+<text text-anchor="middle" x="424.8297" y="-324.8" font-family="Arial" font-size="10.00" fill="#000000">Analyser image?</text>
+</g>
+<!-- PostImage&#45;&gt;PostAnalyse -->
+<g id="edge51" class="edge">
+<title>PostImage-&gt;PostAnalyse</title>
+<path fill="none" stroke="#000000" d="M625.1388,-389.4952C579.1655,-375.3354 511.5245,-354.502 467.8215,-341.0415"/>
+<polygon fill="#000000" stroke="#000000" points="468.6533,-337.6355 458.0661,-338.0368 466.5928,-344.3254 468.6533,-337.6355"/>
+</g>
+<!-- C3_Choice -->
+<g id="node25" class="node">
+<title>C3_Choice</title>
+<polygon fill="#ffffff" stroke="#000000" points="399.8297,-748.2 331.9206,-730.2 399.8297,-712.2 467.7387,-730.2 399.8297,-748.2"/>
+<text text-anchor="middle" x="399.8297" y="-727.2" font-family="Arial" font-size="10.00" fill="#000000">Type de bruit?</text>
+</g>
+<!-- C3_Listen&#45;&gt;C3_Choice -->
+<g id="edge22" class="edge">
+<title>C3_Listen-&gt;C3_Choice</title>
+<path fill="none" stroke="#000000" d="M401.3858,-794.624C401.1277,-783.9377 400.7971,-770.2504 400.507,-758.2424"/>
+<polygon fill="#000000" stroke="#000000" points="404.006,-758.1523 400.2654,-748.2398 397.008,-758.3214 404.006,-758.1523"/>
+</g>
+<!-- C3_Click -->
+<g id="node26" class="node">
+<title>C3_Click</title>
+<polygon fill="#0056b3" stroke="#000000" points="543.077,-665.4 454.5823,-665.4 454.5823,-629.4 543.077,-629.4 543.077,-665.4"/>
+<text text-anchor="middle" x="498.8297" y="-644.4" font-family="Arial" font-size="10.00" fill="#ffffff">ddrescue urgent</text>
+</g>
+<!-- C3_Choice&#45;&gt;C3_Click -->
+<g id="edge23" class="edge">
+<title>C3_Choice-&gt;C3_Click</title>
+<path fill="none" stroke="#000000" d="M416.1775,-716.5273C430.6557,-704.4183 452.1367,-686.4523 469.5708,-671.8711"/>
+<polygon fill="#000000" stroke="#000000" points="471.8313,-674.5433 477.2566,-665.4429 467.3403,-669.1738 471.8313,-674.5433"/>
+<text text-anchor="middle" x="464.5753" y="-686.1" font-family="Arial" font-size="9.00" fill="#000000">Clics</text>
+</g>
+<!-- C3_Scratch -->
+<g id="node27" class="node">
+<title>C3_Scratch</title>
+<polygon fill="#d32f2f" stroke="#000000" points="302.0084,-665.4 229.651,-665.4 229.651,-629.4 302.0084,-629.4 302.0084,-665.4"/>
+<text text-anchor="middle" x="265.8297" y="-644.4" font-family="Arial" font-size="10.00" fill="#ffffff">STOP → Pro</text>
+</g>
+<!-- C3_Choice&#45;&gt;C3_Scratch -->
+<g id="edge24" class="edge">
+<title>C3_Choice-&gt;C3_Scratch</title>
+<path fill="none" stroke="#000000" d="M359.4973,-722.8461C328.3652,-716.3741 288.7381,-706.1371 277.3258,-694.2 272.4313,-689.0804 269.5167,-682.229 267.8079,-675.351"/>
+<polygon fill="#000000" stroke="#000000" points="271.2474,-674.7009 266.0768,-665.4535 264.3521,-675.907 271.2474,-674.7009"/>
+<text text-anchor="middle" x="301.0816" y="-686.1" font-family="Arial" font-size="9.00" fill="#000000">Grincement</text>
+</g>
+<!-- C3_Beep -->
+<g id="node28" class="node">
+<title>C3_Beep</title>
+<polygon fill="#ff8f00" stroke="#000000" points="396.5093,-582.6 319.15,-582.6 319.15,-546.6 396.5093,-546.6 396.5093,-582.6"/>
+<text text-anchor="middle" x="357.8297" y="-561.6" font-family="Arial" font-size="10.00" fill="#000000">Changer PCB</text>
+</g>
+<!-- C3_Choice&#45;&gt;C3_Beep -->
+<g id="edge25" class="edge">
+<title>C3_Choice-&gt;C3_Beep</title>
+<path fill="none" stroke="#000000" d="M383.6066,-716.3911C370.8671,-704.4012 354.1062,-685.7957 346.8274,-665.4 338.3742,-641.7136 342.7822,-613.0719 348.3294,-592.3822"/>
+<polygon fill="#000000" stroke="#000000" points="351.7311,-593.2194 351.182,-582.6388 345.0131,-591.2525 351.7311,-593.2194"/>
+<text text-anchor="middle" x="353.3308" y="-644.7" font-family="Arial" font-size="9.00" fill="#000000">Bip</text>
+</g>
+<!-- C3_Silent -->
+<g id="node29" class="node">
+<title>C3_Silent</title>
+<polygon fill="#ff8f00" stroke="#000000" points="437.2771,-665.4 368.3822,-665.4 368.3822,-629.4 437.2771,-629.4 437.2771,-665.4"/>
+<text text-anchor="middle" x="402.8297" y="-644.4" font-family="Arial" font-size="10.00" fill="#000000">Vérifier alim</text>
+</g>
+<!-- C3_Choice&#45;&gt;C3_Silent -->
+<g id="edge26" class="edge">
+<title>C3_Choice-&gt;C3_Silent</title>
+<path fill="none" stroke="#000000" d="M400.4806,-712.2336C400.8672,-701.5654 401.3658,-687.8018 401.8042,-675.7022"/>
+<polygon fill="#000000" stroke="#000000" points="405.3052,-675.7374 402.1696,-665.6172 398.3097,-675.4839 405.3052,-675.7374"/>
+<text text-anchor="middle" x="415.5825" y="-686.1" font-family="Arial" font-size="9.00" fill="#000000">Silence</text>
+</g>
+<!-- C3_Click&#45;&gt;C2_HDD -->
+<g id="edge27" class="edge">
+<title>C3_Click-&gt;C2_HDD</title>
+<path fill="none" stroke="#000000" d="M506.672,-629.3627C519.2775,-600.37 544.1285,-543.2126 558.9292,-509.171"/>
+<polygon fill="#000000" stroke="#000000" points="562.2194,-510.3814 562.997,-499.8151 555.8,-507.5903 562.2194,-510.3814"/>
+</g>
+<!-- DeadPro -->
+<g id="node30" class="node">
+<title>DeadPro</title>
+<polygon fill="#b71c1c" stroke="#000000" points="347.2792,-397.3442 347.2792,-412.2558 312.4545,-422.8 263.2049,-422.8 228.3802,-412.2558 228.3802,-397.3442 263.2049,-386.8 312.4545,-386.8 347.2792,-397.3442"/>
+<polygon fill="none" stroke="#000000" points="351.2939,-394.3791 351.2939,-415.2209 313.051,-426.8 262.6083,-426.8 224.3655,-415.2209 224.3655,-394.3791 262.6083,-382.8 313.051,-382.8 351.2939,-394.3791"/>
+<text text-anchor="middle" x="287.8297" y="-401.8" font-family="Arial" font-size="10.00" fill="#ffffff">❌ ÉCHEC → Pro</text>
+</g>
+<!-- C3_Scratch&#45;&gt;DeadPro -->
+<g id="edge28" class="edge">
+<title>C3_Scratch-&gt;DeadPro</title>
+<path fill="none" stroke="#000000" d="M267.4833,-629.1656C271.187,-588.3236 280.1906,-489.0381 284.8801,-437.3261"/>
+<polygon fill="#000000" stroke="#000000" points="288.3943,-437.3268 285.8118,-427.0515 281.4229,-436.6945 288.3943,-437.3268"/>
+</g>
+<!-- DeadPCB -->
+<g id="node31" class="node">
+<title>DeadPCB</title>
+<polygon fill="#ff8f00" stroke="#000000" points="399.799,-499.8 315.8604,-499.8 315.8604,-463.8 399.799,-463.8 399.799,-499.8"/>
+<text text-anchor="middle" x="357.8297" y="-478.8" font-family="Arial" font-size="10.00" fill="#000000">PCB recherché</text>
+</g>
+<!-- C3_Beep&#45;&gt;DeadPCB -->
+<g id="edge29" class="edge">
+<title>C3_Beep-&gt;DeadPCB</title>
+<path fill="none" stroke="#000000" d="M357.8297,-546.224C357.8297,-535.5377 357.8297,-521.8504 357.8297,-509.8424"/>
+<polygon fill="#000000" stroke="#000000" points="361.3298,-509.8397 357.8297,-499.8398 354.3298,-509.8398 361.3298,-509.8397"/>
+</g>
+<!-- C3_Silent&#45;&gt;C3_Beep -->
+<g id="edge30" class="edge">
+<title>C3_Silent-&gt;C3_Beep</title>
+<path fill="none" stroke="#000000" d="M392.8427,-629.024C386.8589,-618.0138 379.1439,-603.8181 372.4794,-591.5555"/>
+<polygon fill="#000000" stroke="#000000" points="375.4843,-589.7547 367.6339,-582.6398 369.3339,-593.0973 375.4843,-589.7547"/>
+</g>
+<!-- DeadPCB&#45;&gt;DeadPro -->
+<g id="edge58" class="edge">
+<title>DeadPCB-&gt;DeadPro</title>
+<path fill="none" stroke="#000000" d="M341.2407,-463.5521C333.3929,-454.9195 323.8188,-444.388 314.9552,-434.6381"/>
+<polygon fill="#000000" stroke="#000000" points="317.3623,-432.0827 308.0457,-427.0377 312.1827,-436.7915 317.3623,-432.0827"/>
+</g>
+<!-- C4_USB -->
+<g id="node33" class="node">
+<title>C4_USB</title>
+<polygon fill="#4caf50" stroke="#000000" points="276.6622,-748.2 182.9971,-748.2 182.9971,-712.2 282.6622,-712.2 282.6622,-742.2 276.6622,-748.2"/>
+<polyline fill="none" stroke="#000000" points="276.6622,-748.2 276.6622,-742.2 "/>
+<polyline fill="none" stroke="#000000" points="282.6622,-742.2 276.6622,-742.2 "/>
+<text text-anchor="middle" x="232.8297" y="-727.2" font-family="Arial" font-size="10.00" fill="#000000">Sortir boîtier USB</text>
+</g>
+<!-- C4_Check&#45;&gt;C4_USB -->
+<g id="edge32" class="edge">
+<title>C4_Check-&gt;C4_USB</title>
+<path fill="none" stroke="#000000" d="M253.8375,-794.624C250.3176,-783.8297 245.7993,-769.9736 241.8554,-757.879"/>
+<polygon fill="#000000" stroke="#000000" points="245.14,-756.662 238.7122,-748.2398 238.4849,-758.8322 245.14,-756.662"/>
+<text text-anchor="middle" x="278.0873" y="-768.9" font-family="Arial" font-size="9.00" fill="#000000">si toujours non</text>
+</g>
+<!-- C4_Still -->
+<g id="node34" class="node">
+<title>C4_Still</title>
+<polygon fill="#ffffff" stroke="#000000" points="140.8297,-665.4 70.2732,-647.4 140.8297,-629.4 211.3862,-647.4 140.8297,-665.4"/>
+<text text-anchor="middle" x="140.8297" y="-644.4" font-family="Arial" font-size="10.00" fill="#000000">Toujours mort?</text>
+</g>
+<!-- C4_USB&#45;&gt;C4_Still -->
+<g id="edge33" class="edge">
+<title>C4_USB-&gt;C4_Still</title>
+<path fill="none" stroke="#000000" d="M212.4119,-711.824C198.2081,-699.0406 179.2329,-681.9629 164.3879,-668.6024"/>
+<polygon fill="#000000" stroke="#000000" points="166.3965,-665.7014 156.6222,-661.6132 161.7137,-670.9044 166.3965,-665.7014"/>
+</g>
+<!-- C4_PCB -->
+<g id="node35" class="node">
+<title>C4_PCB</title>
+<polygon fill="#ff8f00" stroke="#000000" points="260.2799,-582.6 179.3794,-582.6 179.3794,-546.6 260.2799,-546.6 260.2799,-582.6"/>
+<text text-anchor="middle" x="219.8297" y="-561.6" font-family="Arial" font-size="10.00" fill="#000000">Chercher PCB</text>
+</g>
+<!-- C4_Still&#45;&gt;C4_PCB -->
+<g id="edge34" class="edge">
+<title>C4_Still-&gt;C4_PCB</title>
+<path fill="none" stroke="#000000" d="M157.2798,-633.5413C164.7031,-627.0514 173.4432,-619.0733 180.8297,-611.4 187.0506,-604.9376 193.4301,-597.6204 199.1804,-590.7242"/>
+<polygon fill="#000000" stroke="#000000" points="201.9624,-592.8513 205.5945,-582.8984 196.5485,-588.414 201.9624,-592.8513"/>
+<text text-anchor="middle" x="218.8368" y="-603.3" font-family="Arial" font-size="9.00" fill="#000000">PCB probable</text>
+</g>
+<!-- C4_Pro -->
+<g id="node36" class="node">
+<title>C4_Pro</title>
+<polygon fill="#d32f2f" stroke="#000000" points="161.8727,-582.6 69.7867,-582.6 69.7867,-546.6 161.8727,-546.6 161.8727,-582.6"/>
+<text text-anchor="middle" x="115.8297" y="-561.6" font-family="Arial" font-size="10.00" fill="#ffffff">Récupération pro</text>
+</g>
+<!-- C4_Still&#45;&gt;C4_Pro -->
+<g id="edge35" class="edge">
+<title>C4_Still-&gt;C4_Pro</title>
+<path fill="none" stroke="#000000" d="M135.7706,-630.6442C132.4607,-619.6818 128.0564,-605.0949 124.229,-592.4185"/>
+<polygon fill="#000000" stroke="#000000" points="127.5562,-591.3291 121.3151,-582.7676 120.855,-593.3525 127.5562,-591.3291"/>
+<text text-anchor="middle" x="154.0851" y="-603.3" font-family="Arial" font-size="9.00" fill="#000000">Envoyer pro</text>
+</g>
+<!-- C4_PCB&#45;&gt;DeadPCB -->
+<g id="edge36" class="edge">
+<title>C4_PCB-&gt;DeadPCB</title>
+<path fill="none" stroke="#000000" d="M250.1144,-546.4292C270.337,-534.2956 297.1196,-518.2261 318.9191,-505.1463"/>
+<polygon fill="#000000" stroke="#000000" points="320.8414,-508.0747 327.6156,-499.9284 317.2399,-502.0722 320.8414,-508.0747"/>
+</g>
+<!-- C4_Pro&#45;&gt;DeadPro -->
+<g id="edge37" class="edge">
+<title>C4_Pro-&gt;DeadPro</title>
+<path fill="none" stroke="#000000" d="M135.2259,-546.5795C164.712,-519.1849 221.113,-466.7845 256.4736,-433.932"/>
+<polygon fill="#000000" stroke="#000000" points="259.171,-436.2034 264.1148,-426.8328 254.4064,-431.0751 259.171,-436.2034"/>
+</g>
+<!-- C5_DD -->
+<g id="node38" class="node">
+<title>C5_DD</title>
+<polygon fill="#0056b3" stroke="#000000" points="804.2617,-748.2 679.3977,-748.2 679.3977,-712.2 804.2617,-712.2 804.2617,-748.2"/>
+<text text-anchor="middle" x="741.8297" y="-727.2" font-family="Arial" font-size="10.00" fill="#ffffff">ddrescue chaque disque</text>
+</g>
+<!-- C5_Principle&#45;&gt;C5_DD -->
+<g id="edge39" class="edge">
+<title>C5_Principle-&gt;C5_DD</title>
+<path fill="none" stroke="#000000" d="M737.1613,-794.624C737.9356,-783.9377 738.9275,-770.2504 739.7976,-758.2424"/>
+<polygon fill="#000000" stroke="#000000" points="743.2905,-758.4666 740.5224,-748.2398 736.3088,-757.9606 743.2905,-758.4666"/>
+<text text-anchor="middle" x="754.5774" y="-768.9" font-family="Arial" font-size="9.00" fill="#000000">compris</text>
+</g>
+<!-- C5_Loop -->
+<g id="node39" class="node">
+<title>C5_Loop</title>
+<polygon fill="#0056b3" stroke="#000000" points="881.0163,-665.4 798.6431,-665.4 798.6431,-629.4 881.0163,-629.4 881.0163,-665.4"/>
+<text text-anchor="middle" x="839.8297" y="-644.4" font-family="Arial" font-size="10.00" fill="#ffffff">Monter en loop</text>
+</g>
+<!-- C5_DD&#45;&gt;C5_Loop -->
+<g id="edge40" class="edge">
+<title>C5_DD-&gt;C5_Loop</title>
+<path fill="none" stroke="#000000" d="M763.5791,-711.824C777.3769,-700.1662 795.4018,-684.937 810.4621,-672.2126"/>
+<polygon fill="#000000" stroke="#000000" points="813.0985,-674.5671 818.4783,-665.4398 808.5808,-669.2201 813.0985,-674.5671"/>
+</g>
+<!-- C5_Import -->
+<g id="node40" class="node">
+<title>C5_Import</title>
+<polygon fill="#0056b3" stroke="#000000" points="822.2267,-582.6 747.4326,-582.6 747.4326,-546.6 822.2267,-546.6 822.2267,-582.6"/>
+<text text-anchor="middle" x="784.8297" y="-561.6" font-family="Arial" font-size="10.00" fill="#ffffff">Importer pool</text>
+</g>
+<!-- C5_Loop&#45;&gt;C5_Import -->
+<g id="edge41" class="edge">
+<title>C5_Loop-&gt;C5_Import</title>
+<path fill="none" stroke="#000000" d="M827.6234,-629.024C820.2382,-617.9059 810.6953,-603.5395 802.4957,-591.1954"/>
+<polygon fill="#000000" stroke="#000000" points="805.2611,-589.033 796.8126,-582.6398 799.4303,-592.9061 805.2611,-589.033"/>
+</g>
+<!-- C5_Import&#45;&gt;PostImage -->
+<g id="edge42" class="edge">
+<title>C5_Import-&gt;PostImage</title>
+<path fill="none" stroke="#000000" d="M776.5713,-546.3119C766.7775,-525.4696 749.3064,-490.8007 729.8297,-463.8 721.343,-452.0348 710.7184,-440.1301 701.0759,-430.1254"/>
+<polygon fill="#000000" stroke="#000000" points="703.454,-427.5519 693.9454,-422.8789 698.4644,-432.4616 703.454,-427.5519"/>
+</g>
+<!-- C6_mdadm -->
+<g id="node42" class="node">
+<title>C6_mdadm</title>
+<polygon fill="#0056b3" stroke="#000000" points="1098.3866,-748.2 997.2727,-748.2 997.2727,-712.2 1098.3866,-712.2 1098.3866,-748.2"/>
+<text text-anchor="middle" x="1047.8297" y="-727.2" font-family="Arial" font-size="10.00" fill="#ffffff">mdadm --assemble</text>
+</g>
+<!-- C6_Type&#45;&gt;C6_mdadm -->
+<g id="edge44" class="edge">
+<title>C6_Type-&gt;C6_mdadm</title>
+<path fill="none" stroke="#000000" d="M934.1106,-801.4886C947.0376,-794.6515 963.5376,-785.6515 977.8297,-777 989.6888,-769.8213 1002.367,-761.5393 1013.6303,-753.9565"/>
+<polygon fill="#000000" stroke="#000000" points="1015.6212,-756.8352 1021.9306,-748.3239 1011.6906,-751.043 1015.6212,-756.8352"/>
+<text text-anchor="middle" x="1007.8304" y="-768.9" font-family="Arial" font-size="9.00" fill="#000000">mdadm</text>
+</g>
+<!-- C6_LVM -->
+<g id="node43" class="node">
+<title>C6_LVM</title>
+<polygon fill="#0056b3" stroke="#000000" points="897.8507,-748.2 821.8087,-748.2 821.8087,-712.2 897.8507,-712.2 897.8507,-748.2"/>
+<text text-anchor="middle" x="859.8297" y="-727.2" font-family="Arial" font-size="10.00" fill="#ffffff">vgchange -ay</text>
+</g>
+<!-- C6_Type&#45;&gt;C6_LVM -->
+<g id="edge45" class="edge">
+<title>C6_Type-&gt;C6_LVM</title>
+<path fill="none" stroke="#000000" d="M902.2921,-797.8132C895.1247,-786.4005 885.1218,-770.4728 876.6249,-756.9432"/>
+<polygon fill="#000000" stroke="#000000" points="879.586,-755.0772 871.3037,-748.4701 873.6581,-758.8 879.586,-755.0772"/>
+<text text-anchor="middle" x="898.0803" y="-768.9" font-family="Arial" font-size="9.00" fill="#000000">LVM</text>
+</g>
+<!-- C6_Fake -->
+<g id="node44" class="node">
+<title>C6_Fake</title>
+<polygon fill="#0056b3" stroke="#000000" points="979.5511,-748.2 916.1083,-748.2 916.1083,-712.2 979.5511,-712.2 979.5511,-748.2"/>
+<text text-anchor="middle" x="947.8297" y="-727.2" font-family="Arial" font-size="10.00" fill="#ffffff">dmraid -ay</text>
+</g>
+<!-- C6_Type&#45;&gt;C6_Fake -->
+<g id="edge46" class="edge">
+<title>C6_Type-&gt;C6_Fake</title>
+<path fill="none" stroke="#000000" d="M918.7708,-797.0353C923.5902,-785.9507 930.1365,-770.8943 935.7957,-757.8782"/>
+<polygon fill="#000000" stroke="#000000" points="939.1295,-758.9883 939.907,-748.422 932.71,-756.1972 939.1295,-758.9883"/>
+<text text-anchor="middle" x="952.5805" y="-768.9" font-family="Arial" font-size="9.00" fill="#000000">FakeRAID</text>
+</g>
+<!-- C6_DD -->
+<g id="node45" class="node">
+<title>C6_DD</title>
+<polygon fill="#0056b3" stroke="#000000" points="987.6189,-665.4 904.0404,-665.4 904.0404,-629.4 987.6189,-629.4 987.6189,-665.4"/>
+<text text-anchor="middle" x="945.8297" y="-644.4" font-family="Arial" font-size="10.00" fill="#ffffff">ddrescue RAID</text>
+</g>
+<!-- C6_mdadm&#45;&gt;C6_DD -->
+<g id="edge47" class="edge">
+<title>C6_mdadm-&gt;C6_DD</title>
+<path fill="none" stroke="#000000" d="M1025.4453,-712.0292C1010.9632,-700.2731 991.9294,-684.8221 976.1039,-671.9756"/>
+<polygon fill="#000000" stroke="#000000" points="978.1316,-669.1136 968.1618,-665.5284 973.7199,-674.5483 978.1316,-669.1136"/>
+</g>
+<!-- C6_LVM&#45;&gt;C6_DD -->
+<g id="edge48" class="edge">
+<title>C6_LVM-&gt;C6_DD</title>
+<path fill="none" stroke="#000000" d="M878.9159,-711.824C890.9121,-700.2741 906.5493,-685.2187 919.6904,-672.5667"/>
+<polygon fill="#000000" stroke="#000000" points="922.3164,-674.8969 927.0927,-665.4398 917.4614,-669.8542 922.3164,-674.8969"/>
+</g>
+<!-- C6_Fake&#45;&gt;C6_DD -->
+<g id="edge49" class="edge">
+<title>C6_Fake-&gt;C6_DD</title>
+<path fill="none" stroke="#000000" d="M947.3858,-711.824C947.1277,-701.1377 946.7971,-687.4504 946.507,-675.4424"/>
+<polygon fill="#000000" stroke="#000000" points="950.006,-675.3523 946.2654,-665.4398 943.008,-675.5214 950.006,-675.3523"/>
+</g>
+<!-- C6_DD&#45;&gt;PostImage -->
+<g id="edge50" class="edge">
+<title>C6_DD-&gt;PostImage</title>
+<path fill="none" stroke="#000000" d="M928.6446,-629.3867C896.0236,-595.5394 822.3426,-520.7288 754.8297,-463.8 740.3821,-451.6174 723.6563,-439.0614 709.2449,-428.6807"/>
+<polygon fill="#000000" stroke="#000000" points="711.2345,-425.8006 701.0619,-422.8393 707.1674,-431.498 711.2345,-425.8006"/>
+</g>
+<!-- PostMount -->
+<g id="node47" class="node">
+<title>PostMount</title>
+<polygon fill="#0056b3" stroke="#000000" points="379.4478,-263 302.2116,-263 302.2116,-227 379.4478,-227 379.4478,-263"/>
+<text text-anchor="middle" x="340.8297" y="-242" font-family="Arial" font-size="10.00" fill="#ffffff">Monter image</text>
+</g>
+<!-- PostAnalyse&#45;&gt;PostMount -->
+<g id="edge52" class="edge">
+<title>PostAnalyse-&gt;PostMount</title>
+<path fill="none" stroke="#000000" d="M408.6834,-313.2997C401.5787,-306.8176 393.1898,-299.024 385.817,-291.8 378.8411,-284.965 371.4331,-277.3948 364.6849,-270.3703"/>
+<polygon fill="#000000" stroke="#000000" points="367.109,-267.8408 357.673,-263.0228 362.0449,-272.6736 367.109,-267.8408"/>
+<text text-anchor="middle" x="402.336" y="-283.7" font-family="Arial" font-size="9.00" fill="#000000">montage</text>
+</g>
+<!-- PostCarve -->
+<g id="node50" class="node">
+<title>PostCarve</title>
+<polygon fill="#ff8f00" stroke="#000000" points="452.2328,-263 397.4266,-263 397.4266,-227 452.2328,-227 452.2328,-263"/>
+<text text-anchor="middle" x="424.8297" y="-242" font-family="Arial" font-size="10.00" fill="#000000">photorec</text>
+</g>
+<!-- PostAnalyse&#45;&gt;PostCarve -->
+<g id="edge53" class="edge">
+<title>PostAnalyse-&gt;PostCarve</title>
+<path fill="none" stroke="#000000" d="M424.8297,-309.424C424.8297,-298.7377 424.8297,-285.0504 424.8297,-273.0424"/>
+<polygon fill="#000000" stroke="#000000" points="428.3298,-273.0397 424.8297,-263.0398 421.3298,-273.0398 428.3298,-273.0397"/>
+<text text-anchor="middle" x="439.3309" y="-283.7" font-family="Arial" font-size="9.00" fill="#000000">carving</text>
+</g>
+<!-- PostCopy -->
+<g id="node48" class="node">
+<title>PostCopy</title>
+<polygon fill="#0056b3" stroke="#000000" points="380.7168,-190 300.9426,-190 300.9426,-154 380.7168,-154 380.7168,-190"/>
+<text text-anchor="middle" x="340.8297" y="-169" font-family="Arial" font-size="10.00" fill="#ffffff">Copier fichiers</text>
+</g>
+<!-- PostMount&#45;&gt;PostCopy -->
+<g id="edge55" class="edge">
+<title>PostMount-&gt;PostCopy</title>
+<path fill="none" stroke="#000000" d="M340.8297,-226.9551C340.8297,-218.8828 340.8297,-209.1764 340.8297,-200.1817"/>
+<polygon fill="#000000" stroke="#000000" points="344.3298,-200.0903 340.8297,-190.0904 337.3298,-200.0904 344.3298,-200.0903"/>
+</g>
+<!-- PostVerify -->
+<g id="node49" class="node">
+<title>PostVerify</title>
+<polygon fill="#ff8f00" stroke="#000000" points="129.8297,-117 75.8297,-117 75.8297,-81 129.8297,-81 129.8297,-117"/>
+<text text-anchor="middle" x="102.8297" y="-96" font-family="Arial" font-size="10.00" fill="#000000">Vérifier</text>
+</g>
+<!-- PostCopy&#45;&gt;PostVerify -->
+<g id="edge56" class="edge">
+<title>PostCopy-&gt;PostVerify</title>
+<path fill="none" stroke="#000000" d="M300.7253,-159.6991C255.7427,-145.9019 183.3863,-123.7086 139.7479,-110.3237"/>
+<polygon fill="#000000" stroke="#000000" points="140.6863,-106.9506 130.0996,-107.3643 138.6336,-113.6429 140.6863,-106.9506"/>
+</g>
+<!-- PostVerify&#45;&gt;EndOK -->
+<g id="edge57" class="edge">
+<title>PostVerify-&gt;EndOK</title>
+<path fill="none" stroke="#000000" d="M91.2174,-80.7521C85.8871,-72.3759 79.4191,-62.2119 73.3717,-52.7089"/>
+<polygon fill="#000000" stroke="#000000" points="76.3025,-50.7952 67.9809,-44.2377 70.3969,-54.5534 76.3025,-50.7952"/>
+</g>
+<!-- PostCarve&#45;&gt;PostCopy -->
+<g id="edge54" class="edge">
+<title>PostCarve-&gt;PostCopy</title>
+<path fill="none" stroke="#000000" d="M404.0656,-226.9551C393.5655,-217.8299 380.6623,-206.6165 369.2558,-196.7036"/>
+<polygon fill="#000000" stroke="#000000" points="371.4899,-194.0082 361.646,-190.0904 366.8981,-199.2918 371.4899,-194.0082"/>
+</g>
+</g>
+</svg>
