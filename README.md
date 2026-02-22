@@ -58,7 +58,8 @@ whatelse
 opensource
 
 and mb 
-![inthekingdomeoffaraway](futur/futur_simple.svg)
+![inthekingdomeoffaraway](https://github.com/newicody/diskutility/blob/master/futur/futur_simple.svg)
+![inthekingdomeoffaraway2](https://github.com/newicody/diskutility/blob/master/futur/futur_ambigue.svg)
 
 support
 
