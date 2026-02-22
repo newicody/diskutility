@@ -36,6 +36,8 @@ media mobile css ok
 Roadmap
 
 
+Code optimizations and options
+
 zfs snapshot gestion
 
 command line options
