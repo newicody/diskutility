@@ -15,28 +15,82 @@
 
     <main class="container">
         <!-- Stockage Physique -->
-        <section class="card accent-disk">
-            <h2>🔌 Stockage Physique</h2>
-            <div class="disk-grid">
-                {% for d in disks if d.nature in ['⚡ NVMe', '💿 HDD', '🚀 SSD'] %}
-                <div class="disk-card" onclick="UI.openDiskModal('{{ d.name }}')" data-nature="{{ d.nature }}">
-                    <div class="disk-head">
-                        <span class="badge">{{ d.nature }}</span>
-                        <span class="health-icon" id="health-{{ d.name }}">{{ health_map.get(d.name,'🟢') }}</span> 
-                        <strong>{{ d.name }}</strong>
-                    </div>
-                    <small>{{ d.model or 'N/A' }}</small>
-                    <div class="usage-container">
-                        <div class="usage-bar">
-                            <div class="fill {{ 'warn' if d.usage_val > 85 }}" style="width: {{ d.usage_val }}%"></div>
-                        </div>
-                        <span>{{ d.usage_val }}%</span>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </section>
+<section class="card accent-disk">
+    <h2>🔌 Stockage Physique</h2>
+    <div class="disk-grid">
+        {% for d in disks if d.nature in ['⚡ NVMe', '💿 HDD', '🚀 SSD'] %}
+            {% set health_icon = health_map.get(d.name, '🟢') %}
+            {% set alert_count = 0 %}
+            {% set severe_alerts = [] %}
+            {% set minor_alerts = [] %}
+            {% set has_note = False %}
+            
+            {# Vérifier si une note existe #}
+            {% for tid, test in tests.items() %}
+                {% if test.data and d.name in test.data %}
+                    {% set smart_data = test.data[d.name].get('smart', {}) %}
+                    {% if smart_data.critical_alerts %}
+                        {% for alert in smart_data.critical_alerts %}
+                            {% if 'SECTEURS' in alert or 'Pending' in alert or 'read failure' in alert or 'FAILED' in alert %}
+                                {% set _ = severe_alerts.append(alert) %}
+                            {% else %}
+                                {% set _ = minor_alerts.append(alert) %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            
+            {# Déterminer la couleur en fonction de la sévérité #}
+            {% if severe_alerts|length > 0 %}
+                {% set final_icon = "🔴" %}
+                {% set tooltip = "🔴 PROBLÈMES GRAVES : " + severe_alerts|join(', ') %}
+                {% if minor_alerts %}
+                    {% set tooltip = tooltip + " | Alertes mineures: " + minor_alerts|join(', ') %}
+                {% endif %}
+            {% elif minor_alerts|length > 0 %}
+                {% set final_icon = "🟡" %}
+                {% set tooltip = "🟡 Anomalies mineures : " + minor_alerts|join(', ') %}
+            {% else %}
+                {% set final_icon = "🟢" %}
+                {% set tooltip = "🟢 Disque en bonne santé" %}
+            {% endif %}
 
+            <div class="disk-card" data-disk="{{ d.name }}">
+                <div class="disk-head">
+                    <span class="badge">{{ d.nature }}</span>
+                    <span class="health-icon tooltip" id="health-{{ d.name }}">
+                        {{ final_icon }}
+                        <span class="tooltip-text">{{ tooltip }}</span>
+                    </span>
+                    <strong>{{ d.name }}</strong>
+                    <span class="note-icon {% if has_note %}has-note{% endif %}" 
+                          onclick="event.stopPropagation(); UI.openDiskModal('{{ d.name }}')"
+                          title="Notes">📝</span>
+                </div>
+                <small>{{ d.model or 'N/A' }}</small>
+                <div class="usage-container">
+                    <div class="usage-bar">
+                        <div class="fill {{ 'warn' if d.usage_val > 85 }}" style="width: {{ d.usage_val }}%"></div>
+                    </div>
+                    <span>{{ d.usage_val }}%</span>
+                </div>
+            </div>
+
+       {% endfor %}
+    </div>
+</section>
+<div id="disk-detail-modal" class="modal disk-detail-modal">
+    <div class="modal-content card">
+        <div class="modal-header">
+            <h2 id="disk-detail-title">💾 Détails du disque</h2>
+            <button class="close-btn" onclick="UI.closeModal('disk-detail-modal')">&times;</button>
+        </div>
+        <div id="disk-detail-content" class="disk-detail-grid">
+            <!-- Le contenu sera chargé dynamiquement -->
+        </div>
+    </div>
+</div>
         <!-- État ZFS -->
         <section class="card accent-zfs">
             <h2>🛡️ État des Pools ZFS</h2>
@@ -92,46 +146,126 @@
         </section>
 
         <!-- Systèmes de Fichiers -->
-        <section class="card">
-            <h2>📂 Systèmes de Fichiers & Partitions</h2>
-            <div class="table-responsive">
-                <table class="fs-table">
-                    <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Montage</th>
-                            <th>Format</th>
-                            <th>Taille</th>
-                            <th>Libre</th>
-                            <th>Usage</th>
-                            <th>UUID</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for p in partitions %}
-                        <tr>
-                            <td><strong>{{ p.name }}</strong></td>
-                            <td><code class="mount-path">{{ p.mountpoint or '-' }}</code></td>
-                            <td><span class="badge">{{ p.fstype or 'N/A' }}</span></td>
-                            <td>{{ p.fssize_human or p.size_human or p.size }}</td>
-                            <td class="text-success">{{ p.fsavail_human or p.fsavail or '-' }}</td>
-                            <td>
-                                {% if p['fsuse%'] %}
-                                <div class="usage-container" style="margin:0;">
-                                    <div class="usage-bar" style="width:80px;">
-                                        <div class="fill" style="width: {{ p['fsuse%'] }}%"></div>
-                                    </div>
-                                    <span>{{ p['fsuse%'] }}</span>
-                                </div>
-                                {% else %} - {% endif %}
-                            </td>
-                            <td><small class="uuid-text">{{ p.uuid or '-' }}</small></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+<!-- Dans la section Systèmes de Fichiers, ajouter un bouton de sauvegarde -->
+<section class="card">
+    <h2>📂 Systèmes de Fichiers & Partitions</h2>
+    <div class="table-responsive">
+        <table class="fs-table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Montage</th>
+                    <th>Format</th>
+                    <th>Taille</th>
+                    <th>Libre</th>
+                    <th>Usage</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in partitions %}
+<tr class="partition-row" data-device="{{ p.name }}" onclick="Backup.toggleExpand(this, '{{ p.name }}')">
+    <td><strong>{{ p.name }}</strong></td>
+    <td><code class="mount-path">{{ p.mountpoint or '-' }}</code></td>
+    <td><span class="badge">{{ p.fstype or 'N/A' }}</span></td>
+    <td>{{ p.fssize_human or p.size_human or p.size }}</td>
+    <td class="text-success">{{ p.fsavail_human or p.fsavail or '-' }}</td>
+    <td>
+        {% if p['fsuse%'] %}
+        <div class="usage-container" style="margin:0;">
+            <div class="usage-bar" style="width:80px;">
+                <div class="fill" style="width: {{ p['fsuse%'] }}%"></div>
             </div>
-        </section>
+            <span>{{ p['fsuse%'] }}</span>
+        </div>
+        {% else %} - {% endif %}
+    </td>
+</tr>
+<tr class="partition-details" id="details-{{ p.name }}" style="display:none;">
+    <td colspan="6">
+        <div class="partition-expanded">
+            <!-- Les options de sauvegarde seront chargées ici -->
+        </div>
+    </td>
+</tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Modal de sauvegarde -->
+<div id="backup-modal" class="modal">
+    <div class="modal-content card">
+        <div class="modal-header">
+            <h3>💾 Sauvegarde sécurisée</h3>
+            <button class="close-btn" onclick="Backup.closeModal()">&times;</button>
+        </div>
+        
+        <form id="backup-form" onsubmit="Backup.start(event)">
+            <input type="hidden" id="backup-source" name="source">
+            
+            <div class="form-group">
+                <label>Source:</label>
+                <code id="backup-source-display" style="background:var(--bg); padding:8px; display:block;"></code>
+            </div>
+            
+            <div class="form-group">
+                <label>Destination:</label>
+                <input type="text" id="backup-destination" class="form-control" 
+                       placeholder="/chemin/vers/sauvegarde.img" required>
+                <small>Chemin complet du fichier de destination</small>
+            </div>
+            
+            <div class="form-group">
+                <label>Taille de bloc:</label>
+                <select id="backup-bs" class="form-control">
+                    <option value="4M">4 Mo (Recommandé)</option>
+                    <option value="1M">1 Mo</option>
+                    <option value="64K">64 Ko</option>
+                    <option value="8K">8 Ko</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Options de sécurité:</label>
+                <div class="checkbox-group">
+                    <label>
+                        <input type="checkbox" id="backup-noerror" checked> 
+                        Ignorer les erreurs de lecture (noerror)
+                    </label>
+                    <label>
+                        <input type="checkbox" id="backup-sync" checked> 
+                        Synchroniser les E/S (sync)
+                    </label>
+                    <label>
+                        <input type="checkbox" id="backup-progress" checked> 
+                        Afficher la progression
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Disques disponibles:</label>
+                <select id="backup-disks" class="form-control">
+                    <option value="">Choisir un disque de destination...</option>
+                </select>
+            </div>
+            
+            <div class="btn-group-mini">
+                <button type="submit" class="btn-primary">🚀 Démarrer la sauvegarde</button>
+                <button type="button" class="btn-sm" onclick="Backup.closeModal()">Annuler</button>
+            </div>
+        </form>
+        
+        <div id="backup-progress" style="display:none; margin-top:15px;">
+            <h4>Progression:</h4>
+            <div class="progress-bar-bg">
+                <div id="backup-progress-bar" class="progress-bar-fill" style="width:0%"></div>
+            </div>
+            <p id="backup-status"></p>
+        </div>
+    </div>
+</div>
 
         <!-- Actions rapides -->
         <div class="top-management-grid">
@@ -147,9 +281,9 @@
             <section class="card accent-daily">
                 <h3>📊 Analyse</h3>
                 <div class="btn-group-mini" style="flex-wrap: wrap;">
-                    <button onclick="Charts.showRead()" class="btn-sm">📈 Débit</button>
-                    <button onclick="Charts.showLatency()" class="btn-sm">⏱️ Latence</button>
-                    <button onclick="Charts.showErrors()" class="btn-sm">⚠️ Erreurs</button>
+                    <button onclick="Charts.showRead()" class="btn-sm chart-type-btn" data-type="read">📈 Débit</button>
+                    <button onclick="Charts.showLatency()" class="btn-sm chart-type-btn" data-type="latency">⏱️ Latence</button>
+                    <button onclick="Charts.showErrors()" class="btn-sm chart-type-btn" data-type="errors">⚠️ Erreurs</button>
                     <button onclick="Charts.toggleDaily()" class="btn-sm">📅 Toggle Daily</button>
                     <button onclick="Charts.filterSmartOnly()" class="btn-sm">🔍 SMART only</button>
                 </div>
@@ -157,12 +291,15 @@
         </div>
 
         <!-- Graphiques -->
-        <section class="card">
-            <h2>📊 Historique des performances</h2>
-            <div id="chart-container" class="svg-container">
-                <p style="padding:40px; text-align:center; color:#7f8c8d;">📊 Cochez des tests pour voir les graphiques</p>
-            </div>
-        </section>
+<section class="card">
+    <h2>📊 Historique des performances</h2>
+    <div id="chart-container">
+        <p style="padding:40px; text-align:center; color:#7f8c8d;">📊 Cochez des tests pour voir les graphiques</p>
+    </div>
+    <p style="font-size:0.85em; color:#7f8c8d; margin-top:10px; text-align:center;">
+        💡 Cliquez sur un point du graphique pour voir le détail du test
+    </p>
+</section>
 
         <!-- Historique des Scans -->
         <section class="card">
@@ -178,10 +315,14 @@
                         <span class="badge {% if t.status == 'Finished' %}bg-success{% elif t.status == 'Running' %}bg-warning{% else %}bg-danger{% endif %}">
                             {{ t.status }}
                         </span>
-                        <div class="actions">
-                            <input type="checkbox" class="chart-toggle" value="{{ id }}" onclick="event.stopPropagation()">
-                            <button onclick="event.preventDefault(); Bench.deleteTest('{{ id }}')" class="btn-delete" title="Supprimer">🗑️</button>
-                        </div>
+<div class="actions">
+    <input type="checkbox" class="chart-toggle" value="{{ id }}" 
+           onclick="event.stopPropagation();"
+           onchange="Charts.update(Charts.currentChartType);"
+           title="Sélectionner pour le graphique">
+    <button onclick="event.preventDefault(); event.stopPropagation(); Bench.deleteTest('{{ id }}')" 
+            class="btn-delete" title="Supprimer">🗑️</button>
+</div>
                     </div>
                 </a>
                 {% endfor %}
@@ -325,6 +466,9 @@
         <div id="task-status-btn" class="task-indicator" onclick="UI.toggleTasks()">
             🔼 Tâches en cours
         </div>
+        <a href="/toolbox" target="_blank" class="task-indicator" style="text-decoration:none; font-size:0.82em; padding:4px 10px;">
+            📋 Logs
+        </a>
 
         <div class="status-right">
             <span>🌍 Sessions: <b id="stat-sessions">1</b></span>
@@ -335,11 +479,41 @@
     <!-- Popup des tâches en cours -->
     <div id="active-tasks" class="card">
         <div class="popup-header">
-            <h3 style="margin:0;">⚙️ Opérations en cours</h3>
-            <button class="btn-close-popup" onclick="UI.toggleTasks()">−</button>
+            <h3 style="margin:0;">⚙️ Opérations</h3>
+            <div class="toolbox-header-actions">
+                <button class="btn-log-toggle" onclick="Toolbox.toggleLogOptions()" title="Options de logs">⚙️ Logs</button>
+                <button class="btn-clear-toolbox" onclick="Toolbox.clearHistory()" title="Effacer l'historique">🗑️ Vider</button>
+                <button class="btn-close-popup" onclick="UI.toggleTasks()">−</button>
+            </div>
         </div>
         <div id="tasks-container">
             <p class="text-muted" style="text-align:center; padding:20px;">Aucune tâche en cours</p>
+        </div>
+        <div class="log-options-panel" id="log-options-panel">
+            <strong style="font-size:0.85em;">📋 Options de logs</strong>
+            <div class="log-options-grid">
+                <label class="log-option-label">
+                    <input type="checkbox" id="log-http" checked> Requêtes HTTP
+                </label>
+                <label class="log-option-label">
+                    <input type="checkbox" id="log-commands" checked> Commandes système
+                </label>
+                <label class="log-option-label">
+                    <input type="checkbox" id="log-output" checked> Sorties commandes
+                </label>
+                <label class="log-option-label">
+                    <input type="checkbox" id="log-duration" checked> Durées
+                </label>
+                <label class="log-option-label">
+                    <input type="checkbox" id="log-errors" checked> Erreurs uniquement
+                </label>
+                <label class="log-option-label">
+                    <input type="checkbox" id="log-progress"> Progression détaillée
+                </label>
+            </div>
+            <div style="margin-top:8px; font-size:0.75em; color:#7f8c8d;">
+                Format: <code>[ISO8601] [LEVEL] [TASK_ID] message</code>
+            </div>
         </div>
     </div>
 

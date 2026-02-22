@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toolbox — Storage Monitor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body { padding-bottom: 30px; }
+
+        .toolbox-page { max-width: 1200px; margin: 0 auto; padding: 20px; display: grid; gap: 20px; }
+
+        /* En-tête */
+        .tb-header {
+            background: white; padding: 16px 20px; border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .tb-header h1 { font-size: 1.4em; color: var(--primary); margin: 0; }
+        .tb-header-actions { display: flex; gap: 10px; align-items: center; }
+
+        /* Grille deux colonnes */
+        .tb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 900px) { .tb-grid { grid-template-columns: 1fr; } }
+
+        /* Panneau */
+        .tb-panel { background: white; border-radius: 10px; padding: 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.06); overflow: hidden; }
+        .tb-panel-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 16px; border-bottom: 1px solid var(--border);
+            background: #f8f9fa;
+        }
+        .tb-panel-header h2 { margin: 0; font-size: 1em; color: var(--text); }
+        .tb-panel-body { padding: 12px; max-height: 520px; overflow-y: auto; }
+
+        /* Tâches */
+        .task-entry {
+            border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px;
+            margin-bottom: 8px; position: relative;
+            transition: box-shadow 0.2s;
+        }
+        .task-entry:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .task-entry.running { border-left: 4px solid var(--warning); background: #fffbf0; }
+        .task-entry.success { border-left: 4px solid var(--success); background: #f0fff4; }
+        .task-entry.error   { border-left: 4px solid var(--danger);  background: #fff5f5; }
+
+        .task-entry-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 4px; }
+        .task-entry-name { font-weight: 600; font-size: 0.95em; }
+        .task-entry-meta { font-size: 0.76em; color: #7f8c8d; display: flex; gap: 10px; flex-wrap: wrap; }
+        .task-entry-op   { font-size: 0.8em; color: #555; font-style: italic; }
+
+        .status-pill {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 2px 8px; border-radius: 12px; font-size: 0.75em; font-weight: 600;
+            white-space: nowrap;
+        }
+        .status-pill.running { background: #fff3cd; color: #856404; }
+        .status-pill.success { background: #d1e7dd; color: #0f5132; }
+        .status-pill.error   { background: #f8d7da; color: #842029; }
+
+        .task-remove {
+            background: none; border: none; cursor: pointer; color: #bdc3c7;
+            font-size: 1em; padding: 2px 5px; border-radius: 4px; flex-shrink: 0;
+            transition: color 0.2s, background 0.2s;
+        }
+        .task-remove:hover { color: var(--danger); background: rgba(231,76,60,0.08); }
+
+        /* Logs */
+        .log-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+        .log-filter-btn {
+            padding: 3px 10px; border-radius: 12px; border: 1px solid var(--border);
+            background: white; font-size: 0.78em; cursor: pointer; transition: all 0.2s;
+        }
+        .log-filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .log-filter-btn.level-ERROR.active { background: var(--danger); border-color: var(--danger); }
+        .log-filter-btn.level-CMD.active   { background: #9b59b6; border-color: #9b59b6; }
+
+        #log-list { font-family: 'Courier New', monospace; font-size: 0.78em; }
+
+        .log-line {
+            display: grid;
+            grid-template-columns: 170px 50px 150px 1fr;
+            gap: 6px;
+            padding: 3px 6px;
+            border-radius: 3px;
+            align-items: baseline;
+            word-break: break-word;
+        }
+        .log-line:hover { background: #f4f7f9; }
+        .log-line + .log-line { border-top: 1px solid #f0f0f0; }
+
+        .log-ts    { color: #7f8c8d; white-space: nowrap; }
+        .log-level { font-weight: 700; text-align: center; }
+        .log-task  { color: #9b59b6; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .log-msg   { color: var(--text); }
+
+        .level-INFO  .log-level { color: #3498db; }
+        .level-ERROR .log-level { color: var(--danger); }
+        .level-CMD   .log-level { color: #9b59b6; }
+        .level-HTTP  .log-level { color: #27ae60; }
+        .level-DEBUG .log-level { color: #95a5a6; }
+        .level-OUT   .log-level { color: #e67e22; }
+
+        .level-ERROR { background: #fff5f5 !important; }
+
+        /* Options de log */
+        .log-options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        @media (max-width: 600px) { .log-options-grid { grid-template-columns: 1fr 1fr; } }
+
+        .log-opt-label {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 0.83em; padding: 4px 8px; border-radius: 5px;
+            cursor: pointer; border: 1px solid var(--border); background: white;
+            transition: background 0.2s;
+        }
+        .log-opt-label:hover { background: var(--hover); }
+        .log-opt-label input:checked + span { font-weight: 600; color: var(--primary); }
+
+        /* Vide */
+        .tb-empty { text-align: center; padding: 30px; color: #aab4be; font-size: 0.9em; }
+
+        /* Stats résumé */
+        .tb-stats { display: flex; gap: 12px; flex-wrap: wrap; }
+        .tb-stat-item {
+            background: var(--bg); border-radius: 6px; padding: 6px 14px;
+            font-size: 0.82em; display: flex; align-items: center; gap: 6px;
+        }
+        .tb-stat-item strong { font-size: 1.1em; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>⚙️ Toolbox — Historique & Logs</h1>
+    <a href="/" class="btn-sm" style="text-decoration:none;">← Retour au tableau de bord</a>
+</header>
+
+<div class="toolbox-page">
+
+    <!-- Résumé -->
+    <div class="tb-header">
+        <div class="tb-stats" id="tb-stats">
+            <div class="tb-stat-item">⏳ <strong id="stat-running">0</strong> en cours</div>
+            <div class="tb-stat-item" style="color:var(--success);">✅ <strong id="stat-success">0</strong> terminées</div>
+            <div class="tb-stat-item" style="color:var(--danger);">❌ <strong id="stat-error">0</strong> erreurs</div>
+            <div class="tb-stat-item">📋 <strong id="stat-logs">0</strong> entrées log</div>
+        </div>
+        <div class="tb-header-actions">
+            <button class="btn-sm" onclick="clearTasks()" title="Effacer les tâches terminées">🗑️ Vider tâches</button>
+            <button class="btn-sm" onclick="clearLogs()" title="Effacer tous les logs">🗑️ Vider logs</button>
+            <button class="btn-primary" onclick="refresh()">🔄 Actualiser</button>
+        </div>
+    </div>
+
+    <div class="tb-grid">
+
+        <!-- Panneau Tâches -->
+        <div class="tb-panel">
+            <div class="tb-panel-header">
+                <h2>📋 Historique des tâches</h2>
+                <div style="display:flex;gap:6px;">
+                    <select id="task-filter" class="btn-sm" onchange="renderTasks()" style="padding:4px 8px;">
+                        <option value="all">Toutes</option>
+                        <option value="Running">En cours</option>
+                        <option value="Finished">Terminées</option>
+                        <option value="Error">Erreurs</option>
+                    </select>
+                </div>
+            </div>
+            <div class="tb-panel-body" id="task-list">
+                <div class="tb-empty">Chargement…</div>
+            </div>
+        </div>
+
+        <!-- Panneau Logs + options -->
+        <div class="tb-panel">
+            <div class="tb-panel-header">
+                <h2>📝 Logs système</h2>
+                <div style="display:flex;gap:6px;align-items:center;">
+                    <span style="font-size:0.75em;color:#7f8c8d;" id="log-count-label">0 entrées</span>
+                </div>
+            </div>
+            <div style="padding:10px 12px; border-bottom:1px solid var(--border); background:#f8f9fa;">
+                <!-- Filtres par niveau -->
+                <div class="log-filters" id="log-filters">
+                    <button class="log-filter-btn active" data-level="all" onclick="toggleLogFilter(this)">Tous</button>
+                    <button class="log-filter-btn level-INFO"  data-level="INFO"  onclick="toggleLogFilter(this)">INFO</button>
+                    <button class="log-filter-btn level-ERROR" data-level="ERROR" onclick="toggleLogFilter(this)">ERROR</button>
+                    <button class="log-filter-btn level-HTTP"  data-level="HTTP"  onclick="toggleLogFilter(this)">HTTP</button>
+                    <button class="log-filter-btn level-CMD"   data-level="CMD"   onclick="toggleLogFilter(this)">CMD</button>
+                    <button class="log-filter-btn level-OUT"   data-level="OUT"   onclick="toggleLogFilter(this)">OUT</button>
+                    <button class="log-filter-btn level-DEBUG" data-level="DEBUG" onclick="toggleLogFilter(this)">DEBUG</button>
+                </div>
+                <!-- Options de logging -->
+                <details style="margin-top:6px;">
+                    <summary style="font-size:0.82em;cursor:pointer;color:#7f8c8d;">⚙️ Options de logging</summary>
+                    <div class="log-options-grid" style="margin-top:8px;" id="log-options">
+                        <label class="log-opt-label"><input type="checkbox" data-opt="http" checked> <span>Requêtes HTTP</span></label>
+                        <label class="log-opt-label"><input type="checkbox" data-opt="commands" checked> <span>Commandes système</span></label>
+                        <label class="log-opt-label"><input type="checkbox" data-opt="output" checked> <span>Sorties (stdout/stderr)</span></label>
+                        <label class="log-opt-label"><input type="checkbox" data-opt="duration" checked> <span>Durées d'exécution</span></label>
+                        <label class="log-opt-label"><input type="checkbox" data-opt="errors" checked> <span>Erreurs uniquement</span></label>
+                        <label class="log-opt-label"><input type="checkbox" data-opt="progress"> <span>Progression détaillée</span></label>
+                    </div>
+                    <div style="margin-top:6px;font-size:0.75em;color:#7f8c8d;">
+                        Format : <code>[ISO8601] [LEVEL] [TASK_ID] message</code><br>
+                        Fichier : <code>toolbox.log</code>
+                    </div>
+                    <button class="btn-sm" style="margin-top:8px;" onclick="saveLogOptions()">💾 Sauvegarder options</button>
+                </details>
+            </div>
+            <div class="tb-panel-body" id="log-list">
+                <div class="tb-empty">Chargement…</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+// ── Données ──────────────────────────────────────────────
+let tasks = [];
+let logs  = [];
+let activeLogFilter = 'all';
+
+// ── Formatage ────────────────────────────────────────────
+function fmtTime(ts) {
+    if (!ts) return '—';
+    try {
+        return new Date(ts).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+    } catch { return ts; }
+}
+function fmtIso(ts) {
+    if (!ts) return '—';
+    try {
+        const d = new Date(ts);
+        return d.toLocaleDateString('fr-FR', {day:'2-digit', month:'2-digit'})
+               + ' ' + d.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+    } catch { return ts; }
+}
+function fmtDur(ms) {
+    if (!ms || ms < 0) return '—';
+    if (ms < 60000) return `${Math.round(ms / 1000)}s`;
+    return `${Math.floor(ms / 60000)}m${Math.round((ms % 60000) / 1000)}s`;
+}
+
+// ── Chargement ───────────────────────────────────────────
+async function loadAll() {
+    try {
+        const [tasksRes, logsRes] = await Promise.all([
+            fetch('/get_toolbox_tasks'),
+            fetch('/get_toolbox_logs?n=300')
+        ]);
+        if (tasksRes.ok) tasks = await tasksRes.json();
+        if (logsRes.ok)  logs  = await logsRes.json();
+    } catch (e) {
+        console.error('Erreur chargement toolbox:', e);
+    }
+    renderAll();
+}
+
+function renderAll() {
+    renderStats();
+    renderTasks();
+    renderLogs();
+}
+
+// ── Stats ─────────────────────────────────────────────────
+function renderStats() {
+    document.getElementById('stat-running').textContent = tasks.filter(t => t.status === 'Running').length;
+    document.getElementById('stat-success').textContent = tasks.filter(t => t.status === 'Finished').length;
+    document.getElementById('stat-error').textContent   = tasks.filter(t => t.status === 'Error').length;
+    document.getElementById('stat-logs').textContent    = logs.length;
+    document.getElementById('log-count-label').textContent = `${logs.length} entrées`;
+}
+
+// ── Tâches ────────────────────────────────────────────────
+function renderTasks() {
+    const filter = document.getElementById('task-filter').value;
+    const filtered = filter === 'all' ? tasks : tasks.filter(t => t.status === filter);
+    const el = document.getElementById('task-list');
+
+    if (filtered.length === 0) {
+        el.innerHTML = `<div class="tb-empty">Aucune tâche${filter !== 'all' ? ' pour ce filtre' : ''}</div>`;
+        return;
+    }
+
+    el.innerHTML = [...filtered].reverse().map(task => {
+        const cls = task.status === 'Running' ? 'running' : task.status === 'Finished' ? 'success' : 'error';
+        const emoji = task.status === 'Running' ? '⏳' : task.status === 'Finished' ? '✅' : '❌';
+        const label = task.status === 'Running' ? 'En cours' : task.status === 'Finished' ? 'Terminé' : 'Erreur';
+
+        const bar = task.status === 'Running' ? `
+            <div style="margin-top:6px;">
+                <div style="background:#e9ecef;height:6px;border-radius:3px;overflow:hidden;">
+                    <div style="background:var(--primary);height:100%;width:${task.progress||0}%;transition:width 0.3s;"></div>
+                </div>
+            </div>` : '';
+
+        return `
+        <div class="task-entry ${cls}" id="te-${task.id}">
+            <div class="task-entry-head">
+                <span class="task-entry-name">${emoji} ${escHtml(task.name || task.id)}</span>
+                <div style="display:flex;align-items:center;gap:6px;">
+                    <span class="status-pill ${cls}">${label}</span>
+                    <button class="task-remove" onclick="removeTask('${task.id}')" title="Supprimer">✕</button>
+                </div>
+            </div>
+            <div class="task-entry-meta">
+                <span>🕐 ${fmtIso(task.startTime)}</span>
+                ${task.endTime ? `<span>→ ${fmtTime(task.endTime)}</span>` : ''}
+                ${task.duration ? `<span>⏱️ ${fmtDur(task.duration)}</span>` : ''}
+                ${task.status === 'Running' ? `<span>${task.progress||0}%</span>` : ''}
+            </div>
+            ${task.current_op ? `<div class="task-entry-op">↳ ${escHtml(task.current_op)}</div>` : ''}
+            ${bar}
+        </div>`;
+    }).join('');
+}
+
+// ── Logs ──────────────────────────────────────────────────
+function toggleLogFilter(btn) {
+    document.querySelectorAll('.log-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeLogFilter = btn.dataset.level;
+    renderLogs();
+}
+
+function renderLogs() {
+    const filtered = activeLogFilter === 'all'
+        ? logs
+        : logs.filter(l => (l.level || '').trim() === activeLogFilter);
+
+    const el = document.getElementById('log-list');
+
+    if (filtered.length === 0) {
+        el.innerHTML = `<div class="tb-empty">Aucun log${activeLogFilter !== 'all' ? ' pour ce niveau' : ''}</div>`;
+        return;
+    }
+
+    el.innerHTML = [...filtered].reverse().map(l => {
+        const level = (l.level || 'INFO').trim();
+        const ts    = l.ts ? fmtIso(l.ts) : '—';
+        const task  = escHtml((l.taskId || '').trim().substring(0, 20));
+        const msg   = escHtml(l.message || '');
+        return `<div class="log-line level-${level}">
+            <span class="log-ts">${ts}</span>
+            <span class="log-level">${level}</span>
+            <span class="log-task" title="${task}">${task}</span>
+            <span class="log-msg">${msg}</span>
+        </div>`;
+    }).join('');
+}
+
+// ── Actions ───────────────────────────────────────────────
+async function removeTask(taskId) {
+    try {
+        await fetch(`/remove_toolbox_task/${taskId}`, { method: 'POST' });
+        tasks = tasks.filter(t => t.id !== taskId);
+        renderAll();
+    } catch (e) { alert('Erreur suppression'); }
+}
+
+async function clearTasks() {
+    if (!confirm('Effacer les tâches terminées ?')) return;
+    try {
+        await fetch('/clear_toolbox_tasks', { method: 'POST' });
+        tasks = tasks.filter(t => t.status === 'Running');
+        renderAll();
+    } catch (e) { alert('Erreur vidage tâches'); }
+}
+
+async function clearLogs() {
+    if (!confirm('Effacer tous les logs ?')) return;
+    try {
+        await fetch('/clear_toolbox_logs', { method: 'POST' });
+        logs = [];
+        renderAll();
+    } catch (e) { alert('Erreur vidage logs'); }
+}
+
+function saveLogOptions() {
+    const opts = {};
+    document.querySelectorAll('#log-options input[data-opt]').forEach(cb => {
+        opts[cb.dataset.opt] = cb.checked;
+    });
+    localStorage.setItem('toolbox_log_options', JSON.stringify(opts));
+    // Notifier la fenêtre principale si ouverte
+    if (window.opener) {
+        try { window.opener.Toolbox?.applyLogOptions?.(opts); } catch {}
+    }
+    alert('Options sauvegardées ✓');
+}
+
+function loadLogOptions() {
+    try {
+        const saved = JSON.parse(localStorage.getItem('toolbox_log_options') || '{}');
+        document.querySelectorAll('#log-options input[data-opt]').forEach(cb => {
+            if (cb.dataset.opt in saved) cb.checked = saved[cb.dataset.opt];
+        });
+    } catch {}
+}
+
+function refresh() { loadAll(); }
+
+function escHtml(str) {
+    return String(str)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Auto-refresh ──────────────────────────────────────────
+loadAll();
+loadLogOptions();
+setInterval(loadAll, 5000);
+</script>
+</body>
+</html>
