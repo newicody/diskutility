@@ -1,0 +1,752 @@
+avance
+
+digraph SauvetageExpert {
+    rankdir=TB;
+    compound=true;
+    node [fontname="Courier New", shape=box, style=filled, fillcolor="#2D2D2D", fontcolor="#FFFFFF", color="#555555", fontsize=9];
+    edge [fontname="Arial", fontsize=9, color="#AAAAAA"];
+
+    // =======================================================================
+    // LÉGENDE - DISTINCTION VISUELLE
+    // =======================================================================
+    subgraph cluster_legend {
+        label = "LÉGENDE - INTERVENTION HUMAINE";
+        color="#000000";
+        
+        LegendAuto [label="🔵 AUTOMATIQUE\nDétectable par la machine\nSMART, dmesg, lsblk, etc.", shape=box, fillcolor="#0056b3", fontcolor="white"];
+        
+        LegendManual [label="🟠 INTERVENTION HUMAINE REQUISE\nParamètres que la machine ne peut pas connaître\nBruits, odeurs, décisions stratégiques", shape=box, fillcolor="#FF8F00", fontcolor="black"];
+        
+        LegendMixed [label="🟢 MIXTE\nDétection auto + validation humaine", shape=box, fillcolor="#2E7D32", fontcolor="white"];
+        
+        LegendUrgent [label="🔴 ALERTE HUMAINE\nSituation critique nécessitant décision immédiate", shape=box, fillcolor="#D32F2F", fontcolor="white"];
+        
+        LegendDecision [label="⬜ DÉCISION HUMAINE\nPoint de choix où l'utilisateur doit décider", shape=diamond, fillcolor="white", fontcolor="black"];
+        
+        LegendConfirm [label="✅ CONFIRMATION REQUISE\nChaque action affiche d'abord:\n• Ce qui va être fait\n• Les risques\n• Les alternatives\n• Puis demande confirmation", shape=box, fillcolor="#4CAF50", fontcolor="black"];
+    }
+
+    // =======================================================================
+    // MONITORING CONTINU - AVEC CONFIRMATIONS
+    // =======================================================================
+    subgraph cluster_monitoring {
+        label = "🔴 SURVEILLANCE CONTINUE - TOUT AU LONG DU PROCESSUS";
+        color="#FF0000";
+        fontcolor="#FF0000";
+        
+        MonitorTemp [label="🌡️ MONITORING TEMPÉRATURE\n🔵 AUTO: sensors, smartctl\n🟠 HUMAIN: Vérifier ventilation physique\n🔴 ALERTE: >55°C HDD, >70°C SSD\n✅ CONFIRMATION: Pause automatique ou manuelle?", 
+                    tooltip="⚠️ ACTION PRÉVUE: Surveiller température toutes les 5 secondes\n🔴 SI >55°C: Envoyer SIGSTOP au processus\n📋 RAPPORT: Température actuelle: XX°C, Seuil: 55°C\n✅ Confirmez-vous la mise en pause automatique? (oui/non)",
+                    shape=note, fillcolor="#BF360C"];
+        
+        MonitorSpeed [label="⚡ MONITORING VITESSE\n🔵 AUTO: ddrescue --status-interval\n🟠 HUMAIN: Interpréter tendances\n🔴 ALERTE: <100KB/s pendant 5min\n✅ CONFIRMATION: Changer stratégie?",
+                     tooltip="⚠️ ACTION PRÉVUE: Surveiller vitesse de lecture\n🔴 SI <100KB/s pendant 5min: Proposer reverse mode\n📋 RAPPORT: Vitesse actuelle: XX KB/s, Durée ralentissement: X min\n✅ Voulez-vous passer en mode reverse? (oui/non)"];
+        
+        MonitorErrors [label="⚠️ MONITORING ERREURS\n🔵 AUTO: dmesg, smartctl -l error\n🟠 HUMAIN: Changer câble, vérifier connexions\n🔴 ALERTE: CRC errors, UNC, DRDY\n✅ CONFIRMATION: Continuer ou changer hardware?",
+                      tooltip="⚠️ ACTION PRÉVUE: Analyser les erreurs noyau\n🔴 SI CRC errors > 10: Proposer changement câble\n📋 RAPPORT: X erreurs CRC détectées, Y erreurs UNC\n✅ Voulez-vous changer le câble maintenant? (oui/non)"];
+        
+        MonitorSound [label="🔊 MONITORING SONORE\n🟠 HUMAIN UNIQUEMENT - Écouter attentivement\n🔴 ALERTE: Nouveaux clics, grincement\n✅ CONFIRMATION: STOP immédiat si grincement",
+                      tooltip="⚠️ ACTION REQUISE: Écouter le disque\n🎤 [APPUYEZ SUR ESPACE pour confirmer que vous écoutez]\n🔴 Si vous entendez un grincement: RÉPONDEZ 'STOP'\n📋 RAPPORT: Bruit détecté: [clic/grincement/silence]",
+                      fillcolor="#FF8F00", fontcolor="black"];
+        
+        MonitorOdor [label="👃 MONITORING OLFACTIF\n🟠 HUMAIN UNIQUEMENT - Sentir\n🔴 ALERTE: Odeur de brûlé, composant chaud\n✅ CONFIRMATION: STOP immédiat",
+                     tooltip="⚠️ ACTION REQUISE: Sentir l'odeur\n👃 [APPUYEZ SUR ESPACE pour confirmer que vous sentez]\n🔴 Si odeur de brûlé: RÉPONDEZ 'STOP'\n📋 RAPPORT: Odeur détectée: [normale/brûlé]",
+                     fillcolor="#FF8F00", fontcolor="black"];
+        
+        MonitorVibration [label="🖐️ MONITORING VIBRATIONS\n🟠 HUMAIN UNIQUEMENT - Toucher\n🔴 ALERTE: Vibrations anormales\n✅ CONFIRMATION: Stabiliser ou arrêter",
+                          tooltip="⚠️ ACTION REQUISE: Toucher le disque\n✋ [APPUYEZ SUR ESPACE pour confirmer que vous touchez]\n🔴 Si vibrations excessives: RÉPONDEZ 'STOP'\n📋 RAPPORT: Vibrations: [normales/anormales]",
+                          fillcolor="#FF8F00", fontcolor="black"];
+        
+        MonitorProgress [label="📊 MONITORING PROGRESSION\n🔵 AUTO: map.log, taille image\n🟢 MIXTE: Décider quand arrêter\n✅ CONFIRMATION: 95% suffit? Réessayer zones?",
+                         tooltip="⚠️ ACTION PRÉVUE: Analyser la progression\n📊 PROGRESSION: XX% récupéré, YY% non récupéré\n🔴 SI <95% après 24h: Proposer arrêt\n✅ Voulez-vous continuer? (oui/non/ignorer zones)",
+                         fillcolor="#2E7D32", fontcolor="white"];
+        
+        MonitorHealth [label="🏥 MONITORING SMART\n🔵 AUTO: smartctl -A\n🟠 HUMAIN: Interpréter tendances\n🔴 ALERTE: Reallocated en hausse\n✅ CONFIRMATION: Accélérer ou ralentir?",
+                       tooltip="⚠️ ACTION PRÉVUE: Analyser attributs SMART\n📊 Reallocated sectors: X (+Y en 1h), Pending: Z\n🔴 SI augmentation rapide: Proposer accélération\n✅ Voulez-vous augmenter la priorité? (oui/non)",
+                       fillcolor="#2E7D32", fontcolor="white"];
+    }
+
+    // Connecter le monitoring à TOUS les blocs principaux
+    MonitorTemp -> Start [style=dotted, color="#FF0000", label="SURVEILLANCE PERMANENTE"];
+    MonitorSpeed -> Start [style=dotted, color="#FF0000"];
+    MonitorErrors -> Start [style=dotted, color="#FF0000"];
+    MonitorSound -> Start [style=dotted, color="#FF0000"];
+    MonitorOdor -> Start [style=dotted, color="#FF0000"];
+    MonitorVibration -> Start [style=dotted, color="#FF0000"];
+    MonitorProgress -> Start [style=dotted, color="#FF0000"];
+    MonitorHealth -> Start [style=dotted, color="#FF0000"];
+
+    // =======================================================================
+    // PHASE 1 : DIAGNOSTIC - AVEC CONFIRMATIONS
+    // =======================================================================
+    Start [label="ÉTAPE 1 : DIAGNOSTIC\n🔵 AUTO: smartctl, dmesg, lsblk\n🟠 HUMAIN: Écouter, sentir, toucher\n🟢 MIXTE: Interpréter résultats\n✅ CONFIRMATION: Valider chaque test", 
+           tooltip="⚠️ ACTION PRÉVUE: Lancer diagnostic complet\n📋 RAPPORT PRÉLIMINAIRE:\n• Disque: /dev/sdX\n• Modèle: [détecté]\n• SMART: [PASS/FAIL]\n• Partitions: [trouvées]\n✅ Confirmez-vous le lancement du diagnostic? (oui/non)",
+           shape=ellipse, fillcolor="#2E7D32"];
+
+    subgraph cluster_diag {
+        label = "RÉSULTATS DIAGNOSTIC - CONFIRMATION REQUISE";
+        color="#444444";
+        
+        DiagOK [label="CAS 1 : Disque sain\n🔵 SMART PASS\n🔵 Pas d'erreur dmesg\n🟠 Pas de bruit anormal\n🔵 Partitions visibles\n✅ CONFIRMATION: Valider et continuer", 
+                tooltip="📋 RAPPORT DIAGNOSTIC:\n✓ SMART: PASS\n✓ dmesg: 0 erreurs\n✓ Partitions: trouvées\n🟠 Bruits: [à confirmer par l'utilisateur]\n✅ Le disque semble sain. Procéder au backup préventif? (oui/non)",
+                fillcolor="#0056b3"];
+        
+        DiagBad [label="CAS 2 : Disque défaillant accessible\n⚠️ SMART FAIL\n⚠️ Erreurs I/O\n⚠️ Secteurs realloués\n🟠 Bruits éventuels\n✅ CONFIRMATION: URGENCE - Agir", 
+                 tooltip="📋 RAPPORT DIAGNOSTIC:\n✗ SMART: FAIL\n✗ Erreurs I/O: X détectées\n✗ Secteurs realloués: Y\n⚠️ URGENCE: Le disque peut lâcher\n✅ Confirmez-vous le lancement de la récupération d'urgence? (oui/non)",
+                 fillcolor="#FF6B6B"];
+        
+        DiagNoise [label="CAS 3 : Bruits anormaux\n🟠 HUMAIN: Clics, grincement, bip\n✅ CONFIRMATION: Décrire le bruit", 
+                   tooltip="📋 RAPPORT SONORE:\n🎤 [Veuillez décrire ce que vous entendez]\nOptions:\n1. Clics réguliers\n2. Grincement métallique\n3. Bip électronique\n4. Silence moteur\n5. Clics puis arrêt\n✅ Sélectionnez le type de bruit (1-5):",
+                   fillcolor="#FF8F00", fontcolor="black"];
+        
+        DiagDead [label="CAS 4 : Disque non détecté\n🔵 Absent de lsblk\n🟠 HUMAIN: Vérifier branchement\n✅ CONFIRMATION: Actions physiques", 
+                  tooltip="📋 RAPPORT:\n✗ Disque non détecté\n✅ Actions à effectuer:\n1. Avez-vous changé le câble? (oui/non)\n2. Avez-vous testé un autre port? (oui/non)\n3. Avez-vous testé sur un autre PC? (oui/non)\n✅ Après ces actions, le disque est-il détecté? (oui/non)",
+                  fillcolor="#2E7D32", fontcolor="white"];
+        
+        DiagZFS [label="CAS 5 : Pool ZFS détecté\n🔵 zpool import\n🟠 HUMAIN: Sauver chaque disque d'abord\n✅ CONFIRMATION: Principe compris?", 
+                 tooltip="📋 RAPPORT:\n✓ Pool ZFS détecté: [nom]\n⚠️ RAPPEL: Ne JAMAIS travailler sur les disques originaux\n✅ Avez-vous bien compris qu'il faut d'abord sauver chaque disque avec ddrescue? (oui/non)",
+                 fillcolor="#2E7D32", fontcolor="white"];
+        
+        DiagRAID [label="CAS 6 : RAID logiciel détecté\n🔵 mdadm/LVM détecté\n🟠 HUMAIN: Assembler avant récupération\n✅ CONFIRMATION: Procéder à l'assemblage?", 
+                  tooltip="📋 RAPPORT:\n✓ RAID détecté: [type]\n📋 Membres trouvés: [disques]\n✅ Voulez-vous assembler le RAID maintenant? (oui/non)",
+                  fillcolor="#2E7D32", fontcolor="white"];
+    }
+
+    Start -> DiagOK;
+    Start -> DiagBad;
+    Start -> DiagNoise;
+    Start -> DiagDead;
+    Start -> DiagZFS;
+    Start -> DiagRAID;
+
+    // =======================================================================
+    // BOUCLES DE RÉTROACTION - AVEC CONFIRMATIONS
+    // =======================================================================
+    subgraph cluster_feedback {
+        label = "🔄 BOUCLES DE RÉTROACTION - DÉCISIONS HUMAINES AVEC CONFIRMATION";
+        color="#FFA000";
+        
+        FeedbackTemp [label="⬜ DÉCISION HUMAINE: Température > seuil\n📋 RAPPORT: Température actuelle: XX°C\nOptions:\n1. Laisser le script gérer (SIGSTOP auto)\n2. Intervenir manuellement (ventilateur)\n3. Arrêter pour la nuit\n✅ Confirmez votre choix (1-3):", 
+                      shape=diamond, fillcolor="white", fontcolor="black"];
+        
+        FeedbackSpeed [label="⬜ DÉCISION HUMAINE: Vitesse trop lente\n📋 RAPPORT: Vitesse: XX KB/s depuis X min\nOptions:\n1. Lancer reverse mode (--reverse)\n2. Augmenter skip (--skip 10M)\n3. Continuer (accepter lenteur)\n✅ Confirmez votre choix (1-3):", 
+                       shape=diamond, fillcolor="white", fontcolor="black"];
+        
+        FeedbackErrors [label="⬜ DÉCISION HUMAINE: Erreurs détectées\n📋 RAPPORT: CRC: X, UNC: Y\nOptions:\n1. Changer câble maintenant\n2. Continuer (risqué)\n3. Passer en mode --direct\n✅ Confirmez votre choix (1-3):", 
+                        shape=diamond, fillcolor="white", fontcolor="black"];
+        
+        FeedbackSound [label="⬜ DÉCISION HUMAINE: Bruit suspect\n📋 RAPPORT SONORE: [description]\n⚠️ Si grincement: STOP IMMÉDIAT\nOptions:\n1. Continuer (clics modérés)\n2. STOP (grincement)\n✅ Confirmez votre choix (1-2):", 
+                       shape=diamond, fillcolor="white", fontcolor="black"];
+    }
+
+    // Connecter les feedbacks aux blocs concernés
+    FeedbackTemp -> C2_HDD_Ideal [style=bold, color="#FFA000"];
+    FeedbackSpeed -> C2_HDD_Ideal [style=bold, color="#FFA000"];
+    FeedbackErrors -> C2_HDD_Ideal [style=bold, color="#FFA000"];
+    FeedbackSound -> C2_HDD_Ideal [style=bold, color="#FFA000"];
+
+    // =======================================================================
+    // CAS 1 : DISQUE SAIN - AVEC CONFIRMATION
+    // =======================================================================
+    subgraph cluster_cas1 {
+        label = "CAS 1 : DISQUE SAIN";
+        color="#2E7D32";
+        
+        C1_Confirm [label="✅ CONFIRMATION PRÉALABLE\n📋 ACTION PRÉVUE: Backup préventif avec ddrescue\n📊 DESTINATION: /backup/disk.img (XX Go libres)\n⚠️ RISQUES: Aucun, opération non-destructive\n⏱️ TEMPS ESTIMÉ: X heures\n✅ Lancer le backup préventif? (oui/non)", 
+                    shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C1_Ideal [label="🔵 BACKUP PRÉVENTIF\n◉ ddrescue -f -v /dev/sdX /backup/disk.img /backup/map.log", 
+                  tooltip="Opération en cours...",
+                  fillcolor="#0056b3"];
+        
+        C1_End [label="DISQUE OPÉRATIONNEL\nPlanifier sauvegardes régulières"];
+    }
+
+    DiagOK -> C1_Confirm;
+    C1_Confirm -> C1_Ideal [label="Si oui"];
+    C1_Confirm -> DiagOK [label="Si non, revenir", style=dotted];
+    C1_Ideal -> C1_End;
+
+    // =======================================================================
+    // CAS 2 : DISQUE DÉFAILLANT - CONFIRMATIONS MULTIPLES
+    // =======================================================================
+    subgraph cluster_cas2 {
+        label = "CAS 2 : DISQUE DÉFAILLANT";
+        color="#FF6B6B";
+        
+        C2_Urgent [label="🔴 ALERTE HUMAINE - URGENCE\n✅ CONFIRMATION: Action immédiate requise?\n📋 RAPPORT: Disque défaillant détecté\n⚠️ RISQUE: Perte définitive possible\n✅ Confirmez-vous le lancement de la récupération d'urgence? (oui/non)", 
+                   fillcolor="#D32F2F"];
+        
+        C2_Storage [label="⬜ DÉCISION: Stockage disponible ?\n📋 ESPACE LIBRE: /backup: XX Go\n📋 TAILLE DISQUE: YY Go\nOptions:\n1. Assez d'espace → méthode standard\n2. Pas assez → streaming\n3. Pas assez → chunking\n✅ Choix (1-3):", 
+                    shape=diamond, fillcolor="white", fontcolor="black"];
+        
+        C2_Storage_OK [label="Stockage suffisant", shape=note, fillcolor="#0056b3"];
+        
+        C2_Type [label="⬜ DÉCISION: Type de disque ?\n📋 DÉTECTION AUTO: rotational=?\nOptions:\n1. HDD mécanique\n2. SSD/NVMe\n3. Je ne sais pas (laisser auto-détecter)\n✅ Choix (1-3):", 
+                 shape=diamond, fillcolor="white", fontcolor="black"];
+        
+        // HDD
+        C2_HDD [label="HDD MÉCANIQUE", fillcolor="#0056b3"];
+        C2_HDD_Confirm [label="✅ CONFIRMATION HDD\n📋 ACTION: ddrescue standard\n⚙️ PARAMÈTRES: -f -n -v --direct\n⚠️ SURVEILLANCE: Température, bruits\n⏱️ ESTIMATION: X heures\n✅ Lancer ddrescue? (oui/non)", 
+                        shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C2_HDD_Ideal [label="🔵 DDRESCUE EN COURS\n◉ ddrescue -f -n -v /dev/sdX /backup/disk.img /backup/map.log", 
+                      tooltip="Opération en cours...",
+                      fillcolor="#0056b3"];
+        
+        // SSD
+        C2_SSD [label="SSD/NVMe", fillcolor="#0056b3"];
+        C2_SSD_Confirm [label="✅ CONFIRMATION SSD\n📋 ACTION: dd bypass cache\n⚙️ PARAMÈTRES: iflag=nocache,noatime\n⚠️ VÉRIFIER: freeze lock\n⏱️ ESTIMATION: X heures\n✅ Lancer la lecture SSD? (oui/non)", 
+                        shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C2_SSD_Ideal [label="🔵 LECTURE SSD EN COURS\n◉ dd if=/dev/sdX of=/backup/disk.img bs=1M iflag=nocache,noatime conv=noerror", 
+                      tooltip="Opération en cours...",
+                      fillcolor="#0056b3"];
+        
+        // Options stockage insuffisant
+        C2_Storage_KO [label="Stockage insuffisant", shape=note, fillcolor="#FF8F00", fontcolor="black"];
+        
+        C2_Streaming [label="⬜ STREAMING CLOUD\n📋 DESTINATION: user@remote\n📋 DÉBIT NÉCESSAIRE: >10Mb/s\n⚠️ RISQUE: Coupure réseau\nOptions:\n1. Configurer streaming SSH\n2. Configurer rclone\n3. Annuler\n✅ Choix (1-3):", 
+                      shape=diamond, fillcolor="white", fontcolor="black"];
+        
+        C2_Chunking [label="⬜ CHUNKING MULTI-DISQUES\n📋 DISQUES DISPONIBLES:\n• /media/disk1: XX Go\n• /media/disk2: YY Go\n• /media/disk3: ZZ Go\nOptions:\n1. Utiliser tous les disques\n2. Sélectionner disques\n3. Annuler\n✅ Choix (1-3):", 
+                     shape=diamond, fillcolor="white", fontcolor="black"];
+        
+        C2_Crypto [label="⬜ DÉCISION: Disque chiffré ?\n📋 DÉTECTION AUTO: [LUKS/non]\nOptions:\n1. Oui (LUKS détecté)\n2. Non (pas de chiffrement)\n3. Je ne sais pas\n✅ Choix (1-3):", 
+                   shape=diamond, fillcolor="white", fontcolor="black"];
+        
+        C2_Crypto_Yes [label="LUKS détecté", fillcolor="#FF8F00", fontcolor="black"];
+        C2_Crypto_Confirm [label="✅ CONFIRMATION LUKS\n📋 ACTION: Sauver header d'abord\n🔐 FICHIER: header.luks\n⚠️ IMPORTANT: Sans header, données perdues\n✅ Sauvegarder le header LUKS? (oui/non)", 
+                           shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C2_Crypto_Ideal [label="🟢 SAUVEGARDE HEADER\n◉ cryptsetup luksHeaderBackup /dev/sdX --header-backup-file header.luks", 
+                         fillcolor="#2E7D32", fontcolor="white"];
+        
+        C2_Crypto_No [label="Non chiffré", fillcolor="#0056b3"];
+    }
+
+    DiagBad -> C2_Urgent;
+    C2_Urgent -> C2_Storage [label="Si oui"];
+    C2_Urgent -> DiagBad [label="Si non, revenir", style=dotted];
+    
+    C2_Storage -> C2_Storage_OK;
+    C2_Storage -> C2_Storage_KO;
+    
+    C2_Storage_OK -> C2_Type;
+    C2_Storage_KO -> C2_Streaming;
+    C2_Storage_KO -> C2_Chunking;
+    
+    C2_Type -> C2_HDD;
+    C2_Type -> C2_SSD;
+    
+    C2_HDD -> C2_Crypto;
+    C2_SSD -> C2_Crypto;
+    
+    C2_Crypto -> C2_Crypto_Yes;
+    C2_Crypto -> C2_Crypto_No;
+    
+    C2_Crypto_Yes -> C2_Crypto_Confirm;
+    C2_Crypto_Confirm -> C2_Crypto_Ideal [label="Si oui"];
+    C2_Crypto_Confirm -> C2_Crypto [label="Si non, revenir", style=dotted];
+    
+    C2_Crypto_Ideal -> C2_Crypto_No [label="Après sauvegarde header"];
+    
+    C2_Crypto_No -> C2_HDD_Confirm;
+    C2_Crypto_No -> C2_SSD_Confirm;
+    
+    C2_HDD_Confirm -> C2_HDD_Ideal [label="Si oui"];
+    C2_HDD_Confirm -> C2_HDD [label="Si non, revenir", style=dotted];
+    
+    C2_SSD_Confirm -> C2_SSD_Ideal [label="Si oui"];
+    C2_SSD_Confirm -> C2_SSD [label="Si non, revenir", style=dotted];
+    
+    C2_Streaming -> C2_Type;
+    C2_Chunking -> C2_Type;
+
+    // =======================================================================
+    // CAS 3 : BRUITS ANORMAUX - CONFIRMATIONS SONORES
+    // =======================================================================
+    subgraph cluster_cas3 {
+        label = "CAS 3 : BRUITS ANORMAUX";
+        color="#FF8F00";
+        
+        C3_Listen [label="🟠 ÉCOUTEZ LE DISQUE\n🎤 [APPUYEZ SUR ESPACE quand vous écoutez]\n📋 Une fois le bruit identifié, répondez:\n1. Clics réguliers\n2. Grincement métallique\n3. Bip électronique\n4. Silence moteur\n5. Clics puis arrêt", 
+                   tooltip="En attente de votre réponse...",
+                   shape=note, fillcolor="#FF8F00", fontcolor="black"];
+        
+        C3_Click [label="CLICS RÉGULIERS"];
+        C3_Click_Confirm [label="✅ CONFIRMATION: Clics réguliers\n📋 ACTION PRÉVUE: ddrescue urgent\n⚠️ SURVEILLANCE: Écouter si bruit change\n⏱️ ESTIMATION: X heures\n✅ Lancer ddrescue? (oui/non)", 
+                          shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C3_Click_Ideal [label="🔵 DDRESCUE URGENT", fillcolor="#0056b3"];
+        
+        C3_Scratch [label="GRINCEMENT MÉTALLIQUE"];
+        C3_Scratch_Confirm [label="🔴 ALERTE: Grincement détecté\n⚠️ ACTION REQUISE: STOP IMMÉDIAT\n📋 COUPER L'ALIMENTATION MAINTENANT\n✅ Confirmez-vous que l'alimentation est coupée? (oui)", 
+                            shape=note, fillcolor="#D32F2F", fontcolor="white"];
+        
+        C3_Scratch_Ideal [label="🟠 PASSER EN MODE PRO", fillcolor="#FF8F00", fontcolor="black"];
+        
+        C3_Beep [label="BIP ÉLECTRONIQUE"];
+        C3_Beep_Confirm [label="✅ CONFIRMATION: Bip électronique\n📋 ACTION PRÉVUE: Changement PCB\n🔍 RECHERCHE: PCB identique (même firmware)\n⚠️ TRANSFERT: ROM à conserver\n✅ Procéder à la recherche de PCB? (oui/non)", 
+                         shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C3_Beep_Ideal [label="🟠 RECHERCHE PCB", fillcolor="#FF8F00", fontcolor="black"];
+        
+        C3_Silent [label="SILENCE MOTEUR"];
+        C3_Silent_Confirm [label="✅ CONFIRMATION: Silence moteur\n📋 ACTION PRÉVUE: Vérifier alimentation\n🔌 VÉRIFIER: Câble, alimentation, connecteurs\n✅ Avez-vous vérifié l'alimentation? (oui/non)", 
+                           shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C3_Silent_Ideal [label="🟠 VÉRIFICATION ALIMENTATION", fillcolor="#FF8F00", fontcolor="black"];
+        
+        C3_ClickStop [label="CLICS PUIS ARRÊT"];
+        C3_ClickStop_Confirm [label="✅ CONFIRMATION: Clics puis arrêt\n📋 ACTION PRÉVUE: Alimentation dédiée\n🔌 UTILISER: Alimentation secteur 12V+5V\n✅ Avez-vous branché une alimentation dédiée? (oui/non)", 
+                              shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C3_ClickStop_Ideal [label="🟠 ALIMENTATION DÉDIÉE", fillcolor="#FF8F00", fontcolor="black"];
+    }
+
+    DiagNoise -> C3_Listen;
+    C3_Listen -> C3_Click;
+    C3_Listen -> C3_Scratch;
+    C3_Listen -> C3_Beep;
+    C3_Listen -> C3_Silent;
+    C3_Listen -> C3_ClickStop;
+    
+    C3_Click -> C3_Click_Confirm;
+    C3_Click_Confirm -> C3_Click_Ideal [label="Si oui"];
+    C3_Click_Confirm -> C3_Listen [label="Si non, revenir", style=dotted];
+    C3_Click_Ideal -> C2_HDD_Ideal;
+    
+    C3_Scratch -> C3_Scratch_Confirm;
+    C3_Scratch_Confirm -> C3_Scratch_Ideal [label="Si oui"];
+    C3_Scratch_Ideal -> DeadPro;
+    
+    C3_Beep -> C3_Beep_Confirm;
+    C3_Beep_Confirm -> C3_Beep_Ideal [label="Si oui"];
+    C3_Beep_Confirm -> C3_Listen [label="Si non, revenir", style=dotted];
+    C3_Beep_Ideal -> DeadPCB;
+    
+    C3_Silent -> C3_Silent_Confirm;
+    C3_Silent_Confirm -> C3_Silent_Ideal [label="Si oui"];
+    C3_Silent_Confirm -> C3_Listen [label="Si non, revenir", style=dotted];
+    C3_Silent_Ideal -> C3_Beep_Ideal;
+    
+    C3_ClickStop -> C3_ClickStop_Confirm;
+    C3_ClickStop_Confirm -> C3_ClickStop_Ideal [label="Si oui"];
+    C3_ClickStop_Confirm -> C3_Listen [label="Si non, revenir", style=dotted];
+    C3_ClickStop_Ideal -> C2_HDD_Ideal;
+
+    // =======================================================================
+    // CAS 4 : DISQUE NON DÉTECTÉ - CONFIRMATIONS PHYSIQUES
+    // =======================================================================
+    subgraph cluster_cas4 {
+        label = "CAS 4 : DISQUE NON DÉTECTÉ";
+        color="#B71C1C";
+        
+        C4_Check1 [label="✅ ÉTAPE 1: Changer le câble\n🔌 Avez-vous changé le câble? (oui/non)", 
+                   shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C4_Check2 [label="✅ ÉTAPE 2: Changer le port\n🔌 Avez-vous testé un autre port? (oui/non)", 
+                   shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C4_Check3 [label="✅ ÉTAPE 3: Tester autre PC\n💻 Avez-vous testé sur un autre ordinateur? (oui/non)", 
+                   shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C4_USB [label="✅ ÉTAPE 4: Boîtier USB ?\n📦 Avez-vous sorti le disque du boîtier? (oui/non)", 
+                shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C4_StillDead [label="⬜ TOUJOURS PAS DÉTECTÉ ?\n📋 Après toutes ces vérifications:\nOptions:\n1. PCB probablement mort\n2. Envoyer en récupération pro\n✅ Choix (1-2):", 
+                      shape=diamond, fillcolor="white", fontcolor="black"];
+        
+        C4_PCB [label="✅ RECHERCHE PCB\n🔍 Modèle exact: [à entrer]\n🔍 Firmware: [à vérifier]\n⚠️ La ROM doit être transférée\n✅ Avez-vous trouvé un PCB compatible? (oui/non)", 
+                shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C4_Pro [label="✅ CONFIRMATION PRO\n💰 Coût estimé: 500-3000€\n⏱️ Délai: 1-4 semaines\n📋 Taux réussite: 60-80%\n✅ Confirmez-vous l'envoi en labo? (oui/non)", 
+                shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C4_Last [label="⬜ DERNIER RECOURS\n⚠️ ACTIONS RISQUÉES:\n1. ddrescue -d (direct I/O)\n2. Congélation (⚠️ très risqué)\n✅ Voulez-vous tenter un dernier recours? (oui/non)", 
+                 shape=diamond, fillcolor="white", fontcolor="black"];
+    }
+
+    DiagDead -> C4_Check1;
+    C4_Check1 -> C4_Check2 [label="Si oui"];
+    C4_Check1 -> C4_Check1 [label="Si non, revenir", style=dotted];
+    
+    C4_Check2 -> C4_Check3 [label="Si oui"];
+    C4_Check2 -> C4_Check2 [label="Si non, revenir", style=dotted];
+    
+    C4_Check3 -> C4_USB [label="Si oui"];
+    C4_Check3 -> C4_Check3 [label="Si non, revenir", style=dotted];
+    
+    C4_USB -> C4_StillDead [label="Si oui"];
+    C4_USB -> C4_USB [label="Si non, revenir", style=dotted];
+    
+    C4_StillDead -> C4_PCB;
+    C4_StillDead -> C4_Pro;
+    
+    C4_PCB -> C4_Last [label="Si oui"];
+    C4_PCB -> C4_StillDead [label="Si non, revenir", style=dotted];
+    
+    C4_Last -> C4_Pro [label="Si échec"];
+
+    // =======================================================================
+    // CAS 5 : ZFS - AVEC CONFIRMATIONS
+    // =======================================================================
+    subgraph cluster_cas5 {
+        label = "CAS 5 : POOL ZFS";
+        color="#6A1B9A";
+        
+        C5_Principle [label="🔴 PRINCIPE FONDAMENTAL\n📋 RÈGLE: Ne jamais travailler sur disques originaux\n✅ Avez-vous bien compris? (oui/non)", 
+                      fillcolor="#D32F2F", fontcolor="white"];
+        
+        C5_Export [label="✅ EXPORTER LE POOL\n📋 POOL: [nom]\n⚠️ Cette opération démonte le pool\n✅ Exporter maintenant? (oui/non)", 
+                   shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C5_DD [label="✅ DDRESCUE CHAQUE DISQUE\n📋 DISQUES: /dev/sdX, /dev/sdY...\n📋 DESTINATION: /backup/disk1.img, /backup/disk2.img\n⏱️ ESTIMATION: X heures par disque\n✅ Lancer ddrescue sur tous les disques? (oui/non)", 
+               shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C5_Loop [label="✅ MONTER IMAGES EN LOOP\n📋 IMAGES: /backup/disk1.img, /backup/disk2.img\n📋 LOOP: /dev/loop0, /dev/loop1\n✅ Monter les images? (oui/non)", 
+                 shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C5_Import [label="✅ IMPORTER DEPUIS IMAGES\n📋 POOL: [nom]\n⚙️ OPTIONS: -f -N (no mount)\n✅ Importer le pool? (oui/non)", 
+                   shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C5_Extract [label="✅ EXTRAIRE DONNÉES\n📋 DESTINATION: /backup/recovery/\nOptions:\n1. zfs send (recommandé)\n2. cp depuis .zfs/snapshot/\n✅ Lancer l'extraction? (oui/non)", 
+                    shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C5_Verify [label="🟠 VÉRIFIER DONNÉES\n📋 Tester quelques fichiers:\n• Documents importants\n• Photos\n• Bases de données\n✅ Les données sont-elles lisibles? (oui/non)", 
+                   fillcolor="#FF8F00", fontcolor="black"];
+    }
+
+    DiagZFS -> C5_Principle;
+    C5_Principle -> C5_Export [label="Si oui"];
+    C5_Principle -> DiagZFS [label="Si non, revenir", style=dotted];
+    
+    C5_Export -> C5_DD [label="Si oui"];
+    C5_Export -> C5_Principle [label="Si non, revenir", style=dotted];
+    
+    C5_DD -> C5_Loop [label="Si oui"];
+    C5_DD -> C5_Export [label="Si non, revenir", style=dotted];
+    
+    C5_Loop -> C5_Import [label="Si oui"];
+    C5_Loop -> C5_DD [label="Si non, revenir", style=dotted];
+    
+    C5_Import -> C5_Extract [label="Si oui"];
+    C5_Import -> C5_Loop [label="Si non, revenir", style=dotted];
+    
+    C5_Extract -> C5_Verify [label="Si oui"];
+    C5_Extract -> C5_Import [label="Si non, revenir", style=dotted];
+    
+    C5_Verify -> PostImage [label="Si oui"];
+    C5_Verify -> C5_Extract [label="Si non, réessayer", style=dotted];
+
+    // =======================================================================
+    // CAS 6 : RAID LOGICIEL - AVEC CONFIRMATIONS
+    // =======================================================================
+    subgraph cluster_cas6 {
+        label = "CAS 6 : RAID LOGICIEL";
+        color="#00796B";
+        
+        C6_Type [label="⬜ TYPE DE RAID ?\n📋 DÉTECTION AUTO: [type]\nOptions:\n1. mdadm\n2. LVM\n3. FakeRAID\n✅ Choix (1-3):", 
+                 shape=diamond, fillcolor="white", fontcolor="black"];
+        
+        C6_mdadm [label="✅ ASSEMBLER MDADM\n📋 COMMANDE: mdadm --assemble --scan\n📋 MEMBRES: [disques]\n✅ Assembler maintenant? (oui/non)", 
+                  shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C6_LVM [label="✅ ACTIVER LVM\n📋 COMMANDES: pvscan, vgscan, lvscan\n📋 VOLUMES: [LV trouvés]\n✅ Activer LVM? (oui/non)", 
+                shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C6_Fake [label="✅ ACTIVER FAKERAID\n📋 COMMANDE: dmraid -ay\n📋 DISPOSITIFS: /dev/mapper/\n✅ Activer FakeRAID? (oui/non)", 
+                 shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C6_DD [label="✅ DDRESCUE RAID\n📋 DISPOSITIF: /dev/mdX\n📋 DESTINATION: /backup/raid.img\n⏱️ ESTIMATION: X heures\n✅ Lancer ddrescue? (oui/non)", 
+               shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        C6_Verify [label="🟠 VÉRIFIER ASSEMBLAGE\n📋 Le RAID est-il correctement assemblé?\n📋 Les fichiers sont-ils visibles?\n✅ Confirmez-vous? (oui/non)", 
+                   fillcolor="#FF8F00", fontcolor="black"];
+    }
+
+    DiagRAID -> C6_Type;
+    C6_Type -> C6_mdadm;
+    C6_Type -> C6_LVM;
+    C6_Type -> C6_Fake;
+    
+    C6_mdadm -> C6_DD [label="Si oui"];
+    C6_mdadm -> C6_Type [label="Si non, revenir", style=dotted];
+    
+    C6_LVM -> C6_DD [label="Si oui"];
+    C6_LVM -> C6_Type [label="Si non, revenir", style=dotted];
+    
+    C6_Fake -> C6_DD [label="Si oui"];
+    C6_Fake -> C6_Type [label="Si non, revenir", style=dotted];
+    
+    C6_DD -> C6_Verify [label="Si oui"];
+    C6_DD -> C6_Type [label="Si non, revenir", style=dotted];
+    
+    C6_Verify -> PostImage [label="Si oui"];
+    C6_Verify -> C6_DD [label="Si non, réessayer", style=dotted];
+
+    // =======================================================================
+    // PHASE POST-RÉCUPÉRATION - CONFIRMATIONS FINALES
+    // =======================================================================
+    subgraph cluster_post {
+        label = "PHASE FINALE : TRAVAIL SUR L'IMAGE";
+        color="#388E3C";
+        
+        PostImage [label="🔵 IMAGE DISPONIBLE\n/backup/disk.img", fillcolor="#0056b3"];
+        
+        PostAnalyse [label="⬜ ANALYSER L'IMAGE ?\nOptions:\n1. Testdisk (partitions)\n2. Photorec (carving)\n3. Montage direct\n✅ Choix (1-3):", 
+                     shape=diamond, fillcolor="white", fontcolor="black"];
+        
+        PostPart_OK [label="✅ TESTDISK\n📋 ANALYSE: Recherche partitions\n📋 RAPPORT: Partitions trouvées\n✅ Restaurer la table? (oui/non)", 
+                     shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        PostPart_KO [label="✅ PHOTOREC\n📋 ACTION: File carving\n📋 TYPES: JPEG, PDF, DOC, etc.\n📋 DESTINATION: /recovery/\n✅ Lancer photorec? (oui/non)", 
+                     shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        PostMount [label="✅ MONTAGE IMAGE\n📋 COMMANDE: mount -o ro,loop /backup/disk.img /mnt\n✅ Monter l'image? (oui/non)", 
+                   shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        PostCopy [label="✅ COPIER FICHIERS\n📋 SOURCE: /mnt/\n📋 DESTINATION: /destination/\n📋 ESTIMATION: X Go à copier\n✅ Lancer rsync? (oui/non)", 
+                  shape=note, fillcolor="#4CAF50", fontcolor="black"];
+        
+        PostVerify [label="🟠 VÉRIFIER FICHIERS\n📋 Tester 5-10 fichiers aléatoires:\n• [fichier1] OK?\n• [fichier2] OK?\n• [fichier3] OK?\n✅ Les fichiers sont-ils lisibles? (oui/non)", 
+                    fillcolor="#FF8F00", fontcolor="black"];
+        
+        PostArchive [label="✅ ARCHIVER IMAGE\n📋 COMPRESSION: gzip / xz / zstd\n📋 MÉTADONNÉES: rapport.txt\n📋 CORRECTION: par2\n✅ Archiver maintenant? (oui/non)", 
+                     shape=note, fillcolor="#4CAF50", fontcolor="black"];
+    }
+
+    // Connexions vers PostImage depuis tous les chemins
+    C2_HDD_Ideal -> PostImage;
+    C2_SSD_Ideal -> PostImage;
+    C2_Streaming -> PostImage;
+    C2_Chunking -> PostImage;
+    C5_Verify -> PostImage;
+    C6_Verify -> PostImage;
+    
+    PostImage -> PostAnalyse;
+    PostAnalyse -> PostPart_OK;
+    PostAnalyse -> PostPart_KO;
+    PostAnalyse -> PostMount;
+    
+    PostPart_OK -> PostMount;
+    PostPart_KO -> PostCopy [label="phoj'essaye de faire baisser leur tendance au blutorec"];
+    
+    PostMount -> PostCopy;
+    PostCopy -> PostVerify;
+    PostVerify -> PostArchive [label="Si oui"];
+    PostVerify -> PostCopy [label="Si non, réessayer", style=dotted];
+    PostArchive -> End;
+
+    // =======================================================================
+    // ISSUES
+    // =======================================================================
+    DeadPro [label="🟠 RÉCUPÉRATION PROFESSIONNELLE\n✅ Confirmez-vous l'envoi en labo? (oui/non)", fillcolor="#FF8F00", fontcolor="black"];
+    DeadPCB [label="🟠 RECHERCHE PCB\n✅ Avez-vous trouvé un PCB compatible? (oui/non)", fillcolor="#FF8F00", fontcolor="black"];
+    
+    C3_Scratch_Ideal -> DeadPro;
+    C4_Pro -> DeadPro;
+    C4_PCB -> DeadPCB;
+    DeadPCB -> DeadPro [label="Si oui"];
+    DeadPCB -> C4_StillDead [label="Si non", style=dotted];
+    
+    End [label="✅ DONNÉES RÉCUPÉRÉES !", shape=doubleoctagon, fillcolor="#1B5E20"];
+    DeadPro -> EndDead [label="Si oui, rapport"];
+    
+    EndDead [label="❌ ÉCHEC RÉCUPÉRATION\nConsulter professionnel", shape=doubleoctagon, fillcolor="#B71C1C"];
+}
+
+simplifie
+
+digraph SauvetageExpert {
+    rankdir=TB;
+    compound=true;
+    node [fontname="Arial", shape=box, style=filled, fillcolor="#2D2D2D", fontcolor="#FFFFFF", fontsize=10];
+    edge [fontname="Arial", fontsize=9];
+
+    // =======================================================================
+    // LÉGENDE SIMPLIFIÉE
+    // =======================================================================
+    subgraph cluster_legend {
+        label = "LÉGENDE";
+        color="#DDDDDD";
+        LegendAuto [label="AUTO", fillcolor="#0056b3"];
+        LegendHuman [label="HUMAIN", fillcolor="#FF8F00", fontcolor="black"];
+        LegendMixed [label="MIXTE", fillcolor="#2E7D32"];
+        LegendUrgent [label="URGENT", fillcolor="#D32F2F"];
+        LegendConfirm [label="CONFIRMATION", fillcolor="#4CAF50", fontcolor="black"];
+    }
+
+    // =======================================================================
+    // PHASE 1 : DIAGNOSTIC
+    // =======================================================================
+    Start [label="DIAGNOSTIC", shape=ellipse, fillcolor="#2E7D32"];
+
+    DiagOK [label="CAS 1: Disque sain", fillcolor="#0056b3"];
+    DiagBad [label="CAS 2: Disque défaillant", fillcolor="#FF6B6B"];
+    DiagNoise [label="CAS 3: Bruits anormaux", fillcolor="#FF8F00", fontcolor="black"];
+    DiagDead [label="CAS 4: Non détecté", fillcolor="#B71C1C"];
+    DiagZFS [label="CAS 5: Pool ZFS", fillcolor="#6A1B9A"];
+    DiagRAID [label="CAS 6: RAID logiciel", fillcolor="#00796B"];
+
+    Start -> DiagOK;
+    Start -> DiagBad;
+    Start -> DiagNoise;
+    Start -> DiagDead;
+    Start -> DiagZFS;
+    Start -> DiagRAID;
+
+    // =======================================================================
+    // CAS 1 : DISQUE SAIN
+    // =======================================================================
+    C1_Confirm [label="CONFIRMER backup préventif", shape=note, fillcolor="#4CAF50", fontcolor="black"];
+    C1_Ideal [label="ddrescue backup", fillcolor="#0056b3"];
+
+    DiagOK -> C1_Confirm;
+    C1_Confirm -> C1_Ideal [label="oui"];
+    C1_Confirm -> DiagOK [label="non", style=dotted];
+    C1_Ideal -> EndOK;
+
+    // =======================================================================
+    // CAS 2 : DISQUE DÉFAILLANT (simplifié)
+    // =======================================================================
+    C2_Urgent [label="URGENCE: Récupération", fillcolor="#D32F2F"];
+    C2_Storage [label="Stockage suffisant?", shape=diamond, fillcolor="white", fontcolor="black"];
+
+    DiagBad -> C2_Urgent;
+    C2_Urgent -> C2_Storage;
+    C2_Storage -> C2_OK [label="oui"];
+    C2_Storage -> C2_KO [label="non"];
+
+    C2_OK [label="Méthode standard", fillcolor="#0056b3"];
+    C2_KO [label="Streaming/Chunking", fillcolor="#FF8F00", fontcolor="black"];
+
+    C2_OK -> C2_Type;
+    C2_KO -> C2_Type;
+
+    C2_Type [label="Type disque?", shape=diamond, fillcolor="white", fontcolor="black"];
+    C2_Type -> C2_HDD [label="HDD"];
+    C2_Type -> C2_SSD [label="SSD"];
+
+    C2_HDD [label="ddrescue HDD", fillcolor="#0056b3"];
+    C2_SSD [label="dd bypass cache", fillcolor="#0056b3"];
+
+    C2_HDD -> PostImage;
+    C2_SSD -> PostImage;
+
+    // =======================================================================
+    // CAS 3 : BRUITS ANORMAUX
+    // =======================================================================
+    C3_Listen [label="Écouter le bruit", shape=note, fillcolor="#FF8F00", fontcolor="black"];
+    C3_Choice [label="Type de bruit?", shape=diamond, fillcolor="white", fontcolor="black"];
+
+    DiagNoise -> C3_Listen;
+    C3_Listen -> C3_Choice;
+
+    C3_Choice -> C3_Click [label="Clics"];
+    C3_Choice -> C3_Scratch [label="Grincement"];
+    C3_Choice -> C3_Beep [label="Bip"];
+    C3_Choice -> C3_Silent [label="Silence"];
+
+    C3_Click [label="ddrescue urgent", fillcolor="#0056b3"];
+    C3_Scratch [label="STOP → Pro", fillcolor="#D32F2F"];
+    C3_Beep [label="Changer PCB", fillcolor="#FF8F00", fontcolor="black"];
+    C3_Silent [label="Vérifier alim", fillcolor="#FF8F00", fontcolor="black"];
+
+    C3_Click -> C2_HDD;
+    C3_Scratch -> DeadPro;
+    C3_Beep -> DeadPCB;
+    C3_Silent -> C3_Beep;
+
+    // =======================================================================
+    // CAS 4 : DISQUE NON DÉTECTÉ
+    // =======================================================================
+    C4_Check [label="Changer câble/port", shape=note, fillcolor="#4CAF50", fontcolor="black"];
+    C4_USB [label="Sortir boîtier USB", shape=note, fillcolor="#4CAF50", fontcolor="black"];
+    C4_Still [label="Toujours mort?", shape=diamond, fillcolor="white", fontcolor="black"];
+
+    DiagDead -> C4_Check;
+    C4_Check -> C4_USB [label="si toujours non"];
+    C4_USB -> C4_Still;
+
+    C4_Still -> C4_PCB [label="PCB probable"];
+    C4_Still -> C4_Pro [label="Envoyer pro"];
+
+    C4_PCB [label="Chercher PCB", fillcolor="#FF8F00", fontcolor="black"];
+    C4_Pro [label="Récupération pro", fillcolor="#D32F2F"];
+
+    C4_PCB -> DeadPCB;
+    C4_Pro -> DeadPro;
+
+    // =======================================================================
+    // CAS 5 : ZFS
+    // =======================================================================
+    C5_Principle [label="D'abord sauver disques", fillcolor="#D32F2F"];
+    C5_DD [label="ddrescue chaque disque", fillcolor="#0056b3"];
+    C5_Loop [label="Monter en loop", fillcolor="#0056b3"];
+    C5_Import [label="Importer pool", fillcolor="#0056b3"];
+
+    DiagZFS -> C5_Principle;
+    C5_Principle -> C5_DD [label="compris"];
+    C5_DD -> C5_Loop;
+    C5_Loop -> C5_Import;
+    C5_Import -> PostImage;
+
+    // =======================================================================
+    // CAS 6 : RAID
+    // =======================================================================
+    C6_Type [label="Type RAID?", shape=diamond, fillcolor="white", fontcolor="black"];
+
+    DiagRAID -> C6_Type;
+    C6_Type -> C6_mdadm [label="mdadm"];
+    C6_Type -> C6_LVM [label="LVM"];
+    C6_Type -> C6_Fake [label="FakeRAID"];
+
+    C6_mdadm [label="mdadm --assemble", fillcolor="#0056b3"];
+    C6_LVM [label="vgchange -ay", fillcolor="#0056b3"];
+    C6_Fake [label="dmraid -ay", fillcolor="#0056b3"];
+
+    C6_mdadm -> C6_DD;
+    C6_LVM -> C6_DD;
+    C6_Fake -> C6_DD;
+
+    C6_DD [label="ddrescue RAID", fillcolor="#0056b3"];
+    C6_DD -> PostImage;
+
+    // =======================================================================
+    // PHASE FINALE
+    // =======================================================================
+    PostImage [label="IMAGE OBTENUE", fillcolor="#0056b3"];
+
+    PostAnalyse [label="Analyser image?", shape=diamond, fillcolor="white", fontcolor="black"];
+    PostMount [label="Monter image", fillcolor="#0056b3"];
+    PostCopy [label="Copier fichiers", fillcolor="#0056b3"];
+    PostVerify [label="Vérifier", fillcolor="#FF8F00", fontcolor="black"];
+
+    PostImage -> PostAnalyse;
+    PostAnalyse -> PostMount [label="montage"];
+    PostAnalyse -> PostCarve [label="carving"];
+
+    PostCarve [label="photorec", fillcolor="#FF8F00", fontcolor="black"];
+    PostCarve -> PostCopy;
+
+    PostMount -> PostCopy;
+    PostCopy -> PostVerify;
+    PostVerify -> EndOK;
+
+    // =======================================================================
+    // FIN
+    // j'essaye de faire baisser leur tendance au bluj'essaye de faire baisser leur tendance au bluj'essaye de faire baisser leur tendance au bluj'essaye de faire baisser leur tendance au bluj'essaye de faire baisser leur tendance au bluj'essaye de faire baisser leur tendance au bluhttps://edotor.net/?engine=dot#deflate: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=======================================================================
+    EndOK [label="✅ RÉUSSITE", shape=doubleoctagon, fillcolor="#1B5E20"];
+
+    DeadPro [label="❌ ÉCHEC → Pro", shape=doubleoctagon, fillcolor="#B71C1C"];
+    DeadPCB [label="PCB recherché", fillcolor="#FF8F00", fontcolor="black"];
+
+    DeadPCB -> DeadPro;
+}ormation in the image. Then, wrap the link for the image in parentheses ().
+
+![Screenshot of a comment on a GitHub issue showing ormation in the image. Then, wrap the link for the image in parentheses ().
+
+![Screenshot of a comment on a GitHub issue showing ormation in the image. Then, wrap the link for the image in parentheses ().
+
+![Screenshot of a comment on a GitHub issue showing 
