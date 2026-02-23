@@ -177,14 +177,20 @@ def run_read_benchmark(dev, duration, is_zfs=False):
                    "--rw=read", "--bs=1M", "--direct=1", f"--runtime={duration}", 
                    "--time_based", "--output-format=json"]
 
-        out = json.loads(subprocess.check_output(cmd))
+        logger.info(f"[CMD] {' '.join(cmd)}")
+        raw = subprocess.check_output(cmd, stderr=subprocess.PIPE)
+        out = json.loads(raw)
         bw = out['jobs'][0]['read']['bw_bytes'] / 1024 / 1024
-        return {"value": round(bw, 2), "unit": "Mo/s"}
-
+        result = {"value": round(bw, 2), "unit": "Mo/s"}
+        logger.info(f"[OUT] read {dev}: {result['value']} Mo/s")
+        return result
 
     except subprocess.CalledProcessError as e:
-        return {"error": f"FIO error: {e.output}"}
+        err = e.output.decode('utf-8', errors='replace') if e.output else str(e)
+        logger.error(f"[ERR] fio read {dev}: {err[:200]}")
+        return {"error": f"FIO error: {err[:100]}"}
     except Exception as e:
+        logger.error(f"[ERR] run_read_benchmark {dev}: {e}")
         return {"error": str(e)}
 
 def run_latency_benchmark(dev, duration, is_zfs=False):
@@ -198,13 +204,19 @@ def run_latency_benchmark(dev, duration, is_zfs=False):
                    "--rw=randread", "--bs=4k", "--direct=1", f"--runtime={duration}",
                    "--time_based", "--output-format=json"]
 
-        # Utiliser check_output - PAS DE TIMEOUT
-        out = json.loads(subprocess.check_output(cmd))
+        logger.info(f"[CMD] {' '.join(cmd)}")
+        raw = subprocess.check_output(cmd, stderr=subprocess.PIPE)
+        out = json.loads(raw)
         latency = out['jobs'][0]['read']['clat_ns']['mean'] / 1000000
-        return {"value": round(latency, 3), "unit": "ms"}
+        result = {"value": round(latency, 3), "unit": "ms"}
+        logger.info(f"[OUT] latency {dev}: {result['value']} ms")
+        return result
     except subprocess.CalledProcessError as e:
-        return {"error": f"FIO error: {e.output}"}
+        err = e.output.decode('utf-8', errors='replace') if e.output else str(e)
+        logger.error(f"[ERR] fio latency {dev}: {err[:200]}")
+        return {"error": f"FIO error: {err[:100]}"}
     except Exception as e:
+        logger.error(f"[ERR] run_latency_benchmark {dev}: {e}")
         return {"error": str(e)}
 
 def run_zfs_scrub(pool_name):
@@ -249,6 +261,14 @@ def run_benchmark_thread(tid, payload):
                 t_obj["current_op"] = f"{test_type} sur {dev_clean}"
                 socketio.emit('progress_update', t_obj)
 
+                # Émettre le log de commande vers la toolbox
+                socketio.emit('toolbox_log', {
+                    'ts': datetime.datetime.now().isoformat(),
+                    'level': 'CMD',
+                    'taskId': tid,
+                    'message': f"Démarrage {test_type} sur /dev/{dev_clean}"
+                })
+
                 try:
                     if test_type == "smart":
                         result = DiskScanner.get_smart_data(dev_clean)
@@ -257,16 +277,39 @@ def run_benchmark_thread(tid, payload):
                             result["value"] = float(result['temp'])
                         else:
                             result["value"] = 0
+                        socketio.emit('toolbox_log', {
+                            'ts': datetime.datetime.now().isoformat(),
+                            'level': 'OUT',
+                            'taskId': tid,
+                            'message': f"SMART {dev_clean}: health={result.get('health','?')}, temp={result.get('temp','?')}°C, alertes={len(result.get('critical_alerts',[]))}"
+                        })
 
                     elif test_type == "read":
                         result = run_read_benchmark(dev_clean, duration, is_zfs)
+                        if 'value' in result:
+                            socketio.emit('toolbox_log', {
+                                'ts': datetime.datetime.now().isoformat(),
+                                'level': 'OUT', 'taskId': tid,
+                                'message': f"read {dev_clean}: {result['value']} {result.get('unit','Mo/s')}"
+                            })
 
                     elif test_type == "latency":
                         result = run_latency_benchmark(dev_clean, duration, is_zfs)
+                        if 'value' in result:
+                            socketio.emit('toolbox_log', {
+                                'ts': datetime.datetime.now().isoformat(),
+                                'level': 'OUT', 'taskId': tid,
+                                'message': f"latency {dev_clean}: {result['value']} {result.get('unit','ms')}"
+                            })
 
                     elif test_type == "zfs_scrub" and is_zfs:
                         pool_name = dev_clean.split('/')[0] if '/' in dev_clean else dev_clean
                         result = run_zfs_scrub(pool_name)
+                        socketio.emit('toolbox_log', {
+                            'ts': datetime.datetime.now().isoformat(),
+                            'level': 'OUT', 'taskId': tid,
+                            'message': f"zfs scrub {pool_name}: {result.get('status', result.get('error','?'))}"
+                        })
 
                     elif test_type == "zfs_perf" and is_zfs:
                         result = run_read_benchmark(dev_clean, duration, True)
@@ -450,46 +493,72 @@ def build_chart_svg(chart_type, disks, active_tests, title, colors, points_info_
 
 
 def inject_tooltips(svg_str, points_info, chart_type):
-    """Injecte data-test-id et data-tooltip sur les cercles pygal"""
+    """
+    Injecte data-test-id et data-tooltip sur les cercles de données pygal.
+
+    Structure pygal réelle :
+        <g class="dots">
+          <g class="dot">
+            <circle cx="..." cy="..." r="4"/>   ← PAS de class="dot" sur le cercle
+          </g>
+        </g>
+    On repère donc les <circle> à l'intérieur d'un <g class="dot[^"]*">,
+    puis on remplace chaque <circle> correspondant.
+    """
     import re
     try:
         valid_points = [p for p in points_info if p is not None]
-        circle_pattern = re.compile(r'<circle([^>]*?)(/?>)')
-        matches = list(circle_pattern.finditer(svg_str))
-        data_circles = [m for m in matches if 'dot' in m.group(1)]
+
+        # Trouver les circles qui sont précédés (proche) d'un <g class="dot...">
+        # On utilise un pattern qui capture le contexte parent.
+        # Pygal émet exactement un <circle> par <g class="dot">.
+        dot_circle_pat = re.compile(
+            r'(<g\s[^>]*class="dot[^"]*"[^>]*>)\s*(<circle([^>]*?)(/?>))'
+        )
+        all_matches = list(dot_circle_pat.finditer(svg_str))
 
         replacements = []
         for i, info in enumerate(valid_points):
-            if i >= len(data_circles):
+            if i >= len(all_matches):
                 break
-            match = data_circles[i]
+            m = all_matches[i]
 
+            # Construire le texte du tooltip
             if chart_type == 'errors':
-                count = info['real_value']
+                count = info.get('real_value', 0)
                 fallback = info.get('fallback', False)
-                if count == 0:
-                    status_line = '✅ Aucune erreur critique'
-                else:
-                    status_line = f'⚠ {count} erreur(s) critique(s)'
+                status_line = '✅ Aucune erreur' if count == 0 else f'⚠ {count} erreur(s) critique(s)'
                 tooltip = f"{info['disk']} — {info['date']}\n{status_line}"
                 if fallback:
-                    tooltip += '\n(données SMART du dernier test disponible)'
+                    tooltip += '\n(données du dernier test SMART disponible)'
                 if info.get('alerts'):
                     tooltip += '\n' + '\n'.join(f"  • {a}" for a in info['alerts'][:4])
             elif chart_type == 'read':
-                tooltip = f"{info['disk']} — {info['date']}\nDébit: {info['value']} {info.get('unit','Mo/s')}"
+                tooltip = (f"{info['disk']} — {info['date']}\n"
+                           f"Débit: {info['value']} {info.get('unit','Mo/s')}")
             else:
-                tooltip = f"{info['disk']} — {info['date']}\nLatence: {info['value']} {info.get('unit','ms')}"
+                tooltip = (f"{info['disk']} — {info['date']}\n"
+                           f"Latence: {info['value']} {info.get('unit','ms')}")
 
-            old_attrs = match.group(1)
-            new_elem = (f'<circle data-test-id="{info["test_id"]}" '
-                        f'data-tooltip="{tooltip}" title="{tooltip}" '
-                        f'class="clickable-point dot" style="cursor:pointer;"'
-                        f'{old_attrs}{match.group(2)}')
-            replacements.append((match.start(), match.end(), new_elem))
+            # Échapper les guillemets dans le tooltip pour HTML
+            tooltip_safe = tooltip.replace('"', '&quot;')
 
-        for start, end, new_elem in reversed(replacements):
-            svg_str = svg_str[:start] + new_elem + svg_str[end:]
+            circle_attrs = m.group(3)
+            circle_close = m.group(4)
+            new_circle = (
+                f'<circle data-test-id="{info["test_id"]}" '
+                f'data-tooltip="{tooltip_safe}" title="{tooltip_safe}" '
+                f'class="clickable-point" style="cursor:pointer;"'
+                f'{circle_attrs}{circle_close}'
+            )
+            # On remplace seulement le <circle> (groupes 2,3,4), pas le <g>
+            circle_start = m.start(2)
+            circle_end = m.end(2)
+            replacements.append((circle_start, circle_end, new_circle))
+
+        # Appliquer en ordre inverse pour préserver les offsets
+        for start, end, new_circle in reversed(replacements):
+            svg_str = svg_str[:start] + new_circle + svg_str[end:]
 
     except Exception as e:
         logger.error(f"Erreur injection tooltips: {e}")
@@ -497,6 +566,284 @@ def inject_tooltips(svg_str, points_info, chart_type):
     return svg_str
 
 
+# ── Catégories d'erreurs SMART avec leurs attributs et couleurs ──────────────
+SMART_ERROR_CATEGORIES = [
+    {
+        'key': 'pending',
+        'label': 'Secteurs en attente (Pending)',
+        'icon': '⏳',
+        'note': 'Secteurs suspects — perte de données possible si non récupérés',
+        'attr_ids': [197],
+        'alert_keywords': ['Current_Pending_Sector', 'SECTEURS PENDING'],
+        'colors': ('#e74c3c', '#c0392b', '#f39c12', '#e67e22', '#9b59b6', '#8e44ad',
+                   '#3498db', '#2ecc71', '#1abc9c', '#e74c3c'),
+        'severity': 'critical',
+    },
+    {
+        'key': 'reallocated',
+        'label': 'Secteurs réalloués',
+        'icon': '♻️',
+        'note': 'Secteurs défectueux remplacés par des secteurs de réserve — dégradation physique',
+        'attr_ids': [5, 10],
+        'alert_keywords': ['Reallocated_Sector', 'Reallocated_Event'],
+        'colors': ('#f39c12', '#e67e22', '#e74c3c', '#c0392b', '#27ae60', '#2ecc71',
+                   '#9b59b6', '#3498db', '#1abc9c', '#16a085'),
+        'severity': 'warning',
+    },
+    {
+        'key': 'uncorrectable',
+        'label': 'Erreurs non corrigibles',
+        'icon': '💀',
+        'note': 'Données non récupérables (lecture échouée) — risque de corruption de données',
+        'attr_ids': [187, 198, 201],
+        'alert_keywords': ['Reported_Uncorrect', 'Offline_Uncorrectable', 'Soft_Read_Error'],
+        'colors': ('#9b59b6', '#8e44ad', '#e74c3c', '#c0392b', '#3498db', '#2980b9',
+                   '#f39c12', '#2ecc71', '#1abc9c', '#e67e22'),
+        'severity': 'critical',
+    },
+    {
+        'key': 'other_hw',
+        'label': 'Autres erreurs matérielles',
+        'icon': '⚠️',
+        'note': 'Erreurs E2E, timeouts commandes, erreurs NVMe Media — indicateurs de défaillance',
+        'attr_ids': [184, 188],
+        'alert_keywords': ['End-to-End_Error', 'Command_Timeout', 'Erreurs Média', 'Media Error',
+                           'Avertissement critique'],
+        'colors': ('#3498db', '#2980b9', '#1abc9c', '#16a085', '#9b59b6', '#8e44ad',
+                   '#f39c12', '#e74c3c', '#27ae60', '#e67e22'),
+        'severity': 'warning',
+    },
+]
+
+# IDs SMART dont on prend la VALEUR BRUTE CUMULÉE depuis les alertes NVMe
+NVME_MEDIA_ALERT_KEY = 'Erreurs Média'
+
+
+def extract_smart_value_for_category(smart_data, category):
+    """
+    Extrait la valeur numérique réelle pour une catégorie d'erreur donnée.
+    Priorité : 1) attributs SMART par ID  2) parsing des alert strings.
+    Retourne (value: int, source_name: str).
+    """
+    import re
+    if not smart_data:
+        return 0, ''
+
+    total = 0
+    source_names = []
+
+    # 1) Chercher dans les attributs SMART par ID
+    attrs = smart_data.get('attributes', [])
+    for attr in attrs:
+        attr_id = attr.get('id')
+        if attr_id in category['attr_ids']:
+            raw = attr.get('raw_value', 0)
+            if raw and int(raw) > 0:
+                total += int(raw)
+                source_names.append(attr.get('name', str(attr_id)))
+
+    if total > 0:
+        return total, ' + '.join(source_names)
+
+    # 2) Fallback : parser les alert strings avec regex nombre après ':'
+    alerts = smart_data.get('critical_alerts', [])
+    for alert in alerts:
+        for kw in category['alert_keywords']:
+            if kw in alert:
+                m = re.search(r':\s*(\d+)', alert)
+                if m:
+                    v = int(m.group(1))
+                    if v > 0:
+                        total += v
+                        source_names.append(kw)
+                        break  # un seul match par alert
+
+    return total, ' + '.join(source_names) if source_names else ''
+
+
+def build_smart_error_charts(all_disks, active_tests, colors_all):
+    """
+    Génère un graphique par catégorie d'erreur SMART.
+    Chaque graphique montre l'évolution de la valeur réelle pour tous les disques.
+    Seules les catégories avec au moins une valeur non nulle sont affichées.
+    Retourne du HTML (grille de charts).
+    """
+    charts_parts = []
+    any_smart_data = False
+
+    for category in SMART_ERROR_CATEGORIES:
+        # Collecter les données pour chaque disque sur chaque test
+        disk_series = {}   # disk -> [values par test]
+        disk_points = {}   # disk -> [point_info par test]
+        has_nonzero = False
+
+        for disk in all_disks:
+            values = []
+            points = []
+            for test in active_tests:
+                # Récupérer le dict smart complet (avec fallback si besoin)
+                raw_smart = _get_raw_smart(disk, test)
+                # Détecter si c'est un fallback (le test n'a pas de données SMART directes)
+                direct_smart = test.get('data', {}).get(disk, {}).get('smart')
+                is_fallback = not (direct_smart and ('attributes' in direct_smart or 'critical_alerts' in direct_smart))
+                # Extraire la valeur pour cette catégorie
+                value, src_name = extract_smart_value_for_category(raw_smart, category)
+                values.append(value)
+                if value > 0:
+                    has_nonzero = True
+                    any_smart_data = True
+                elif raw_smart:
+                    any_smart_data = True  # Il y a des données SMART, juste 0 erreur ici
+                points.append({
+                    'disk': disk,
+                    'test_id': test['id'],
+                    'date': test['date'],
+                    'value': value,
+                    'source': src_name,
+                    'fallback': is_fallback,
+                })
+            disk_series[disk] = values
+            disk_points[disk] = points
+
+        if not has_nonzero:
+            continue  # Catégorie vide → on saute
+
+        # Construire le graphique pygal pour cette catégorie
+        severity_colors = {
+            'critical': '#e74c3c',
+            'warning':  '#f39c12',
+        }
+        border_color = severity_colors.get(category['severity'], '#3498db')
+
+        style = pygal.style.Style(
+            background='white',
+            plot_background='#f8f9fa',
+            foreground='#2c3e50',
+            colors=category['colors']
+        )
+        chart = pygal.Line(
+            style=style, fill=False, x_label_rotation=20,
+            show_legend=True, legend_at_bottom=True,
+            width=760, height=320,
+            show_dots=True, dots_size=5,
+            title=f"{category['icon']} {category['label']}",
+            min_scale=3,
+            include_x_axis=True,
+        )
+        chart.x_labels = [t['date'] for t in active_tests]
+
+        points_info_flat = []
+        for disk in all_disks:
+            values = disk_series[disk]
+            if any(v > 0 for v in values):
+                # Afficher les disques avec au moins une valeur non-nulle
+                chart.add(disk, values)
+                points_info_flat.extend(disk_points[disk])
+            else:
+                # Afficher quand même à 0 pour montrer qu'ils sont sains
+                chart.add(disk, values)
+                points_info_flat.extend(disk_points[disk])
+
+        svg = chart.render().decode('utf-8')
+        svg = inject_tooltips_smart(svg, points_info_flat, category)
+
+        charts_parts.append(f'''
+        <div class="chart-block smart-error-block"
+             style="border-left: 4px solid {border_color};">
+            <div class="smart-error-header">
+                <span class="smart-error-icon">{category['icon']}</span>
+                <span class="smart-error-title">{category['label']}</span>
+                <span class="smart-error-note">{category['note']}</span>
+            </div>
+            {svg}
+        </div>''')
+
+    if not charts_parts:
+        # Aucune données SMART du tout → message informatif
+        if not any_smart_data:
+            return '''<div class="charts-single">
+                <div class="chart-block chart-full" style="padding:40px; text-align:center;">
+                    <p style="color:#7f8c8d; font-size:1.1em;">
+                        📊 Aucune donnée SMART dans les tests sélectionnés.<br>
+                        <small>Sélectionnez des tests incluant un contrôle SMART, ou lancez un QuickSmart.</small>
+                    </p>
+                </div>
+            </div>'''
+        return '''<div class="charts-single">
+            <div class="chart-block chart-full" style="padding:40px; text-align:center;">
+                <p style="color:#27ae60; font-size:1.1em;">
+                    ✅ Aucune erreur critique détectée sur les tests sélectionnés.
+                </p>
+            </div>
+        </div>'''
+
+    # Mise en page : 1 ou 2 colonnes selon le nombre de graphiques
+    layout = "charts-dual" if len(charts_parts) >= 2 else "charts-single"
+    return f'<div class="{layout} smart-errors-grid">{"".join(charts_parts)}</div>'
+
+
+def _get_raw_smart(disk, test):
+    """Retourne le dict smart complet pour un disque dans un test donné, avec fallback."""
+    raw = test.get('data', {}).get(disk, {}).get('smart')
+    if raw and ('attributes' in raw or 'critical_alerts' in raw):
+        return raw
+    # Fallback : test SMART le plus récent
+    candidates = sorted(
+        [t for t in tests_store.values()
+         if t.get('status') == 'Finished'
+         and disk in t.get('data', {})
+         and t['data'][disk].get('smart', {}).get('critical_alerts') is not None],
+        key=lambda x: x.get('timestamp', 0), reverse=True
+    )
+    if candidates:
+        return candidates[0]['data'][disk].get('smart', {})
+    return {}
+
+
+def inject_tooltips_smart(svg_str, points_info, category):
+    """
+    Injecte data-test-id et data-tooltip sur les points d'un graphique SMART.
+    Pygal génère <g class="dot..."><circle .../></g> — la classe dot est sur le <g>, pas le <circle>.
+    """
+    import re
+    try:
+        valid_points = [p for p in points_info if p is not None]
+        dot_circle_pat = re.compile(
+            r'(<g\s[^>]*class="dot[^"]*"[^>]*>)\s*(<circle([^>]*?)(/?>))'
+        )
+        all_matches = list(dot_circle_pat.finditer(svg_str))
+        replacements = []
+        for i, info in enumerate(valid_points):
+            if i >= len(all_matches):
+                break
+            m = all_matches[i]
+            value = info.get('value', 0)
+            src = info.get('source', '')
+            fallback_note = '\n(données du dernier test SMART disponible)' if info.get('fallback') else ''
+            if value == 0:
+                status = "✅ 0 — disque sain"
+            else:
+                status = f"⚠ {value:,}"
+                if src:
+                    status += f" ({src})"
+            tooltip = (f"{info['disk']} — {info['date']}\n"
+                       f"{category['icon']} {category['label']}\n"
+                       f"{status}{fallback_note}")
+            tooltip_safe = tooltip.replace('"', '&quot;')
+            circle_attrs = m.group(3)
+            circle_close = m.group(4)
+            new_circle = (
+                f'<circle data-test-id="{info["test_id"]}" '
+                f'data-tooltip="{tooltip_safe}" title="{tooltip_safe}" '
+                f'class="clickable-point" style="cursor:pointer;"'
+                f'{circle_attrs}{circle_close}'
+            )
+            replacements.append((m.start(2), m.end(2), new_circle))
+        for start, end, new_circle in reversed(replacements):
+            svg_str = svg_str[:start] + new_circle + svg_str[end:]
+    except Exception as e:
+        logger.error(f"Erreur tooltips SMART: {e}")
+    return svg_str
 @app.route("/get_charts")
 def get_charts():
     try:
@@ -523,25 +870,9 @@ def get_charts():
         COLORS_ALL  = ('#e74c3c', '#f39c12', '#3498db', '#2ecc71', '#9b59b6', '#1abc9c',
                        '#e67e22', '#c0392b', '#2980b9', '#16a085')
 
-        # ── Mode ERRORS : un seul graphique tous disques confondus ──
+        # ── Mode ERRORS : un graphique par catégorie d'erreur SMART ──
         if chart_type == 'errors':
-            points_info = []
-            unit_label = "erreurs critiques SMART"
-            svg = build_chart_svg(
-                'errors', all_disks, active_tests,
-                f"⚠️ Erreurs critiques SMART — tous disques",
-                COLORS_ALL, points_info
-            )
-            if svg is None:
-                return send_svg_message("📊 Aucune donnée erreurs", "Aucun test SMART sélectionné")
-            svg = inject_tooltips(svg, points_info, 'errors')
-            # Envelopper dans du HTML pour affichage pleine largeur
-            html = f'''<div class="charts-single">
-                <div class="chart-block chart-full">
-                    <h4 class="chart-subtitle">⚠️ Erreurs critiques SMART — tous disques</h4>
-                    {svg}
-                </div>
-            </div>'''
+            html = build_smart_error_charts(all_disks, active_tests, COLORS_ALL)
             return app.response_class(response=html, status=200, mimetype='text/html')
 
         # ── Mode READ / LATENCY : deux graphiques séparés HDD vs NVMe ──
@@ -620,7 +951,17 @@ def index():
     sorted_zfs_tests = dict(sorted(zfs_tests_store.items(),
                                   key=lambda x: x[1].get('timestamp', 0),
                                   reverse=True))
-    
+
+    # Charger les disques avec notes pour afficher l'icône correctement
+    disk_notes_set = set()
+    if os.path.exists(NOTES_FILE):
+        try:
+            with open(NOTES_FILE, 'r') as f:
+                notes = json.load(f)
+            disk_notes_set = {k for k, v in notes.items() if v and v.strip()}
+        except Exception:
+            pass
+
     return render_template("index.html",
         disks=DiskScanner.get_topology(),
         partitions=DiskScanner.get_partitions(),
@@ -628,7 +969,8 @@ def index():
         tests=sorted_tests,
         zfs_tests=sorted_zfs_tests,
         config=current_config,
-        health_map=health_map)
+        health_map=health_map,
+        disk_notes_set=disk_notes_set)
 
 @app.route("/start_test", methods=["POST"])
 def start_test():
@@ -702,16 +1044,14 @@ def test_detail(tid):
     if not test:
         return "Rapport introuvable", 404
     
-    # Générer les graphiques
+    # Générer les graphiques (bar chart comparatif par disque)
     charts = {}
     if test.get('status') == 'Finished':
         for metric in ['read', 'latency']:
             if any(metric in data for data in test['data'].values()):
                 chart = pygal.Bar(
-                    height=300,
-                    show_legend=False,
-                    title=f"{metric.capitalize()} par disque",
-                    width=600
+                    height=300, show_legend=False,
+                    title=f"{metric.capitalize()} par disque", width=600
                 )
                 has_data = False
                 for dev, res in test['data'].items():
@@ -724,8 +1064,96 @@ def test_detail(tid):
                             pass
                 if has_data:
                     charts[metric] = chart.render_data_uri()
-    
+
+    # Chercher test_detail.html : d'abord à côté de app.py, puis dans templates/
+    detail_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'test_detail.html')
+    if os.path.exists(detail_path):
+        from jinja2 import Template
+        with open(detail_path, 'r', encoding='utf-8') as f:
+            tmpl_src = f.read()
+        from flask import current_app
+        from jinja2 import Environment, FileSystemLoader
+        tmpl_dir = os.path.dirname(detail_path)
+        env = current_app.jinja_env
+        template = env.from_string(tmpl_src)
+        html = template.render(test=test, charts=charts)
+        return app.response_class(response=html, status=200, mimetype='text/html')
+
     return render_template("test_detail.html", test=test, charts=charts)
+
+
+@app.route("/test_fragment/<tid>")
+def test_fragment(tid):
+    """Renvoie le contenu du rapport de test sous forme de fragment HTML (style + body)."""
+    import re as _re
+
+    # Charger le test depuis le store ou le fichier
+    test = tests_store.get(tid)
+    if not test:
+        file_path = os.path.join(RESULTS_DIR, f"{tid}.json")
+        if os.path.exists(file_path):
+            try:
+                with open(file_path, 'r') as fh:
+                    test = json.load(fh)
+                    tests_store[tid] = test
+            except Exception as exc:
+                return f"<p style='color:red'>Erreur lecture: {exc}</p>", 500
+    if not test:
+        return "<p>Rapport introuvable</p>", 404
+
+    # Générer les graphiques comparatifs
+    charts = {}
+    if test.get('status') == 'Finished':
+        for metric in ['read', 'latency']:
+            if any(metric in d for d in (test.get('data') or {}).values()):
+                bar = pygal.Bar(height=260, show_legend=False,
+                                title=f"{metric.capitalize()} par disque", width=560)
+                any_val = False
+                for dev, res in (test.get('data') or {}).items():
+                    if metric in res and 'value' in res[metric]:
+                        try:
+                            bar.add(dev, float(res[metric]['value']))
+                            any_val = True
+                        except (ValueError, TypeError):
+                            pass
+                if any_val:
+                    charts[metric] = bar.render_data_uri()
+
+    # Charger test_detail.html depuis le dossier de app.py (même logique que test_detail route)
+    detail_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'test_detail.html')
+    if os.path.exists(detail_path):
+        from flask import current_app
+        env = current_app.jinja_env
+        with open(detail_path, 'r', encoding='utf-8') as fh:
+            tmpl_src = fh.read()
+        template = env.from_string(tmpl_src)
+        full_html = template.render(test=test, charts=charts)
+    else:
+        from flask import render_template as _rt
+        full_html = _rt("test_detail.html", test=test, charts=charts)
+
+    # Extraire le bloc <style> du <head> (styles critiques pour l'affichage)
+    style_match = _re.search(r'<style>(.*?)</style>', full_html, _re.DOTALL)
+    style_block = f'<style id="tf-styles">{style_match.group(1)}</style>' if style_match else ''
+
+    # Extraire le contenu du <main>
+    main_match = _re.search(r'<main[^>]*>(.*?)</main>', full_html, _re.DOTALL)
+    main_content = main_match.group(1) if main_match else full_html
+
+    fragment = f'{style_block}<div class="test-fragment-wrap" style="padding:4px 0">{main_content}</div>'
+    return app.response_class(response=fragment, status=200, mimetype='text/html')
+
+
+@app.route("/get_reports_json")
+def get_reports_json():
+    """Retourne la liste des tests pour mise à jour dynamique."""
+    sorted_tests = sorted(tests_store.values(), key=lambda x: x.get('timestamp', 0), reverse=True)
+    return jsonify([{
+        "id": t.get("id"),
+        "name": t.get("name", "?"),
+        "date": t.get("date", ""),
+        "status": t.get("status", "?"),
+    } for t in sorted_tests])
 
 @app.route("/delete_test/<tid>", methods=['POST'])
 def delete_test(tid):
@@ -785,6 +1213,9 @@ def clear_toolbox_tasks():
     toolbox_history_tasks = [t for t in toolbox_history_tasks if t.get('status') == 'Running']
     return jsonify({"status": "ok"})
 
+MAX_LOG_LINES  = 5000   # Rotation : tronquer le fichier au-delà de cette limite
+MAX_LOG_MEMORY = 500    # Garder en mémoire (RAM) les N dernières entrées
+
 @app.route("/toolbox_log", methods=['POST'])
 def toolbox_log():
     """Reçoit et persiste les logs de la toolbox frontend"""
@@ -798,19 +1229,31 @@ def toolbox_log():
         task_id = (entry.get('taskId') or 'system').ljust(20)
         message = entry.get('message', '')
         
-        # Format standard
+        # Format standard compatible syslog-ng
         log_line = f"[{ts}] [{level}] [{task_id}] {message}\n"
         
         # Écrire dans le fichier toolbox.log
         with open(TOOLBOX_LOG_FILE, 'a', encoding='utf-8') as f:
             f.write(log_line)
         
-        # Garder en mémoire (max 500 entrées)
+        # Rotation : si > MAX_LOG_LINES, garder seulement les dernières
+        try:
+            with open(TOOLBOX_LOG_FILE, 'r', encoding='utf-8') as f:
+                lines = f.readlines()
+            if len(lines) > MAX_LOG_LINES:
+                keep = lines[-(MAX_LOG_LINES - 100):]  # -100 pour éviter la rotation à chaque ligne
+                with open(TOOLBOX_LOG_FILE, 'w', encoding='utf-8') as f:
+                    f.writelines(keep)
+                logger.info(f"Rotation toolbox.log : {len(lines)} → {len(keep)} lignes")
+        except Exception:
+            pass
+        
+        # Garder en mémoire (limité à MAX_LOG_MEMORY)
         toolbox_history.append({
             'ts': ts, 'level': level.strip(), 'taskId': task_id.strip(),
             'message': message
         })
-        if len(toolbox_history) > 500:
+        if len(toolbox_history) > MAX_LOG_MEMORY:
             toolbox_history.pop(0)
         
         return jsonify({"status": "ok"})
@@ -837,6 +1280,23 @@ def clear_toolbox_logs():
         return jsonify({"status": "ok"})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
+
+@app.route("/export_toolbox_logs")
+def export_toolbox_logs():
+    """
+    Exporte le fichier toolbox.log en téléchargement direct.
+    Compatible avec une intégration syslog-ng ou rsyslog :
+      imfile { File("/path/to/toolbox.log"); Tag("storage-monitor"); };
+    """
+    from flask import send_file as flask_send_file
+    if os.path.exists(TOOLBOX_LOG_FILE):
+        return flask_send_file(
+            os.path.abspath(TOOLBOX_LOG_FILE),
+            mimetype='text/plain',
+            as_attachment=True,
+            download_name=f"toolbox_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+        )
+    return jsonify({"status": "error", "message": "Aucun fichier de log"}), 404
 
 @app.route("/save_disk_note", methods=['POST'])
 def save_disk_note():
@@ -1000,7 +1460,25 @@ def start_backup():
             f"status={status}"
         ]
         
-        # Lancer dans un thread
+        # Récupérer la taille totale pour calculer le pourcentage
+        dev_name = source.replace('/dev/', '')
+        total_bytes = DiskScanner.get_device_size_bytes(dev_name)
+        logger.info(f"[CMD] dd backup {source} → {destination} (taille: {total_bytes} o)")
+
+        # Ajouter le toolbox task
+        backup_id = f"backup_{int(time.time())}"
+        start_ts = datetime.datetime.now().isoformat()
+        toolbox_history_tasks.append({
+            'id': backup_id,
+            'name': f"💾 Backup {dev_name}",
+            'status': 'Running',
+            'startTime': start_ts,
+            'endTime': None,
+            'progress': 0,
+            'current_op': f"{source} → {destination}",
+            'detail': f"bs={bs}, conv={conv}"
+        })
+
         def run_backup():
             try:
                 process = subprocess.Popen(
@@ -1010,36 +1488,92 @@ def start_backup():
                     text=True,
                     bufsize=1
                 )
-                
-                backup_id = f"backup_{int(time.time())}"
-                
+
+                last_bytes = 0
+                last_speed = "—"
+
                 for line in process.stderr:
-                    if 'bytes' in line:
-                        # Extraire la progression
+                    line = line.strip()
+                    if not line:
+                        continue
+
+                    # dd avec status=progress émet des lignes comme :
+                    # "1073741824 bytes (1.1 GB, 1.0 GiB) copied, 5.2 s, 206 MB/s"
+                    m = re.search(r'^(\d+)\s+bytes.*?,\s*([\d.]+)\s*s(?:,\s*([\d.]+ \S+/s))?', line)
+                    if m:
+                        copied = int(m.group(1))
+                        elapsed = float(m.group(2))
+                        speed_str = m.group(3) or "—"
+                        last_bytes = copied
+                        last_speed = speed_str
+
+                        pct = int(min(copied / total_bytes * 100, 99)) if total_bytes > 0 else 0
+                        copied_human = DiskScanner._format_bytes(str(copied))
+                        total_human = DiskScanner._format_bytes(str(total_bytes)) if total_bytes else "?"
+
                         socketio.emit('backup_progress', {
                             'id': backup_id,
-                            'progress': line.strip(),
+                            'percent': pct,
+                            'copied': copied_human,
+                            'total': total_human,
+                            'speed': speed_str,
+                            'elapsed': round(elapsed, 1),
                             'source': source,
                             'destination': destination
                         })
-                
+                        logger.info(f"[OUT] dd {dev_name}: {copied_human}/{total_human} ({pct}%) @ {speed_str}")
+
+                        # Sync toolbox
+                        for task in toolbox_history_tasks:
+                            if task['id'] == backup_id:
+                                task['progress'] = pct
+                                task['current_op'] = f"{copied_human}/{total_human} @ {speed_str}"
+                                break
+
                 return_code = process.wait()
-                
+                elapsed_total = round(time.time() - float(start_ts.split('T')[1][:8].replace(':', '.')), 1) if False else "?"
+
                 if return_code == 0:
-                    socketio.emit('backup_complete', {
-                        'id': backup_id,
-                        'status': 'success',
-                        'message': f"Sauvegarde terminée: {destination}"
-                    })
+                    total_human = DiskScanner._format_bytes(str(total_bytes)) if total_bytes else "?"
+                    msg = f"Sauvegarde terminée — {total_human} → {destination}"
+                    status_val = 'success'
+                    logger.info(f"[OUT] dd {dev_name}: TERMINÉ ({return_code})")
                 else:
-                    socketio.emit('backup_complete', {
-                        'id': backup_id,
-                        'status': 'error',
-                        'message': f"Erreur lors de la sauvegarde"
-                    })
-                    
+                    msg = f"Erreur dd (code {return_code})"
+                    status_val = 'error'
+                    logger.error(f"[ERR] dd {dev_name}: code={return_code}")
+
+                socketio.emit('backup_complete', {
+                    'id': backup_id,
+                    'status': status_val,
+                    'message': msg,
+                    'source': source,
+                    'destination': destination
+                })
+
+                # Finaliser dans l'historique toolbox
+                for task in toolbox_history_tasks:
+                    if task['id'] == backup_id:
+                        task['status'] = 'Finished' if return_code == 0 else 'Error'
+                        task['progress'] = 100 if return_code == 0 else task.get('progress', 0)
+                        task['endTime'] = datetime.datetime.now().isoformat()
+                        break
+
+                # Log toolbox
+                socketio.emit('toolbox_log', {
+                    'ts': datetime.datetime.now().isoformat(),
+                    'level': 'OUT',
+                    'taskId': backup_id,
+                    'message': msg
+                })
+
             except Exception as e:
-                logger.error(f"Erreur backup: {e}")
+                logger.error(f"Erreur backup thread: {e}")
+                for task in toolbox_history_tasks:
+                    if task['id'] == backup_id:
+                        task['status'] = 'Error'
+                        task['endTime'] = datetime.datetime.now().isoformat()
+                        break
         
         thread = threading.Thread(target=run_backup)
         thread.daemon = True
