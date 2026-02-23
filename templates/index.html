@@ -8,24 +8,100 @@
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 </head>
 <body>
+
+<!-- ══════════════════════════════════════════════════════
+     BARRE DE NAVIGATION FIXE
+══════════════════════════════════════════════════════ -->
+<nav id="app-nav">
+    <div class="nav-brand">
+        🚀 <span>Storage</span><span class="brand-text"> Pro</span>
+    </div>
+
+    <!-- Desktop : flèche gauche -->
+    <button class="nav-arrow" id="nav-prev" onclick="Navigation.prev()" title="Mode précédent">&#8249;</button>
+
+    <!-- Desktop : onglets -->
+    <div class="nav-tabs">
+        <button class="nav-tab active" data-mode="0" onclick="Navigation.go(0)">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Monitoring</span>
+        </button>
+        <button class="nav-tab" data-mode="1" onclick="Navigation.go(1)">
+            <span class="nav-icon">💾</span>
+            <span class="nav-label">Backup</span>
+        </button>
+        <button class="nav-tab" data-mode="2" onclick="Navigation.go(2)">
+            <span class="nav-icon">⚖️</span>
+            <span class="nav-label">Parité</span>
+        </button>
+        <button class="nav-tab" data-mode="3" onclick="Navigation.go(3)">
+            <span class="nav-icon">📋</span>
+            <span class="nav-label">Logs</span>
+        </button>
+    </div>
+
+    <!-- Desktop : flèche droite -->
+    <button class="nav-arrow" id="nav-next" onclick="Navigation.next()" title="Mode suivant">&#8250;</button>
+
+    <!-- Mobile : indicateur mode courant -->
+    <span class="nav-mode-indicator" id="nav-mode-label">📊 Monitoring</span>
+
+    <!-- Mobile : hamburger -->
+    <button class="nav-hamburger" id="hamburger" onclick="Navigation.toggleDrawer()" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+
+<!-- Drawer mobile -->
+<div class="nav-drawer" id="nav-drawer">
+    <div class="drawer-header">🗂️ Navigation</div>
+    <button class="drawer-item active" data-mode="0" onclick="Navigation.go(0); Navigation.closeDrawer()">
+        <span class="di-icon">📊</span>
+        <span class="di-label">Monitoring</span>
+    </button>
+    <button class="drawer-item" data-mode="1" onclick="Navigation.go(1); Navigation.closeDrawer()">
+        <span class="di-icon">💾</span>
+        <span class="di-label">Backup / Récupération</span>
+    </button>
+    <button class="drawer-item" data-mode="2" onclick="Navigation.go(2); Navigation.closeDrawer()">
+        <span class="di-icon">⚖️</span>
+        <span class="di-label">Parité / Intégrité</span>
+    </button>
+    <button class="drawer-item" data-mode="3" onclick="Navigation.go(3); Navigation.closeDrawer()">
+        <span class="di-icon">📋</span>
+        <span class="di-label">Logs</span>
+    </button>
+    <div class="drawer-footer">Storage Monitor Pro</div>
+</div>
+<div class="drawer-overlay" id="drawer-overlay" onclick="Navigation.closeDrawer()"></div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDES CONTAINER
+══════════════════════════════════════════════════════ -->
+<div id="slides-viewport">
+<div id="slides-container">
+
+<!-- ──────────────────────────────────────────────────
+     SLIDE 0 — MONITORING
+────────────────────────────────────────────────── -->
+<div class="slide" id="slide-0">
+<main class="container">
+
+    <!-- En-tête page -->
     <header>
         <h1>🚀 Storage Dashboard</h1>
         <div id="global-status">Système: Optimal</div>
     </header>
 
-    <main class="container">
-        <!-- Stockage Physique -->
-<section class="card accent-disk">
-    <h2>🔌 Stockage Physique</h2>
-    <div class="disk-grid">
+    <!-- Stockage Physique -->
+    <section class="card accent-disk">
+        <h2>🔌 Stockage Physique</h2>
+        <div class="disk-grid">
         {% for d in disks if d.nature in ['⚡ NVMe', '💿 HDD', '🚀 SSD'] %}
-            {% set health_icon = health_map.get(d.name, '🟢') %}
-            {% set alert_count = 0 %}
             {% set severe_alerts = [] %}
             {% set minor_alerts = [] %}
-            {% set has_note = False %}
-            
-            {# Vérifier si une note existe #}
+            {% set has_note = d.name in disk_notes_set %}
+
             {% for tid, test in tests.items() %}
                 {% if test.data and d.name in test.data %}
                     {% set smart_data = test.data[d.name].get('smart', {}) %}
@@ -40,23 +116,24 @@
                     {% endif %}
                 {% endif %}
             {% endfor %}
-            
-            {# Déterminer la couleur en fonction de la sévérité #}
+
             {% if severe_alerts|length > 0 %}
                 {% set final_icon = "🔴" %}
                 {% set tooltip = "🔴 PROBLÈMES GRAVES : " + severe_alerts|join(', ') %}
-                {% if minor_alerts %}
-                    {% set tooltip = tooltip + " | Alertes mineures: " + minor_alerts|join(', ') %}
-                {% endif %}
+                {% if minor_alerts %}{% set tooltip = tooltip + " | Alertes mineures: " + minor_alerts|join(', ') %}{% endif %}
             {% elif minor_alerts|length > 0 %}
                 {% set final_icon = "🟡" %}
                 {% set tooltip = "🟡 Anomalies mineures : " + minor_alerts|join(', ') %}
             {% else %}
-                {% set final_icon = "🟢" %}
+                {% set final_icon = health_map.get(d.name, '🟢') %}
                 {% set tooltip = "🟢 Disque en bonne santé" %}
             {% endif %}
 
             <div class="disk-card" data-disk="{{ d.name }}">
+                <span class="expand-icon" title="Déplier / Replier">🔽</span>
+                <span class="note-icon {% if has_note %}has-note{% endif %}"
+                      onclick="event.stopPropagation(); UI.openDiskModal('{{ d.name }}')"
+                      title="{% if has_note %}Voir / modifier la note{% else %}Ajouter une note{% endif %}">📝</span>
                 <div class="disk-head">
                     <span class="badge">{{ d.nature }}</span>
                     <span class="health-icon tooltip" id="health-{{ d.name }}">
@@ -64,9 +141,6 @@
                         <span class="tooltip-text">{{ tooltip }}</span>
                     </span>
                     <strong>{{ d.name }}</strong>
-                    <span class="note-icon {% if has_note %}has-note{% endif %}" 
-                          onclick="event.stopPropagation(); UI.openDiskModal('{{ d.name }}')"
-                          title="Notes">📝</span>
                 </div>
                 <small>{{ d.model or 'N/A' }}</small>
                 <div class="usage-container">
@@ -75,448 +149,694 @@
                     </div>
                     <span>{{ d.usage_val }}%</span>
                 </div>
+                <div class="disk-details"></div>
+            </div>
+        {% endfor %}
+        </div>
+    </section>
+
+    <!-- État ZFS -->
+    <section class="card accent-zfs">
+        <h2>🛡️ État des Pools ZFS</h2>
+        {% if not zfs %}
+            <p class="text-muted">Aucun pool ZFS détecté sur ce système.</p>
+        {% else %}
+            {% for pool in zfs %}
+            <div class="zfs-pool">
+                <div class="zfs-header">
+                    <h3>Pool: <span class="text-primary">{{ pool.name }}</span></h3>
+                    <span class="badge {% if pool.health == 'ONLINE' %}bg-success{% else %}bg-danger{% endif %}">{{ pool.health }}</span>
+                </div>
+                <div class="zfs-grid">
+                    <div class="zfs-stat">
+                        <strong>Capacité:</strong> {{ pool.alloc }} / {{ pool.size }} ({{ pool.cap }}%)
+                        <div class="progress-bar-bg" style="margin-top:5px;">
+                            <div class="progress-bar-fill" style="width: {{ pool.cap }}%"></div>
+                        </div>
+                    </div>
+                    <div class="zfs-stat"><strong>Fragmentation:</strong> {{ pool.frag }}</div>
+                    <div class="zfs-stat">
+                        <strong>Erreurs (R/W/CK):</strong>
+                        <span class="{% if pool.errors.read != '0' %}text-danger{% endif %}">{{ pool.errors.read }}</span> /
+                        <span class="{% if pool.errors.write != '0' %}text-danger{% endif %}">{{ pool.errors.write }}</span> /
+                        <span class="{% if pool.errors.cksum != '0' %}text-danger{% endif %}">{{ pool.errors.cksum }}</span>
+                    </div>
+                </div>
+                <div class="zfs-scrub" style="margin:10px 0; padding:10px; background:var(--bg); border-radius:6px;">
+                    <strong>Dernier Scan/Scrub :</strong> <small>{{ pool.scrub }}</small>
+                </div>
+                <details>
+                    <summary style="cursor:pointer; padding:5px;">Voir les Datasets ({{ pool.datasets|length }})</summary>
+                    <table class="fs-table">
+                        {% for ds in pool.datasets %}
+                        <tr>
+                            <td><small>{{ ds.name }}</small></td>
+                            <td><strong>{{ ds.used }}</strong> utilisé</td>
+                            <td><code class="mount-path">{{ ds.mount }}</code></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </details>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </section>
+
+    <!-- Systèmes de Fichiers -->
+    <section class="card">
+        <h2>📂 Systèmes de Fichiers & Partitions</h2>
+        <div class="table-responsive">
+            <table class="fs-table">
+                <thead>
+                    <tr>
+                        <th>Nom</th><th>Montage</th><th>Format</th>
+                        <th>Taille</th><th>Libre</th><th>Usage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in partitions %}
+                    <tr class="partition-row" data-device="{{ p.name }}" onclick="Backup.toggleExpand(this, '{{ p.name }}')">
+                        <td><strong>{{ p.name }}</strong></td>
+                        <td><code class="mount-path">{{ p.mountpoint or '-' }}</code></td>
+                        <td><span class="badge">{{ p.fstype or 'N/A' }}</span></td>
+                        <td>{{ p.fssize_human or p.size_human or p.size }}</td>
+                        <td class="text-success">{{ p.fsavail_human or p.fsavail or '-' }}</td>
+                        <td>
+                            {% if p['fsuse%'] %}
+                            <div class="usage-container" style="margin:0;">
+                                <div class="usage-bar" style="width:80px;">
+                                    <div class="fill" style="width: {{ p['fsuse%'] }}%"></div>
+                                </div>
+                                <span>{{ p['fsuse%'] }}</span>
+                            </div>
+                            {% else %} - {% endif %}
+                        </td>
+                    </tr>
+                    <tr class="partition-details" id="details-{{ p.name }}" style="display:none;">
+                        <td colspan="6">
+                            <div class="partition-expanded"></div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Actions rapides -->
+    <div class="top-management-grid">
+        <section class="card accent-daily">
+            <h3>⚡ Daily Check</h3>
+            <p>Scan complet programmé des disques configurés.</p>
+            <div class="btn-group-mini">
+                <button onclick="Bench.runDailyNow()" class="btn-primary">🚀 Lancer maintenant</button>
+                <button onclick="Bench.startQuickSmart()" class="btn-sm">🔍 Quick SMART</button>
+            </div>
+        </section>
+        <section class="card accent-daily">
+            <h3>📊 Analyse</h3>
+            <div class="btn-group-mini" style="flex-wrap:wrap;">
+                <button onclick="Charts.showRead()" class="btn-sm chart-type-btn" data-type="read">📈 Débit</button>
+                <button onclick="Charts.showLatency()" class="btn-sm chart-type-btn" data-type="latency">⏱️ Latence</button>
+                <button onclick="Charts.showErrors()" class="btn-sm chart-type-btn" data-type="errors">⚠️ Erreurs</button>
+                <button onclick="Charts.toggleDaily()" class="btn-sm">📅 Toggle Daily</button>
+                <button onclick="Charts.filterSmartOnly()" class="btn-sm">🔍 SMART only</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Graphiques -->
+    <section class="card">
+        <h2>📊 Historique des performances</h2>
+        <div id="chart-container">
+            <p style="padding:40px; text-align:center; color:#7f8c8d;">📊 Cochez des tests pour voir les graphiques</p>
+        </div>
+        <p style="font-size:0.85em; color:#7f8c8d; margin-top:10px; text-align:center;">
+            💡 Cliquez sur un point du graphique pour voir le détail du test
+        </p>
+    </section>
+
+    <!-- Historique des Scans -->
+    <section class="card">
+        <h2>📋 Historique des Scans</h2>
+        <div class="reports-grid" id="reports-list">
+            {% for id, t in tests.items()|sort(attribute='1.timestamp', reverse=True) %}
+            <div class="report-card {{ t.status.lower() }}" id="report-{{ id }}"
+                 data-test-id="{{ id }}" onclick="TestPanel.open('{{ id }}')" style="cursor:pointer;">
+                <div class="report-top">
+                    <strong>{{ t.name }}</strong>
+                    <span class="date">{{ t.date }}</span>
+                </div>
+                <div class="report-bottom">
+                    <span class="badge {% if t.status == 'Finished' %}bg-success{% elif t.status == 'Running' %}bg-warning{% else %}bg-danger{% endif %}">{{ t.status }}</span>
+                    <div class="actions">
+                        <input type="checkbox" class="chart-toggle" value="{{ id }}"
+                               onclick="event.stopPropagation();"
+                               onchange="Charts.update(Charts.currentChartType);"
+                               title="Sélectionner pour le graphique">
+                        <button onclick="event.preventDefault(); event.stopPropagation(); Bench.deleteTest('{{ id }}')"
+                                class="btn-delete" title="Supprimer">🗑️</button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Benchmarks -->
+    <div class="benchmark-container">
+        <section class="card accent-disk">
+            <h2>💾 Benchmark Disques Physiques</h2>
+            <form onsubmit="Bench.startManual(event, 'disk')">
+                <label>Cibles :</label>
+                <div class="selection-box checkbox-group">
+                    {% for disk in disks if disk.type == 'disk' %}
+                    <label class="check-item">
+                        <input type="checkbox" name="targets" value="/dev/{{ disk.name }}">
+                        {{ disk.name }} ({{ disk.size }}) - {{ disk.nature }}
+                    </label>
+                    {% endfor %}
+                </div>
+                <label>Tests à effectuer :</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="test_types" value="read" checked> Lecture Séquentielle</label>
+                    <label><input type="checkbox" name="test_types" value="latency"> Latence (Rand-Read)</label>
+                    <label><input type="checkbox" name="test_types" value="smart" checked> Analyse SMART</label>
+                </div>
+                <div class="input-group" style="margin:15px 0;">
+                    <label>Durée (secondes) :</label>
+                    <input type="number" name="duration" value="30" min="5" max="300" style="width:80px;">
+                </div>
+                <button type="submit" class="btn-primary">Lancer le Benchmark</button>
+            </form>
+        </section>
+        <section class="card accent-zfs">
+            <h2>🛡️ Benchmark Pool ZFS</h2>
+            <form onsubmit="Bench.startManual(event, 'zfs')">
+                <label>Datasets :</label>
+                <div class="selection-box checkbox-group">
+                    {% for pool in zfs %}{% for ds in pool.datasets %}
+                    <label class="check-item">
+                        <input type="checkbox" name="targets" value="{{ ds.mount }}">
+                        {{ ds.name }} ({{ ds.used }})
+                    </label>
+                    {% endfor %}{% endfor %}
+                </div>
+                <label>Tests ZFS :</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="test_types" value="read" checked> Débit Séquentiel</label>
+                    <label><input type="checkbox" name="test_types" value="latency"> Latence</label>
+                    <label><input type="checkbox" name="test_types" value="zfs_scrub"> Forcer un Scrub</label>
+                    <label><input type="checkbox" name="test_types" value="zfs_perf"> Performance Pool</label>
+                </div>
+                <div class="input-group" style="margin:15px 0;">
+                    <label>Durée (s) :</label>
+                    <input type="number" name="duration" value="30" min="5" max="300" style="width:80px;">
+                </div>
+                <div class="input-group" style="margin:15px 0;">
+                    <label>Taille du test :</label>
+                    <select name="size">
+                        <option value="1G">1 Go (Cache ARC)</option>
+                        <option value="8G" selected>8 Go (Standard)</option>
+                        <option value="32G">32 Go (Stress disques)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-zfs">Lancer le Benchmark ZFS</button>
+            </form>
+        </section>
+    </div>
+
+    <!-- Configuration DailyCheck -->
+    <section class="card accent-conf">
+        <h3>⚙️ Configuration DailyCheck</h3>
+        <div class="settings-grid">
+            <div class="setting-item">
+                <label><strong>Disques à surveiller</strong></label>
+                <div class="checkbox-group">
+                    {% for d in disks if d.type == 'disk' %}
+                    <label class="check-item">
+                        <input type="checkbox" class="daily-disk" value="{{ d.name }}"
+                               {% if d.name in config.disks %}checked{% endif %}>
+                        {{ d.name }} <small>({{ d.size }}) - {{ d.nature }}</small>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="setting-item">
+                <label><strong>Tests quotidiens</strong></label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" class="daily-test" value="smart" {% if 'smart' in config.tests %}checked{% endif %}> SMART</label>
+                    <label><input type="checkbox" class="daily-test" value="read" {% if 'read' in config.tests %}checked{% endif %}> Débit</label>
+                    <label><input type="checkbox" class="daily-test" value="latency" {% if 'latency' in config.tests %}checked{% endif %}> Latence</label>
+                </div>
+                <div class="input-group">
+                    <label>Durée (s) :</label>
+                    <input type="number" id="dailyDuration" value="{{ config.duration }}" min="5" max="300" style="width:70px;">
+                </div>
+            </div>
+            <div class="setting-item">
+                <label><strong>Options ZFS</strong></label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="check-zfs-scrub" class="daily-test" value="zfs_scrub" {% if config.zfs_scrub %}checked{% endif %}> Scrub automatique</label>
+                    <label><input type="checkbox" id="check-zfs-perf" class="daily-test" value="zfs_perf" {% if config.zfs_perf %}checked{% endif %}> Test de performance</label>
+                </div>
+            </div>
+        </div>
+        <div class="btn-group-mini" style="margin-top:20px;">
+            <button onclick="Bench.saveDailyConfig()" class="btn-primary">💾 Enregistrer la Configuration</button>
+        </div>
+    </section>
+
+</main>
+</div><!-- /slide-0 -->
+
+
+<!-- ──────────────────────────────────────────────────
+     SLIDE 1 — BACKUP / RÉCUPÉRATION
+────────────────────────────────────────────────── -->
+<div class="slide" id="slide-1">
+<main class="container">
+    <header>
+        <h1>💾 Backup & Récupération</h1>
+        <div id="global-status-backup" style="background:#e67e22;" class="badge">Sauvegarde sécurisée</div>
+    </header>
+
+    <div class="backup-grid">
+        <!-- Formulaire de sauvegarde -->
+        <section class="card accent-disk">
+            <h2>💾 Nouvelle sauvegarde</h2>
+            <form id="backup-form-main" onsubmit="Backup.startFromForm(event)">
+                <div class="form-group">
+                    <label><strong>Source :</strong></label>
+                    <select id="backup-src-select" class="form-control" required>
+                        <option value="">— Choisir un disque source —</option>
+                        {% for disk in disks if disk.type == 'disk' %}
+                        <option value="/dev/{{ disk.name }}">{{ disk.name }} — {{ disk.size }} ({{ disk.nature }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><strong>Destination :</strong></label>
+                    <input type="text" id="backup-dest-main" class="form-control"
+                           placeholder="/mnt/backup/disk_$(date).img" required>
+                    <small>Chemin complet du fichier image de destination</small>
+                </div>
+                <div class="form-group">
+                    <label><strong>Taille de bloc :</strong></label>
+                    <select id="backup-bs-main" class="form-control">
+                        <option value="4M">4 Mo (Recommandé)</option>
+                        <option value="1M">1 Mo</option>
+                        <option value="64K">64 Ko</option>
+                        <option value="8K">8 Ko</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><strong>Options :</strong></label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="bk-noerror" checked> Ignorer les erreurs de lecture (noerror)</label>
+                        <label><input type="checkbox" id="bk-sync" checked> Synchroniser les E/S (sync)</label>
+                    </div>
+                </div>
+                <div id="backup-progress-main" style="display:none; margin:15px 0;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                        <strong>Progression</strong>
+                        <span id="bk-pct-label">0%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div id="bk-bar-main" class="progress-bar-fill" style="width:0%"></div>
+                    </div>
+                    <p id="bk-status-main" style="font-size:0.85em; color:#7f8c8d; margin-top:6px;"></p>
+                </div>
+                <div class="btn-group-mini" style="margin-top:15px;">
+                    <button type="submit" class="btn-primary" id="bk-btn-main">🚀 Démarrer la sauvegarde</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Historique des sauvegardes + section récupération -->
+        <div style="display:flex; flex-direction:column; gap:20px;">
+            <section class="card">
+                <h2>📋 Historique des sauvegardes</h2>
+                <div class="backup-history-list" id="backup-history-list">
+                    <p class="text-muted" style="text-align:center; padding:20px;">Aucune sauvegarde effectuée</p>
+                </div>
+            </section>
+
+            <section class="card accent-zfs">
+                <h2>🔄 Récupération (Restauration)</h2>
+                <form onsubmit="Backup.startRestore(event)">
+                    <div class="form-group">
+                        <label><strong>Fichier image source :</strong></label>
+                        <input type="text" id="restore-src" class="form-control"
+                               placeholder="/mnt/backup/disk.img" required>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Disque destination :</strong></label>
+                        <select id="restore-dest" class="form-control" required>
+                            <option value="">— Choisir un disque cible —</option>
+                            {% for disk in disks if disk.type == 'disk' %}
+                            <option value="/dev/{{ disk.name }}">{{ disk.name }} — {{ disk.size }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div style="background:#fff3cd; border:1px solid #ffc107; border-radius:6px; padding:10px; margin:10px 0; font-size:0.85em;">
+                        ⚠️ <strong>Attention :</strong> La restauration écrasera toutes les données du disque cible.
+                    </div>
+                    <div id="restore-progress" style="display:none; margin:10px 0;">
+                        <div class="progress-bar-bg">
+                            <div id="restore-bar" class="progress-bar-fill" style="width:0%"></div>
+                        </div>
+                        <p id="restore-status" style="font-size:0.85em; color:#7f8c8d; margin-top:4px;"></p>
+                    </div>
+                    <div class="btn-group-mini" style="margin-top:12px;">
+                        <button type="submit" class="btn-primary" style="background:#e67e22;">🔄 Restaurer l'image</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+
+</main>
+</div><!-- /slide-1 -->
+
+
+<!-- ──────────────────────────────────────────────────
+     SLIDE 2 — PARITÉ / INTÉGRITÉ
+────────────────────────────────────────────────── -->
+<div class="slide" id="slide-2">
+<main class="container">
+    <header>
+        <h1>⚖️ Parité & Intégrité</h1>
+        <div style="background:#9b59b6;" class="badge" style="color:white;">Vérification des données</div>
+    </header>
+
+    <!-- ZFS Scrub -->
+    <section class="card accent-zfs">
+        <h2>🛡️ Parité ZFS — Scrub</h2>
+        {% if not zfs %}
+            <p class="text-muted">Aucun pool ZFS détecté.</p>
+        {% else %}
+        <div class="parite-grid">
+            {% for pool in zfs %}
+            <div class="card" style="padding:15px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+                    <h3>🗄️ {{ pool.name }}</h3>
+                    <span class="badge {% if pool.health == 'ONLINE' %}bg-success{% else %}bg-danger{% endif %}">{{ pool.health }}</span>
+                </div>
+                <div class="scrub-status">
+                    <div class="scrub-status-dot {% if pool.errors.read == '0' and pool.errors.write == '0' and pool.errors.cksum == '0' %}ok{% else %}err{% endif %}"></div>
+                    <div>
+                        <div style="font-size:0.85em; font-weight:600;">Erreurs R/W/CK</div>
+                        <div style="font-size:0.8em; color:#7f8c8d;">
+                            {{ pool.errors.read }} / {{ pool.errors.write }} / {{ pool.errors.cksum }}
+                        </div>
+                    </div>
+                </div>
+                <div style="font-size:0.82em; color:#7f8c8d; margin:6px 0 12px; padding:8px; background:var(--bg); border-radius:6px;">
+                    <strong>Dernier scrub :</strong> {{ pool.scrub }}
+                </div>
+                <div class="parite-action-grid">
+                    <button class="btn-primary" style="font-size:0.85em;"
+                            onclick="Parite.startScrub('{{ pool.name }}')">
+                        🔍 Lancer un Scrub
+                    </button>
+                    <button class="btn-sm" onclick="Parite.stopScrub('{{ pool.name }}')">
+                        ⏹ Arrêter le Scrub
+                    </button>
+                    <button class="btn-sm" onclick="Parite.checkStatus('{{ pool.name }}')">
+                        📊 Statut détaillé
+                    </button>
+                    <button class="btn-sm" style="color:#e74c3c; border-color:#e74c3c;"
+                            onclick="Parite.clearErrors('{{ pool.name }}')">
+                        🗑️ Effacer erreurs
+                    </button>
+                </div>
+                <div id="scrub-progress-{{ pool.name }}" style="display:none; margin-top:10px;">
+                    <div class="progress-bar-bg">
+                        <div id="scrub-bar-{{ pool.name }}" class="progress-bar-fill" style="width:0%;background:#9b59b6;"></div>
+                    </div>
+                    <p id="scrub-status-{{ pool.name }}" style="font-size:0.82em; margin-top:4px;"></p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- SMART Self-Test -->
+    <section class="card accent-disk">
+        <h2>🔬 Auto-test SMART des disques</h2>
+        <div class="parite-grid">
+            {% for disk in disks if disk.type == 'disk' %}
+            <div class="card" style="padding:15px;">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+                    <span id="health-parite-{{ disk.name }}">{{ health_map.get(disk.name, '🟢') }}</span>
+                    <strong>{{ disk.name }}</strong>
+                    <span class="badge">{{ disk.nature }}</span>
+                    <small style="color:#7f8c8d;">{{ disk.size }}</small>
+                </div>
+                <div class="parite-action-grid">
+                    <button class="btn-sm" onclick="Parite.smartTest('{{ disk.name }}', 'short')">
+                        ⚡ Test court
+                    </button>
+                    <button class="btn-sm" onclick="Parite.smartTest('{{ disk.name }}', 'long')">
+                        🕐 Test long
+                    </button>
+                    <button class="btn-primary" style="font-size:0.82em; grid-column:1/-1;"
+                            onclick="Parite.smartTest('{{ disk.name }}', 'status')">
+                        📋 Voir résultats SMART
+                    </button>
+                </div>
+                <div id="smart-test-{{ disk.name }}" style="margin-top:8px; font-size:0.82em;"></div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Vérification intégrité fichiers -->
+    <section class="card accent-conf">
+        <h2>🔒 Vérification d'intégrité</h2>
+        <div class="parite-grid">
+            <div>
+                <p style="margin-bottom:15px; color:#7f8c8d; font-size:0.9em;">
+                    Vérifier l'intégrité d'un fichier ou d'un répertoire via somme de contrôle (SHA-256/MD5).
+                </p>
+                <div class="form-group">
+                    <label><strong>Chemin à vérifier :</strong></label>
+                    <input type="text" id="integrity-path" class="form-control" placeholder="/mnt/data/backup.img">
+                </div>
+                <div class="form-group">
+                    <label><strong>Algorithme :</strong></label>
+                    <select id="integrity-algo" class="form-control">
+                        <option value="sha256">SHA-256 (Recommandé)</option>
+                        <option value="md5">MD5 (Rapide)</option>
+                        <option value="sha512">SHA-512 (Haute sécurité)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><strong>Checksum attendu (optionnel) :</strong></label>
+                    <input type="text" id="integrity-expected" class="form-control"
+                           placeholder="Laisser vide pour calculer seulement">
+                </div>
+                <button class="btn-primary" onclick="Parite.checkIntegrity()">🔍 Vérifier</button>
+            </div>
+            <div>
+                <div id="integrity-result" style="background:var(--bg); border-radius:8px; padding:15px; min-height:100px; font-family:monospace; font-size:0.85em; white-space:pre-wrap; color:#7f8c8d;">
+                    Aucune vérification lancée.
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+</div><!-- /slide-2 -->
+
+
+<!-- ──────────────────────────────────────────────────
+     SLIDE 3 — LOGS
+────────────────────────────────────────────────── -->
+<div class="slide" id="slide-3">
+<main class="container">
+    <header>
+        <h1>📋 Logs & Historique</h1>
+        <div style="background:#2c3e50;" class="badge" style="color:white;">Journalisation système</div>
+    </header>
+
+    <div class="logs-grid">
+        <!-- Filtres -->
+        <div class="log-filters">
+            <h3 style="margin-bottom:14px; font-size:1em;">⚙️ Filtres</h3>
+
+            <div class="filter-section">
+                <label>Niveaux</label>
+                <div class="checkbox-group" style="gap:4px;">
+                    <label class="log-option-label"><input type="checkbox" id="lf-info" checked> <span class="log-level INFO" style="display:inline-block;">INFO</span></label>
+                    <label class="log-option-label"><input type="checkbox" id="lf-error" checked> <span class="log-level ERROR" style="display:inline-block;">ERROR</span></label>
+                    <label class="log-option-label"><input type="checkbox" id="lf-warn" checked> <span class="log-level WARN" style="display:inline-block;">WARN</span></label>
+                    <label class="log-option-label"><input type="checkbox" id="lf-cmd" checked> <span class="log-level CMD" style="display:inline-block;">CMD</span></label>
+                    <label class="log-option-label"><input type="checkbox" id="lf-out"> <span class="log-level OUT" style="display:inline-block;">OUT</span></label>
+                    <label class="log-option-label"><input type="checkbox" id="lf-http"> <span class="log-level HTTP" style="display:inline-block;">HTTP</span></label>
+                    <label class="log-option-label"><input type="checkbox" id="lf-debug"> <span class="log-level DEBUG" style="display:inline-block;">DEBUG</span></label>
+                </div>
             </div>
 
-       {% endfor %}
+            <div class="filter-section">
+                <label>Recherche</label>
+                <input type="text" id="log-search" class="form-control" placeholder="Filtrer les messages…" oninput="LogViewer.filter()">
+            </div>
+
+            <div class="filter-section">
+                <label>Tâche</label>
+                <input type="text" id="log-task-filter" class="form-control" placeholder="ID ou nom de tâche…" oninput="LogViewer.filter()">
+            </div>
+
+            <div style="margin-top:16px; display:flex; flex-direction:column; gap:8px;">
+                <button class="btn-sm" onclick="LogViewer.scrollBottom()">⬇️ Aller en bas</button>
+                <button class="btn-sm" onclick="LogViewer.clear()">🗑️ Vider l'affichage</button>
+                <button class="btn-primary" onclick="LogViewer.export()" style="font-size:0.82em;">📤 Exporter logs</button>
+            </div>
+
+            <div style="margin-top:16px; border-top:1px solid var(--border); padding-top:12px;">
+                <label style="font-size:0.8em; font-weight:600; color:#7f8c8d; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:8px;">Options toolbox</label>
+                <div class="checkbox-group" style="gap:4px;">
+                    <label class="log-option-label"><input type="checkbox" id="log-http" checked> Requêtes HTTP</label>
+                    <label class="log-option-label"><input type="checkbox" id="log-commands" checked> Commandes système</label>
+                    <label class="log-option-label"><input type="checkbox" id="log-output" checked> Sorties commandes</label>
+                    <label class="log-option-label"><input type="checkbox" id="log-duration" checked> Durées</label>
+                    <label class="log-option-label"><input type="checkbox" id="log-errors" checked> Erreurs uniquement</label>
+                    <label class="log-option-label"><input type="checkbox" id="log-progress"> Progression détaillée</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visionneuse de logs -->
+        <div>
+            <div class="log-toolbar">
+                <span class="log-count-badge" id="log-count-badge">0 entrées</span>
+                <button class="btn-sm" onclick="LogViewer.autoScroll = !LogViewer.autoScroll; this.textContent = LogViewer.autoScroll ? '🔒 Auto-scroll ON' : '🔓 Auto-scroll OFF'">🔒 Auto-scroll ON</button>
+                <button class="btn-sm" onclick="LogViewer.loadFromServer()">🔄 Recharger</button>
+            </div>
+            <div class="log-viewer" id="log-viewer-main">
+                <div class="log-empty">
+                    <span class="log-empty-icon">📋</span>
+                    <span>Aucun log disponible — lancez une tâche ou rechargez</span>
+                </div>
+            </div>
+        </div>
     </div>
-</section>
+
+    <!-- Historique des tâches (résumé) -->
+    <section class="card" style="margin-top:0;">
+        <h2>🗂️ Historique des tâches</h2>
+        <div id="tasks-container-logs" style="max-height:400px; overflow-y:auto;">
+            <p class="text-muted" style="text-align:center; padding:20px;">Aucune tâche enregistrée</p>
+        </div>
+    </section>
+
+</main>
+</div><!-- /slide-3 -->
+
+</div><!-- /slides-container -->
+</div><!-- /slides-viewport -->
+
+<!-- Dots de navigation (mobile) -->
+<div class="slide-dots" id="slide-dots">
+    <div class="slide-dot active" onclick="Navigation.go(0)" title="Monitoring"></div>
+    <div class="slide-dot" onclick="Navigation.go(1)" title="Backup"></div>
+    <div class="slide-dot" onclick="Navigation.go(2)" title="Parité"></div>
+    <div class="slide-dot" onclick="Navigation.go(3)" title="Logs"></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     STATUS BAR FIXE EN BAS
+══════════════════════════════════════════════════════ -->
+<div class="status-bar">
+    <div class="status-left">
+        <span>👥 <b id="stat-users">0</b> utilisateurs</span>
+        <span>🔄 IO: <b id="stat-io">0.0 MB/s</b></span>
+    </div>
+    <div id="task-status-btn" class="task-indicator" onclick="UI.toggleTasks()">
+        🔼 Tâches en cours
+    </div>
+    <div class="status-right">
+        <span>🌍 Sessions: <b id="stat-sessions">1</b></span>
+        <span>Système: <b style="color:var(--success)">Optimal</b></span>
+    </div>
+</div>
+
+<!-- Popup tâches en cours -->
+<div id="active-tasks" class="card">
+    <div class="popup-header">
+        <h3 style="margin:0;">⚙️ Opérations</h3>
+        <div class="toolbox-header-actions">
+            <button class="btn-log-toggle" onclick="Toolbox.toggleLogOptions()" title="Options de logs">⚙️ Logs</button>
+            <button class="btn-clear-toolbox" onclick="Toolbox.clearHistory()" title="Effacer l'historique">🗑️ Vider</button>
+            <button class="btn-close-popup" onclick="UI.toggleTasks()">−</button>
+        </div>
+    </div>
+    <div id="tasks-container">
+        <p class="text-muted" style="text-align:center; padding:20px;">Aucune tâche en cours</p>
+    </div>
+    <div class="log-options-panel" id="log-options-panel">
+        <strong style="font-size:0.85em;">📋 Options de logs</strong>
+        <div class="log-options-grid">
+            <label class="log-option-label"><input type="checkbox" id="tbx-http" checked> Requêtes HTTP</label>
+            <label class="log-option-label"><input type="checkbox" id="tbx-commands" checked> Commandes système</label>
+            <label class="log-option-label"><input type="checkbox" id="tbx-output" checked> Sorties commandes</label>
+            <label class="log-option-label"><input type="checkbox" id="tbx-duration" checked> Durées</label>
+            <label class="log-option-label"><input type="checkbox" id="tbx-errors" checked> Erreurs uniquement</label>
+            <label class="log-option-label"><input type="checkbox" id="tbx-progress"> Progression détaillée</label>
+        </div>
+        <div style="margin-top:8px; font-size:0.75em; color:#7f8c8d;">
+            Format: <code>[ISO8601] [LEVEL] [TASK_ID] message</code>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- ══════════════════════════════════════════════════════
+     PANNEAU LATÉRAL — Détails d'un test
+══════════════════════════════════════════════════════ -->
+<div id="test-panel" class="test-panel">
+    <div class="test-panel-header">
+        <div class="test-panel-title">
+            <span id="test-panel-icon">📊</span>
+            <div>
+                <div id="test-panel-name" style="font-weight:700; font-size:1.05em;">Test</div>
+                <div id="test-panel-meta" style="font-size:0.8em; color:#7f8c8d;"></div>
+            </div>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+            <button class="btn-sm" id="test-panel-extlink" onclick="TestPanel.openExternal()"
+                    title="Ouvrir dans un onglet" style="font-size:0.8em;">↗ Plein écran</button>
+            <button class="test-panel-close" onclick="TestPanel.close()" title="Fermer">✕</button>
+        </div>
+    </div>
+    <div class="test-panel-body" id="test-panel-body">
+        <div class="test-panel-loading">
+            <div class="test-panel-spinner"></div>
+            <span>Chargement…</span>
+        </div>
+    </div>
+</div>
+<div class="test-panel-overlay" id="test-panel-overlay" onclick="TestPanel.close()"></div>
+
+<!-- ══════════════════════════════════════════════════════
+     MODALS (hors slides)
+══════════════════════════════════════════════════════ -->
+<div id="disk-modal" class="modal"></div>
 <div id="disk-detail-modal" class="modal disk-detail-modal">
     <div class="modal-content card">
         <div class="modal-header">
             <h2 id="disk-detail-title">💾 Détails du disque</h2>
             <button class="close-btn" onclick="UI.closeModal('disk-detail-modal')">&times;</button>
         </div>
-        <div id="disk-detail-content" class="disk-detail-grid">
-            <!-- Le contenu sera chargé dynamiquement -->
-        </div>
-    </div>
-</div>
-        <!-- État ZFS -->
-        <section class="card accent-zfs">
-            <h2>🛡️ État des Pools ZFS</h2>
-            {% if not zfs %}
-                <p class="text-muted">Aucun pool ZFS détecté sur ce système.</p>
-            {% else %}
-                {% for pool in zfs %}
-                <div class="zfs-pool">
-                    <div class="zfs-header">
-                        <h3>Pool: <span class="text-primary">{{ pool.name }}</span></h3>
-                        <span class="badge {% if pool.health == 'ONLINE' %}bg-success{% else %}bg-danger{% endif %}">
-                            {{ pool.health }}
-                        </span>
-                    </div>
-
-                    <div class="zfs-grid">
-                        <div class="zfs-stat">
-                            <strong>Capacité:</strong> {{ pool.alloc }} / {{ pool.size }} ({{ pool.cap }}%)
-                            <div class="progress-bar-bg" style="margin-top:5px;">
-                                <div class="progress-bar-fill" style="width: {{ pool.cap }}%"></div>
-                            </div>
-                        </div>
-                        <div class="zfs-stat">
-                            <strong>Fragmentation:</strong> {{ pool.frag }}
-                        </div>
-                        <div class="zfs-stat">
-                            <strong>Erreurs (R/W/CK):</strong> 
-                            <span class="{% if pool.errors.read != '0' %}text-danger{% endif %}">{{ pool.errors.read }}</span> /
-                            <span class="{% if pool.errors.write != '0' %}text-danger{% endif %}">{{ pool.errors.write }}</span> /
-                            <span class="{% if pool.errors.cksum != '0' %}text-danger{% endif %}">{{ pool.errors.cksum }}</span>
-                        </div>
-                    </div>
-
-                    <div class="zfs-scrub" style="margin:10px 0; padding:10px; background:var(--bg); border-radius:6px;">
-                        <strong>Dernier Scan/Scrub :</strong> <small>{{ pool.scrub }}</small>
-                    </div>
-
-                    <details>
-                        <summary style="cursor:pointer; padding:5px;">Voir les Datasets ({{ pool.datasets|length }})</summary>
-                        <table class="fs-table">
-                            {% for ds in pool.datasets %}
-                            <tr>
-                                <td><small>{{ ds.name }}</small></td>
-                                <td><strong>{{ ds.used }}</strong> utilisé</td>
-                                <td><code class="mount-path">{{ ds.mount }}</code></td>
-                            </tr>
-                            {% endfor %}
-                        </table>
-                    </details>
-                </div>
-                {% endfor %}
-            {% endif %}
-        </section>
-
-        <!-- Systèmes de Fichiers -->
-<!-- Dans la section Systèmes de Fichiers, ajouter un bouton de sauvegarde -->
-<section class="card">
-    <h2>📂 Systèmes de Fichiers & Partitions</h2>
-    <div class="table-responsive">
-        <table class="fs-table">
-            <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Montage</th>
-                    <th>Format</th>
-                    <th>Taille</th>
-                    <th>Libre</th>
-                    <th>Usage</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for p in partitions %}
-<tr class="partition-row" data-device="{{ p.name }}" onclick="Backup.toggleExpand(this, '{{ p.name }}')">
-    <td><strong>{{ p.name }}</strong></td>
-    <td><code class="mount-path">{{ p.mountpoint or '-' }}</code></td>
-    <td><span class="badge">{{ p.fstype or 'N/A' }}</span></td>
-    <td>{{ p.fssize_human or p.size_human or p.size }}</td>
-    <td class="text-success">{{ p.fsavail_human or p.fsavail or '-' }}</td>
-    <td>
-        {% if p['fsuse%'] %}
-        <div class="usage-container" style="margin:0;">
-            <div class="usage-bar" style="width:80px;">
-                <div class="fill" style="width: {{ p['fsuse%'] }}%"></div>
-            </div>
-            <span>{{ p['fsuse%'] }}</span>
-        </div>
-        {% else %} - {% endif %}
-    </td>
-</tr>
-<tr class="partition-details" id="details-{{ p.name }}" style="display:none;">
-    <td colspan="6">
-        <div class="partition-expanded">
-            <!-- Les options de sauvegarde seront chargées ici -->
-        </div>
-    </td>
-</tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</section>
-
-<!-- Modal de sauvegarde -->
-<div id="backup-modal" class="modal">
-    <div class="modal-content card">
-        <div class="modal-header">
-            <h3>💾 Sauvegarde sécurisée</h3>
-            <button class="close-btn" onclick="Backup.closeModal()">&times;</button>
-        </div>
-        
-        <form id="backup-form" onsubmit="Backup.start(event)">
-            <input type="hidden" id="backup-source" name="source">
-            
-            <div class="form-group">
-                <label>Source:</label>
-                <code id="backup-source-display" style="background:var(--bg); padding:8px; display:block;"></code>
-            </div>
-            
-            <div class="form-group">
-                <label>Destination:</label>
-                <input type="text" id="backup-destination" class="form-control" 
-                       placeholder="/chemin/vers/sauvegarde.img" required>
-                <small>Chemin complet du fichier de destination</small>
-            </div>
-            
-            <div class="form-group">
-                <label>Taille de bloc:</label>
-                <select id="backup-bs" class="form-control">
-                    <option value="4M">4 Mo (Recommandé)</option>
-                    <option value="1M">1 Mo</option>
-                    <option value="64K">64 Ko</option>
-                    <option value="8K">8 Ko</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label>Options de sécurité:</label>
-                <div class="checkbox-group">
-                    <label>
-                        <input type="checkbox" id="backup-noerror" checked> 
-                        Ignorer les erreurs de lecture (noerror)
-                    </label>
-                    <label>
-                        <input type="checkbox" id="backup-sync" checked> 
-                        Synchroniser les E/S (sync)
-                    </label>
-                    <label>
-                        <input type="checkbox" id="backup-progress" checked> 
-                        Afficher la progression
-                    </label>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label>Disques disponibles:</label>
-                <select id="backup-disks" class="form-control">
-                    <option value="">Choisir un disque de destination...</option>
-                </select>
-            </div>
-            
-            <div class="btn-group-mini">
-                <button type="submit" class="btn-primary">🚀 Démarrer la sauvegarde</button>
-                <button type="button" class="btn-sm" onclick="Backup.closeModal()">Annuler</button>
-            </div>
-        </form>
-        
-        <div id="backup-progress" style="display:none; margin-top:15px;">
-            <h4>Progression:</h4>
-            <div class="progress-bar-bg">
-                <div id="backup-progress-bar" class="progress-bar-fill" style="width:0%"></div>
-            </div>
-            <p id="backup-status"></p>
-        </div>
+        <div id="disk-detail-content" class="disk-detail-grid"></div>
     </div>
 </div>
 
-        <!-- Actions rapides -->
-        <div class="top-management-grid">
-            <section class="card accent-daily">
-                <h3>⚡ Daily Check</h3>
-                <p>Scan complet programmé des disques configurés.</p>
-                <div class="btn-group-mini">
-                    <button onclick="Bench.runDailyNow()" class="btn-primary">🚀 Lancer maintenant</button>
-                    <button onclick="Bench.startQuickSmart()" class="btn-sm">🔍 Quick SMART</button>
-                </div>
-            </section>
-
-            <section class="card accent-daily">
-                <h3>📊 Analyse</h3>
-                <div class="btn-group-mini" style="flex-wrap: wrap;">
-                    <button onclick="Charts.showRead()" class="btn-sm chart-type-btn" data-type="read">📈 Débit</button>
-                    <button onclick="Charts.showLatency()" class="btn-sm chart-type-btn" data-type="latency">⏱️ Latence</button>
-                    <button onclick="Charts.showErrors()" class="btn-sm chart-type-btn" data-type="errors">⚠️ Erreurs</button>
-                    <button onclick="Charts.toggleDaily()" class="btn-sm">📅 Toggle Daily</button>
-                    <button onclick="Charts.filterSmartOnly()" class="btn-sm">🔍 SMART only</button>
-                </div>
-            </section>
-        </div>
-
-        <!-- Graphiques -->
-<section class="card">
-    <h2>📊 Historique des performances</h2>
-    <div id="chart-container">
-        <p style="padding:40px; text-align:center; color:#7f8c8d;">📊 Cochez des tests pour voir les graphiques</p>
-    </div>
-    <p style="font-size:0.85em; color:#7f8c8d; margin-top:10px; text-align:center;">
-        💡 Cliquez sur un point du graphique pour voir le détail du test
-    </p>
-</section>
-
-        <!-- Historique des Scans -->
-        <section class="card">
-            <h2>📋 Historique des Scans</h2>
-            <div class="reports-grid" id="reports-list">
-                {% for id, t in tests.items()|sort(attribute='1.timestamp', reverse=True) %}
-                <a href="/test_detail/{{ id }}" class="report-card {{ t.status.lower() }}" id="report-{{ id }}">
-                    <div class="report-top">
-                        <strong>{{ t.name }}</strong>
-                        <span class="date">{{ t.date }}</span>
-                    </div>
-                    <div class="report-bottom">
-                        <span class="badge {% if t.status == 'Finished' %}bg-success{% elif t.status == 'Running' %}bg-warning{% else %}bg-danger{% endif %}">
-                            {{ t.status }}
-                        </span>
-<div class="actions">
-    <input type="checkbox" class="chart-toggle" value="{{ id }}" 
-           onclick="event.stopPropagation();"
-           onchange="Charts.update(Charts.currentChartType);"
-           title="Sélectionner pour le graphique">
-    <button onclick="event.preventDefault(); event.stopPropagation(); Bench.deleteTest('{{ id }}')" 
-            class="btn-delete" title="Supprimer">🗑️</button>
-</div>
-                    </div>
-                </a>
-                {% endfor %}
-            </div>
-        </section>
-
-        <!-- Benchmarks -->
-        <div class="benchmark-container">
-            <section class="card accent-disk">
-                <h2>💾 Benchmark Disques Physiques</h2>
-                <form onsubmit="Bench.startManual(event, 'disk')">
-                    <label>Cibles :</label>
-                    <div class="selection-box checkbox-group">
-                        {% for disk in disks if disk.type == 'disk' %}
-                        <label class="check-item">
-                            <input type="checkbox" name="targets" value="/dev/{{ disk.name }}"> 
-                            {{ disk.name }} ({{ disk.size }}) - {{ disk.nature }}
-                        </label>
-                        {% endfor %}
-                    </div>
-                    
-                    <label>Tests à effectuer :</label>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" name="test_types" value="read" checked> Lecture Séquentielle</label>
-                        <label><input type="checkbox" name="test_types" value="latency"> Latence (Rand-Read)</label>
-                        <label><input type="checkbox" name="test_types" value="smart" checked> Analyse SMART</label>
-                    </div>
-                    
-                    <div class="input-group" style="margin:15px 0;">
-                        <label>Durée (secondes) :</label>
-                        <input type="number" name="duration" value="30" min="5" max="300" style="width:80px;">
-                    </div>
-                    
-                    <button type="submit" class="btn-primary">Lancer le Benchmark</button>
-                </form>
-            </section>
-
-            <section class="card accent-zfs">
-                <h2>🛡️ Benchmark Pool ZFS</h2>
-                <form onsubmit="Bench.startManual(event, 'zfs')">
-                    <label>Datasets :</label>
-                    <div class="selection-box checkbox-group">
-                        {% for pool in zfs %}
-                            {% for ds in pool.datasets %}
-                            <label class="check-item">
-                                <input type="checkbox" name="targets" value="{{ ds.mount }}"> 
-                                {{ ds.name }} ({{ ds.used }})
-                            </label>
-                            {% endfor %}
-                        {% endfor %}
-                    </div>
-                    
-                    <label>Tests ZFS :</label>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" name="test_types" value="read" checked> Débit Séquentiel</label>
-                        <label><input type="checkbox" name="test_types" value="latency"> Latence</label>
-                        <label><input type="checkbox" name="test_types" value="zfs_scrub"> Forcer un Scrub</label>
-                        <label><input type="checkbox" name="test_types" value="zfs_perf"> Performance Pool</label>
-                    </div>
-                    
-                    <div class="input-group" style="margin:15px 0;">
-                        <label>Durée (secondes) :</label>
-                        <input type="number" name="duration" value="30" min="5" max="300" style="width:80px;">
-                    </div>
-                    
-                    <div class="input-group" style="margin:15px 0;">
-                        <label>Taille du test :</label>
-                        <select name="size">
-                            <option value="1G">1 Go (Cache ARC)</option>
-                            <option value="8G" selected>8 Go (Standard)</option>
-                            <option value="32G">32 Go (Stress disques)</option>
-                        </select>
-                    </div>
-                    
-                    <button type="submit" class="btn-zfs">Lancer le Benchmark ZFS</button>
-                </form>
-            </section>
-        </div>
-
-        <!-- Configuration DailyCheck -->
-        <section class="card accent-conf">
-            <h3>⚙️ Configuration DailyCheck</h3>
-            <div class="settings-grid">
-                <div class="setting-item">
-                    <label><strong>Disques à surveiller</strong></label>
-                    <div class="checkbox-group">
-                        {% for d in disks if d.type == 'disk' %}
-                        <label class="check-item">
-                            <input type="checkbox" class="daily-disk" value="{{ d.name }}"
-                                   {% if d.name in config.disks %}checked{% endif %}> 
-                            {{ d.name }} <small>({{ d.size }}) - {{ d.nature }}</small>
-                        </label>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <div class="setting-item">
-                    <label><strong>Tests quotidiens</strong></label>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" class="daily-test" value="smart" 
-                            {% if 'smart' in config.tests %}checked{% endif %}> SMART</label>
-                        <label><input type="checkbox" class="daily-test" value="read" 
-                            {% if 'read' in config.tests %}checked{% endif %}> Débit</label>
-                        <label><input type="checkbox" class="daily-test" value="latency" 
-                            {% if 'latency' in config.tests %}checked{% endif %}> Latence</label>
-                    </div>
-                    
-                    <div class="input-group">
-                        <label>Durée (s) :</label>
-                        <input type="number" id="dailyDuration" value="{{ config.duration }}" min="5" max="300" style="width:70px;">
-                    </div>
-                </div>
-
-                <div class="setting-item">
-                    <label><strong>Options ZFS</strong></label>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" id="check-zfs-scrub" class="daily-test" value="zfs_scrub"
-                            {% if config.zfs_scrub %}checked{% endif %}> Scrub automatique</label>
-                        <label><input type="checkbox" id="check-zfs-perf" class="daily-test" value="zfs_perf"
-                            {% if config.zfs_perf %}checked{% endif %}> Test de performance</label>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="btn-group-mini" style="margin-top:20px;">
-                <button onclick="Bench.saveDailyConfig()" class="btn-primary">💾 Enregistrer la Configuration</button>
-            </div>
-        </section>
-
-        <!-- Modal pour les notes de disques -->
-        <div id="disk-modal" class="modal"></div>
-    </main>
-
-    <!-- Status Bar -->
-    <div class="status-bar">
-        <div class="status-left">
-            <span>👥 <b id="stat-users">0</b> utilisateurs</span>
-            <span>🔄 IO: <b id="stat-io">0.0 MB/s</b></span>
-        </div>
-
-        <div id="task-status-btn" class="task-indicator" onclick="UI.toggleTasks()">
-            🔼 Tâches en cours
-        </div>
-        <a href="/toolbox" target="_blank" class="task-indicator" style="text-decoration:none; font-size:0.82em; padding:4px 10px;">
-            📋 Logs
-        </a>
-
-        <div class="status-right">
-            <span>🌍 Sessions: <b id="stat-sessions">1</b></span>
-            <span>Système: <b style="color:var(--success)">Optimal</b></span>
-        </div>
-    </div>
-
-    <!-- Popup des tâches en cours -->
-    <div id="active-tasks" class="card">
-        <div class="popup-header">
-            <h3 style="margin:0;">⚙️ Opérations</h3>
-            <div class="toolbox-header-actions">
-                <button class="btn-log-toggle" onclick="Toolbox.toggleLogOptions()" title="Options de logs">⚙️ Logs</button>
-                <button class="btn-clear-toolbox" onclick="Toolbox.clearHistory()" title="Effacer l'historique">🗑️ Vider</button>
-                <button class="btn-close-popup" onclick="UI.toggleTasks()">−</button>
-            </div>
-        </div>
-        <div id="tasks-container">
-            <p class="text-muted" style="text-align:center; padding:20px;">Aucune tâche en cours</p>
-        </div>
-        <div class="log-options-panel" id="log-options-panel">
-            <strong style="font-size:0.85em;">📋 Options de logs</strong>
-            <div class="log-options-grid">
-                <label class="log-option-label">
-                    <input type="checkbox" id="log-http" checked> Requêtes HTTP
-                </label>
-                <label class="log-option-label">
-                    <input type="checkbox" id="log-commands" checked> Commandes système
-                </label>
-                <label class="log-option-label">
-                    <input type="checkbox" id="log-output" checked> Sorties commandes
-                </label>
-                <label class="log-option-label">
-                    <input type="checkbox" id="log-duration" checked> Durées
-                </label>
-                <label class="log-option-label">
-                    <input type="checkbox" id="log-errors" checked> Erreurs uniquement
-                </label>
-                <label class="log-option-label">
-                    <input type="checkbox" id="log-progress"> Progression détaillée
-                </label>
-            </div>
-            <div style="margin-top:8px; font-size:0.75em; color:#7f8c8d;">
-                Format: <code>[ISO8601] [LEVEL] [TASK_ID] message</code>
-            </div>
-        </div>
-    </div>
-
-    <script src="{{ url_for('static', filename='monitor.js') }}"></script>
+<script src="{{ url_for('static', filename='monitor.js') }}"></script>
 </body>
 </html>
