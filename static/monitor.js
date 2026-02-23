@@ -9,6 +9,8 @@ const AppState = {
 
 // Interface utilisateur
 const Backup = {
+    _taskId: null,       // ID de la tâche toolbox en cours
+
 loadOptions: (device, container) => {
     container.innerHTML = `
         <div style="padding:15px; background:var(--bg); border-radius:8px;">
@@ -70,7 +72,7 @@ startFromPartition: (event, device) => {
         body: JSON.stringify(payload)
     }).then(response => {
         if (response.ok) {
-            Toolbox.addInstantTask(`Sauvegarde ${device}`, `→ ${destination}`);
+            Backup._taskId = Toolbox.addInstantTask(`Sauvegarde ${device}`, `→ ${destination}`);
             UI.showNotification('Sauvegarde démarrée', 'success');
         }
     });
@@ -148,7 +150,7 @@ toggleExpand: (row, device) => {
             });
             
             if (response.ok) {
-                Toolbox.addInstantTask(`Sauvegarde ${source}`, `→ ${destination}`);
+                Backup._taskId = Toolbox.addInstantTask(`Sauvegarde ${source}`, `→ ${destination}`);
                 UI.showNotification('Sauvegarde démarrée', 'success');
                 document.getElementById('backup-progress').style.display = 'block';
             } else {
@@ -226,15 +228,19 @@ toggleDiskExpand: (card, deviceName, forceClose = false) => {
 },
 
 loadDiskDetails: async (card, deviceName) => {
-    // Vérifier si les détails sont déjà chargés
-    if (card.querySelector('.disk-details')) return;
-    
+    // Utiliser la div .disk-details déjà présente dans le HTML (ou créer si absente)
+    let detailsDiv = card.querySelector('.disk-details');
+    // Si déjà chargé (a du contenu), ne pas recharger
+    if (detailsDiv && detailsDiv.dataset.loaded === '1') return;
+    if (!detailsDiv) {
+        detailsDiv = document.createElement('div');
+        detailsDiv.className = 'disk-details';
+        card.appendChild(detailsDiv);
+    }
+
     try {
         const response = await fetch(`/get_disk_details/${deviceName}`);
         const data = await response.json();
-        
-        const detailsDiv = document.createElement('div');
-        detailsDiv.className = 'disk-details';
         
         // Construire le HTML des détails COMPLETS (pas juste 5 attributs)
         let attributesHtml = '';
@@ -351,7 +357,8 @@ loadDiskDetails: async (card, deviceName) => {
             </div>
         `;
         
-        card.appendChild(detailsDiv);
+        detailsDiv.dataset.loaded = '1';
+        // card.appendChild(detailsDiv) supprimé — div déjà dans le DOM via le template
     } catch (error) {
         console.error('Erreur chargement détails:', error);
     }
@@ -480,7 +487,10 @@ openDiskDetailModal: async (deviceName) => {
         if (modal) modal.style.display = 'none';
     },
 
-    refresh: () => location.reload(),
+    refresh: () => {
+        // Plus de reload de page — les mises à jour sont gérées par SocketIO et DOM
+        // Utilisé uniquement pour compatibilité (ne pas supprimer les appels)
+    },
 
     openDiskModal: async (deviceName) => {
         try {
@@ -586,9 +596,13 @@ const Bench = {
             });
             
             if (response.ok) {
-                UI.showNotification('Test démarré avec succès', 'success');
-                UI.toggleTasks();
-                setTimeout(() => UI.refresh(), 1000);
+                const startData = await response.json();
+                UI.showNotification('Test démarré — suivi dans la toolbox', 'success');
+                Toolbox.open();
+                // Ajouter immédiatement la carte dans la liste
+                if (startData.id) {
+                    ReportsList.addRunning(startData.id, payload.name || 'Test');
+                }
             } else {
                 UI.showNotification('Erreur au démarrage du test', 'error');
             }
@@ -699,7 +713,8 @@ const Bench = {
             if (response.ok) {
                 document.getElementById(`report-${tid}`)?.remove();
                 UI.showNotification('Test supprimé', 'success');
-                setTimeout(() => UI.refresh(), 500);
+                TestPanel.close();
+                Charts.update(Charts.currentChartType);
             }
         } catch (error) {
             UI.showNotification('Erreur lors de la suppression', 'error');
@@ -759,15 +774,21 @@ const Toolbox = {
         Toolbox.renderHistory();
     },
 
-    // Options de log (lues depuis les checkboxes)
-    getLogOptions: () => ({
-        http:     document.getElementById('log-http')?.checked ?? true,
-        commands: document.getElementById('log-commands')?.checked ?? true,
-        output:   document.getElementById('log-output')?.checked ?? true,
-        duration: document.getElementById('log-duration')?.checked ?? true,
-        errors:   document.getElementById('log-errors')?.checked ?? true,
-        progress: document.getElementById('log-progress')?.checked ?? false,
-    }),
+    // Options de log (lues depuis les checkboxes — compatibles avec les deux panels)
+    getLogOptions: () => {
+        const g = (id1, id2, def) => {
+            const el = document.getElementById(id1) || document.getElementById(id2);
+            return el ? el.checked : def;
+        };
+        return {
+            http:     g('tbx-http', 'log-http', true),
+            commands: g('tbx-commands', 'log-commands', true),
+            output:   g('tbx-output', 'log-output', true),
+            duration: g('tbx-duration', 'log-duration', true),
+            errors:   g('tbx-errors', 'log-errors', true),
+            progress: g('tbx-progress', 'log-progress', false),
+        };
+    },
 
     // Formater une date ISO
     formatTime: (ts) => {
@@ -961,9 +982,7 @@ const Charts = {
             if (e.target.closest('.point')) {
                 const point = e.target.closest('.point');
                 const testId = point.getAttribute('data-test-id');
-                if (testId) {
-                    window.location.href = `/test_detail/${testId}`;
-                }
+                if (testId) TestPanel.open(testId);
             }
         });
     },
@@ -1016,48 +1035,46 @@ update: async (type = null) => {
 
 // Créer un tooltip flottant JS pour les points SVG
 bindPointTooltips: (container) => {
-    // Créer/réutiliser le tooltip element
     let tip = document.getElementById('svg-chart-tooltip');
     if (!tip) {
         tip = document.createElement('div');
         tip.id = 'svg-chart-tooltip';
         tip.style.cssText = `
             position: fixed; z-index: 20000; background: #2c3e50; color: white;
-            padding: 8px 12px; border-radius: 6px; font-size: 0.82em; line-height: 1.5;
-            pointer-events: none; opacity: 0; transition: opacity 0.2s;
-            white-space: pre-line; max-width: 280px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            padding: 8px 12px; border-radius: 6px; font-size: 0.82em; line-height: 1.6;
+            pointer-events: none; opacity: 0; transition: opacity 0.15s;
+            white-space: pre-line; max-width: 300px; box-shadow: 0 4px 14px rgba(0,0,0,0.35);
         `;
         document.body.appendChild(tip);
     }
 
-    // Lier les événements sur tous les éléments avec data-test-id ou title
-    const points = container.querySelectorAll('[data-test-id], circle[title], .clickable-point');
+    const points = container.querySelectorAll('[data-test-id], circle[data-tooltip], circle[title]');
     points.forEach(point => {
+        if (point._tooltipBound) return;
+        point._tooltipBound = true;
         point.style.cursor = 'pointer';
 
-        point.addEventListener('mouseenter', (e) => {
-            const titleText = point.getAttribute('title') || point.getAttribute('data-tooltip') || '';
-            if (titleText) {
-                tip.textContent = titleText;
-                tip.style.opacity = '1';
-            }
+        point.addEventListener('mouseenter', () => {
+            const text = point.getAttribute('data-tooltip') || point.getAttribute('title') || '';
+            if (!text) return;
+            tip.textContent = text.replace(/&quot;/g, '"').replace(/&amp;/g, '&');
+            tip.style.opacity = '1';
         });
 
         point.addEventListener('mousemove', (e) => {
-            tip.style.left = (e.clientX + 15) + 'px';
-            tip.style.top = (e.clientY - 10) + 'px';
+            const x = e.clientX + 16;
+            const y = e.clientY - 10;
+            const maxX = window.innerWidth - tip.offsetWidth - 10;
+            tip.style.left = Math.min(x, maxX) + 'px';
+            tip.style.top = y + 'px';
         });
 
-        point.addEventListener('mouseleave', () => {
-            tip.style.opacity = '0';
-        });
+        point.addEventListener('mouseleave', () => { tip.style.opacity = '0'; });
 
         point.addEventListener('click', (e) => {
             e.stopPropagation();
             const testId = point.getAttribute('data-test-id');
-            if (testId) {
-                window.location.href = `/test_detail/${testId}`;
-            }
+            if (testId) TestPanel.open(testId);
         });
     });
 },
@@ -1117,17 +1134,54 @@ socket.on('connect', () => {
 });
 
 socket.on('backup_progress', (data) => {
-    document.getElementById('backup-progress-bar').style.width = '50%'; // À améliorer
-    document.getElementById('backup-status').textContent = data.progress;
+    const pct = data.percent ?? 0;
+    const bar = document.getElementById('backup-progress-bar');
+    const statusEl = document.getElementById('backup-status');
+    if (bar) bar.style.width = `${pct}%`;
+    if (statusEl) {
+        statusEl.innerHTML = `
+            <span style="font-weight:600;">${pct}%</span>
+            — ${data.copied || '?'} / ${data.total || '?'}
+            <span style="color:#7f8c8d; margin-left:8px;">⚡ ${data.speed || '—'}</span>
+            <span style="color:#7f8c8d; margin-left:8px;">⏱️ ${data.elapsed || '?'}s</span>
+        `;
+    }
+    // Afficher la section progression si masquée
+    const progressSection = document.querySelector('#backup-modal #backup-progress');
+    if (progressSection) progressSection.style.display = 'block';
+
+    // Mettre à jour la tâche dans la toolbox
+    if (Backup._taskId) {
+        const task = Toolbox.taskHistory.find(t => t.id === Backup._taskId);
+        if (task) {
+            task.progress = pct;
+            task.current_op = `${data.copied || '?'} / ${data.total || '?'} @ ${data.speed || '—'}`;
+            Toolbox.renderHistory();
+        }
+    }
 });
 
 socket.on('backup_complete', (data) => {
     if (data.status === 'success') {
         UI.showNotification(data.message, 'success');
-        document.getElementById('backup-progress-bar').style.width = '100%';
-        setTimeout(() => Backup.closeModal(), 2000);
+        const bar = document.getElementById('backup-progress-bar');
+        const statusEl = document.getElementById('backup-status');
+        if (bar) bar.style.width = '100%';
+        if (statusEl) statusEl.textContent = '✅ ' + data.message;
+        setTimeout(() => Backup.closeModal(), 3000);
     } else {
-        UI.showNotification(data.message, 'error');
+        UI.showNotification('❌ ' + (data.message || 'Erreur lors de la sauvegarde'), 'error');
+        const statusEl = document.getElementById('backup-status');
+        if (statusEl) statusEl.textContent = '❌ ' + data.message;
+    }
+    // Finaliser la tâche toolbox
+    if (Backup._taskId) {
+        Toolbox.finishInstantTask(
+            Backup._taskId,
+            data.status === 'success' ? 'Finished' : 'Error',
+            data.message || ''
+        );
+        Backup._taskId = null;
     }
 });
 
@@ -1138,32 +1192,63 @@ socket.on('sys_stats', (stats) => {
 socket.on('progress_update', (data) => {
     Toolbox.handleProgressUpdate(data);
     
-    // Mettre à jour les icônes de santé
-    if (data.status === 'Finished' && data.data) {
-        Object.keys(data.data).forEach(diskName => {
-            const cleanName = diskName.replace('/dev/', '');
-            const healthIcon = document.getElementById(`health-${cleanName}`);
-            if (healthIcon && data.data[diskName].smart) {
-                const hasErrors = data.data[diskName].smart.critical_alerts?.length > 0;
-                healthIcon.innerText = hasErrors ? '🔴' : '🟢';
-            }
-        });
+    // Mettre à jour la carte report dans la liste
+    ReportsList.updateCard(data.id, data.status, data.progress);
+
+    // Mettre à jour les icônes de santé + le panel si ouvert sur ce test
+    if (data.status === 'Finished') {
+        if (data.data) {
+            Object.keys(data.data).forEach(diskName => {
+                const cleanName = diskName.replace('/dev/', '');
+                const healthIcon = document.getElementById(`health-${cleanName}`);
+                if (healthIcon && data.data[diskName].smart) {
+                    const hasErrors = data.data[diskName].smart.critical_alerts?.length > 0;
+                    healthIcon.innerText = hasErrors ? '🔴' : '🟢';
+                }
+            });
+        }
+        // Rafraîchir le panel s'il affiche ce test
+        if (TestPanel._currentId === data.id) {
+            setTimeout(() => TestPanel.open(data.id), 800);
+        }
     }
+});
+
+// Réception des logs de commandes backend (fio, smartctl, zpool...)
+socket.on('toolbox_log', (entry) => {
+    const opts = Toolbox.getLogOptions();
+    const level = entry.level || 'INFO';
+    // Filtrer selon les options
+    if (level === 'CMD' && !opts.commands) return;
+    if (level === 'OUT' && !opts.output) return;
+    if (level === 'HTTP' && !opts.http) return;
+    if (level === 'DEBUG' && !opts.progress) return;
+
+    // Ajouter à l'historique en mémoire (limité à 500)
+    Toolbox.logEntries = Toolbox.logEntries || [];
+    Toolbox.logEntries.push({
+        ts: entry.ts || new Date().toISOString(),
+        level,
+        taskId: entry.taskId || 'system',
+        message: entry.message || ''
+    });
+    if (Toolbox.logEntries.length > 500) Toolbox.logEntries.shift();
+
+    // Persister côté serveur
+    fetch('/toolbox_log', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(entry)
+    }).catch(() => {});
 });
 
 // Initialisation
 document.addEventListener('DOMContentLoaded', () => {
+    Navigation.init();
     Charts.init();
     
-    // Gestionnaire de clic sur les cartes de rapport
-    document.querySelectorAll('.report-card').forEach(card => {
-        card.addEventListener('click', (e) => {
-            if (!e.target.closest('input') && !e.target.closest('button')) {
-                const href = card.getAttribute('href');
-                if (href) window.location.href = href;
-            }
-        });
-    });
+    // Les report-cards ont maintenant onclick=TestPanel.open() dans le HTML
+    // (plus de navigation)
     
     // Rafraîchir la liste des tâches actives toutes les 5 secondes
     setInterval(async () => {
@@ -1198,13 +1283,13 @@ document.querySelectorAll('.disk-card').forEach(card => {
         // Si déjà expanded et clic sur la carte (pas l'icon) : on ne replie pas
     });
     
-    // Ajouter l'icône d'expansion si elle n'existe pas déjà
+    // Ajouter l'icône d'expansion si elle n'existe pas déjà (fallback)
     if (!card.querySelector('.expand-icon')) {
         const expandIcon = document.createElement('span');
         expandIcon.className = 'expand-icon';
         expandIcon.innerHTML = '🔽';
         expandIcon.title = 'Déplier / Replier';
-        card.appendChild(expandIcon);
+        card.insertBefore(expandIcon, card.firstChild);
     }
 });
 
@@ -1270,3 +1355,681 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+
+// ══ NAVIGATION + MODES ══
+// ═══════════════════════════════════════════════════════════════
+// NAVIGATION — slider 4 modes
+// ═══════════════════════════════════════════════════════════════
+const NAV_LABELS = ['📊 Monitoring', '💾 Backup', '⚖️ Parité', '📋 Logs'];
+let _currentSlide = 0;
+let _isMobile = () => window.innerWidth <= 768;
+
+const Navigation = {
+    init: () => {
+        Navigation._updateArrows();
+        Navigation._updateDots();
+        Navigation._updateTabs();
+        // Restaurer depuis sessionStorage
+        const saved = parseInt(sessionStorage.getItem('activeSlide') || '0');
+        if (saved > 0) Navigation.go(saved, true);
+    },
+
+    go: (index, instant = false) => {
+        _currentSlide = Math.max(0, Math.min(3, index));
+        sessionStorage.setItem('activeSlide', _currentSlide);
+
+        const container = document.getElementById('slides-container');
+        if (!container) return;
+
+        if (_isMobile()) {
+            // Mobile : translation verticale — chaque slide fait 100vh
+            // On utilise le viewport pour un scroll propre
+            const slideH = window.innerHeight;
+            container.style.transition = instant ? 'none' : 'transform 0.42s cubic-bezier(0.4,0,0.2,1)';
+            container.style.transform = `translateY(-${_currentSlide * slideH}px)`;
+        } else {
+            // Desktop : translation horizontale
+            container.style.transition = instant ? 'none' : 'transform 0.42s cubic-bezier(0.4,0,0.2,1)';
+            container.style.transform = `translateX(-${_currentSlide * 25}%)`;
+        }
+
+        Navigation._updateTabs();
+        Navigation._updateDots();
+        Navigation._updateArrows();
+        Navigation._updateModeLabel();
+
+        // Sur slide Logs : charger les logs
+        if (_currentSlide === 3) {
+            setTimeout(() => LogViewer.loadFromServer(), 200);
+        }
+    },
+
+    next: () => Navigation.go(_currentSlide + 1),
+    prev: () => Navigation.go(_currentSlide - 1),
+
+    toggleDrawer: () => {
+        const drawer = document.getElementById('nav-drawer');
+        const overlay = document.getElementById('drawer-overlay');
+        const hamburger = document.getElementById('hamburger');
+        drawer.classList.toggle('open');
+        overlay.classList.toggle('show');
+        hamburger.classList.toggle('open');
+    },
+
+    closeDrawer: () => {
+        document.getElementById('nav-drawer')?.classList.remove('open');
+        document.getElementById('drawer-overlay')?.classList.remove('show');
+        document.getElementById('hamburger')?.classList.remove('open');
+    },
+
+    _updateTabs: () => {
+        document.querySelectorAll('.nav-tab, .drawer-item').forEach(btn => {
+            btn.classList.toggle('active', parseInt(btn.dataset.mode) === _currentSlide);
+        });
+    },
+
+    _updateDots: () => {
+        document.querySelectorAll('.slide-dot').forEach((dot, i) => {
+            dot.classList.toggle('active', i === _currentSlide);
+        });
+    },
+
+    _updateArrows: () => {
+        const prev = document.getElementById('nav-prev');
+        const next = document.getElementById('nav-next');
+        if (prev) prev.disabled = _currentSlide === 0;
+        if (next) next.disabled = _currentSlide === 3;
+    },
+
+    _updateModeLabel: () => {
+        const el = document.getElementById('nav-mode-label');
+        if (el) el.textContent = NAV_LABELS[_currentSlide];
+    }
+};
+
+// Recalcul au resize (passage desktop ↔ mobile)
+window.addEventListener('resize', () => {
+    Navigation.go(_currentSlide, true);
+});
+
+// Swipe tactile horizontal (desktop) et vertical (mobile)
+(function() {
+    let sx = 0, sy = 0;
+    const vp = document.getElementById('slides-viewport');
+    if (!vp) return;
+    vp.addEventListener('touchstart', e => {
+        sx = e.touches[0].clientX;
+        sy = e.touches[0].clientY;
+    }, {passive: true});
+    vp.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - sx;
+        const dy = e.changedTouches[0].clientY - sy;
+        if (_isMobile()) {
+            if (Math.abs(dy) > 50 && Math.abs(dy) > Math.abs(dx)) {
+                dy < 0 ? Navigation.next() : Navigation.prev();
+            }
+        } else {
+            if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+                dx < 0 ? Navigation.next() : Navigation.prev();
+            }
+        }
+    }, {passive: true});
+})();
+
+// ═══════════════════════════════════════════════════════════════
+// PARITE — scrub ZFS + SMART self-test + intégrité
+// ═══════════════════════════════════════════════════════════════
+const Parite = {
+    startScrub: async (pool) => {
+        const tid = Toolbox.addInstantTask(`Scrub ZFS ${pool}`);
+        const prog = document.getElementById(`scrub-progress-${pool}`);
+        const bar = document.getElementById(`scrub-bar-${pool}`);
+        const status = document.getElementById(`scrub-status-${pool}`);
+        if (prog) prog.style.display = 'block';
+        try {
+            const res = await fetch('/zfs_scrub', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({pool})
+            });
+            if (res.ok) {
+                Toolbox.finishInstantTask(tid, 'Finished', `Scrub lancé sur ${pool}`);
+                if (status) status.textContent = '✅ Scrub lancé — vérifiez le statut dans quelques minutes';
+                if (bar) bar.style.width = '100%';
+                UI.showNotification(`Scrub lancé sur ${pool}`, 'success');
+            } else {
+                throw new Error(await res.text());
+            }
+        } catch(e) {
+            Toolbox.finishInstantTask(tid, 'Error', e.message);
+            if (status) status.textContent = '❌ ' + e.message;
+            UI.showNotification('Erreur scrub: ' + e.message, 'error');
+        }
+    },
+
+    stopScrub: async (pool) => {
+        try {
+            await fetch('/zfs_scrub_stop', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({pool})});
+            UI.showNotification(`Scrub arrêté sur ${pool}`, 'info');
+        } catch(e) { UI.showNotification('Erreur: ' + e.message, 'error'); }
+    },
+
+    checkStatus: async (pool) => {
+        try {
+            const res = await fetch(`/zfs_status/${pool}`);
+            const data = await res.json();
+            const el = document.getElementById(`scrub-status-${pool}`);
+            const prog = document.getElementById(`scrub-progress-${pool}`);
+            if (prog) prog.style.display = 'block';
+            if (el) el.textContent = data.status || 'Statut récupéré';
+        } catch(e) { UI.showNotification('Erreur: ' + e.message, 'error'); }
+    },
+
+    clearErrors: async (pool) => {
+        if (!confirm(`Effacer les compteurs d'erreurs de ${pool} ?`)) return;
+        try {
+            await fetch('/zfs_clear', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({pool})});
+            UI.showNotification(`Erreurs effacées pour ${pool}`, 'success');
+        } catch(e) { UI.showNotification('Erreur: ' + e.message, 'error'); }
+    },
+
+    smartTest: async (disk, type) => {
+        const el = document.getElementById(`smart-test-${disk}`);
+        if (type === 'status') {
+            try {
+                const res = await fetch(`/smart_status/${disk}`);
+                const data = await res.json();
+                if (el) el.innerHTML = `<pre style="white-space:pre-wrap;font-size:0.8em;color:#555;">${data.output || 'Aucun résultat'}</pre>`;
+            } catch(e) { if (el) el.textContent = 'Erreur: ' + e.message; }
+            return;
+        }
+        const tid = Toolbox.addInstantTask(`SMART ${type === 'short' ? 'court' : 'long'} — ${disk}`);
+        if (el) el.textContent = '⏳ Test en cours…';
+        try {
+            const res = await fetch('/smart_test', {
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({disk, type})
+            });
+            const data = await res.json();
+            Toolbox.finishInstantTask(tid, 'Finished', `Test SMART ${type} lancé`);
+            if (el) el.innerHTML = `<span style="color:var(--success)">✅ ${data.message || 'Test lancé'}</span>`;
+            UI.showNotification(`Test SMART ${type} lancé sur ${disk}`, 'success');
+        } catch(e) {
+            Toolbox.finishInstantTask(tid, 'Error', e.message);
+            if (el) el.innerHTML = `<span style="color:var(--danger)">❌ ${e.message}</span>`;
+        }
+    },
+
+    checkIntegrity: async () => {
+        const path = document.getElementById('integrity-path')?.value;
+        const algo = document.getElementById('integrity-algo')?.value || 'sha256';
+        const expected = document.getElementById('integrity-expected')?.value || '';
+        const result = document.getElementById('integrity-result');
+        if (!path) { UI.showNotification('Entrez un chemin', 'error'); return; }
+        if (result) result.textContent = '⏳ Calcul en cours…';
+        const tid = Toolbox.addInstantTask(`Intégrité ${algo}`, path);
+        try {
+            const res = await fetch('/check_integrity', {
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({path, algo, expected})
+            });
+            const data = await res.json();
+            Toolbox.finishInstantTask(tid, data.match !== false ? 'Finished' : 'Error', data.hash || '');
+            if (result) {
+                let out = `Algorithme : ${algo.toUpperCase()}\nFichier    : ${path}\nChecksum   : ${data.hash || '?'}`;
+                if (expected) out += `\nAttendu    : ${expected}\nRésultat   : ${data.match ? '✅ IDENTIQUE' : '❌ DIFFÉRENT'}`;
+                result.textContent = out;
+                result.style.color = expected ? (data.match ? '#2ecc71' : '#e74c3c') : '#cdd3de';
+            }
+        } catch(e) {
+            Toolbox.finishInstantTask(tid, 'Error', e.message);
+            if (result) result.textContent = '❌ Erreur : ' + e.message;
+        }
+    }
+};
+
+// ═══════════════════════════════════════════════════════════════
+// BACKUP étendu — formulaire slide-1
+// ═══════════════════════════════════════════════════════════════
+Backup.startFromForm = async (event) => {
+    event.preventDefault();
+    const src = document.getElementById('backup-src-select').value;
+    const dest = document.getElementById('backup-dest-main').value;
+    const bs = document.getElementById('backup-bs-main').value;
+    let conv = [];
+    if (document.getElementById('bk-noerror').checked) conv.push('noerror');
+    if (document.getElementById('bk-sync').checked) conv.push('sync');
+
+    const payload = { source: src, destination: dest, bs, conv: conv.join(','), status: 'progress' };
+
+    const prog = document.getElementById('backup-progress-main');
+    const btn = document.getElementById('bk-btn-main');
+    if (prog) prog.style.display = 'block';
+    if (btn) { btn.disabled = true; btn.textContent = '⏳ En cours…'; }
+
+    try {
+        const res = await fetch('/start_backup', {
+            method:'POST', headers:{'Content-Type':'application/json'},
+            body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+            Backup._taskId = Toolbox.addInstantTask(`Sauvegarde ${src}`, `→ ${dest}`);
+            UI.showNotification('Sauvegarde démarrée', 'success');
+            BackupHistory.add(src, dest, 'running');
+        } else {
+            UI.showNotification('Erreur au démarrage', 'error');
+            if (btn) { btn.disabled = false; btn.textContent = '🚀 Démarrer la sauvegarde'; }
+        }
+    } catch(e) {
+        UI.showNotification('Erreur réseau', 'error');
+        if (btn) { btn.disabled = false; btn.textContent = '🚀 Démarrer la sauvegarde'; }
+    }
+};
+
+Backup.startRestore = async (event) => {
+    event.preventDefault();
+    const src = document.getElementById('restore-src').value;
+    const dest = document.getElementById('restore-dest').value;
+    if (!confirm(`⚠️ Restaurer ${src} vers ${dest} ?\nToutes les données de ${dest} seront ÉCRASÉES.`)) return;
+    const payload = { source: src, destination: dest, bs: '4M', conv: 'noerror,sync', status: 'progress', reverse: true };
+    const prog = document.getElementById('restore-progress');
+    if (prog) prog.style.display = 'block';
+    try {
+        const res = await fetch('/start_backup', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+        if (res.ok) {
+            Backup._taskId = Toolbox.addInstantTask(`Restauration ${dest}`, `← ${src}`);
+            UI.showNotification('Restauration démarrée', 'success');
+        } else { UI.showNotification('Erreur au démarrage', 'error'); }
+    } catch(e) { UI.showNotification('Erreur réseau', 'error'); }
+};
+
+// Mise à jour barres de progression slide-1
+socket.on('backup_progress', (data) => {
+    const pct = data.percent ?? 0;
+    // Barre slide-1
+    ['bk-bar-main', 'restore-bar'].forEach(id => {
+        const bar = document.getElementById(id);
+        if (bar) bar.style.width = `${pct}%`;
+    });
+    const pctLabel = document.getElementById('bk-pct-label');
+    if (pctLabel) pctLabel.textContent = pct + '%';
+    const statusMain = document.getElementById('bk-status-main');
+    if (statusMain) {
+        statusMain.textContent = `${data.copied || '?'} / ${data.total || '?'} @ ${data.speed || '—'}`;
+    }
+    const restoreStatus = document.getElementById('restore-status');
+    if (restoreStatus) restoreStatus.textContent = statusMain?.textContent || '';
+    // Toolbox
+    if (Backup._taskId) {
+        const task = Toolbox.taskHistory.find(t => t.id === Backup._taskId);
+        if (task) { task.progress = pct; task.current_op = `${data.copied || '?'} / ${data.total || '?'} @ ${data.speed || '—'}`; Toolbox.renderHistory(); }
+    }
+});
+
+socket.on('backup_complete', (data) => {
+    const btn = document.getElementById('bk-btn-main');
+    if (btn) { btn.disabled = false; btn.textContent = '🚀 Démarrer la sauvegarde'; }
+    if (data.status === 'success') {
+        UI.showNotification(data.message, 'success');
+        document.querySelectorAll('#bk-bar-main, #restore-bar').forEach(b => b.style.width = '100%');
+        BackupHistory.finish(data.status);
+    } else {
+        UI.showNotification('❌ ' + (data.message || 'Erreur'), 'error');
+        BackupHistory.finish('error');
+    }
+    if (Backup._taskId) {
+        Toolbox.finishInstantTask(Backup._taskId, data.status === 'success' ? 'Finished' : 'Error', data.message || '');
+        Backup._taskId = null;
+    }
+});
+
+// Historique simple des sauvegardes (en mémoire)
+const BackupHistory = {
+    entries: [],
+    _current: null,
+    add: (src, dest, status) => {
+        const e = { src, dest, status, ts: new Date().toLocaleString('fr-FR'), end: null };
+        BackupHistory._current = e;
+        BackupHistory.entries.unshift(e);
+        BackupHistory.render();
+    },
+    finish: (status) => {
+        if (BackupHistory._current) {
+            BackupHistory._current.status = status;
+            BackupHistory._current.end = new Date().toLocaleString('fr-FR');
+        }
+        BackupHistory.render();
+    },
+    render: () => {
+        const el = document.getElementById('backup-history-list');
+        if (!el) return;
+        if (!BackupHistory.entries.length) {
+            el.innerHTML = '<p class="text-muted" style="text-align:center;padding:20px;">Aucune sauvegarde effectuée</p>';
+            return;
+        }
+        el.innerHTML = BackupHistory.entries.map(e => `
+            <div class="backup-entry ${e.status}">
+                <div class="backup-entry-info">
+                    <div class="backup-entry-name">${e.status === 'success' ? '✅' : e.status === 'error' ? '❌' : '⏳'} ${e.src.replace('/dev/','')} → ${e.dest}</div>
+                    <div class="backup-entry-meta">Démarré ${e.ts}${e.end ? ' · Terminé ' + e.end : ''}</div>
+                </div>
+            </div>
+        `).join('');
+    }
+};
+
+// ═══════════════════════════════════════════════════════════════
+// LOG VIEWER — slide 3
+// ═══════════════════════════════════════════════════════════════
+const LogViewer = {
+    entries: [],
+    autoScroll: true,
+
+    loadFromServer: async () => {
+        try {
+            const res = await fetch('/get_logs');
+            if (!res.ok) return;
+            const data = await res.json();
+            LogViewer.entries = data.entries || [];
+            LogViewer.filter();
+        } catch(e) { console.warn('Logs non disponibles', e); }
+    },
+
+    push: (entry) => {
+        LogViewer.entries.push(entry);
+        if (LogViewer.entries.length > 2000) LogViewer.entries.shift();
+        LogViewer.filter();
+    },
+
+    filter: () => {
+        const search = document.getElementById('log-search')?.value?.toLowerCase() || '';
+        const taskF = document.getElementById('log-task-filter')?.value?.toLowerCase() || '';
+        const levels = {
+            INFO:  document.getElementById('lf-info')?.checked  ?? true,
+            ERROR: document.getElementById('lf-error')?.checked ?? true,
+            WARN:  document.getElementById('lf-warn')?.checked  ?? true,
+            CMD:   document.getElementById('lf-cmd')?.checked   ?? true,
+            OUT:   document.getElementById('lf-out')?.checked   ?? false,
+            HTTP:  document.getElementById('lf-http')?.checked  ?? false,
+            DEBUG: document.getElementById('lf-debug')?.checked ?? false,
+        };
+
+        const filtered = LogViewer.entries.filter(e => {
+            const lvl = (e.level || 'INFO').toUpperCase();
+            if (!levels[lvl]) return false;
+            if (search && !e.message?.toLowerCase().includes(search)) return false;
+            if (taskF && !(e.taskId || '').toLowerCase().includes(taskF)) return false;
+            return true;
+        });
+
+        LogViewer.render(filtered);
+        const badge = document.getElementById('log-count-badge');
+        if (badge) badge.textContent = `${filtered.length} entrée${filtered.length > 1 ? 's' : ''}`;
+    },
+
+    render: (entries) => {
+        const el = document.getElementById('log-viewer-main');
+        if (!el) return;
+        if (!entries || !entries.length) {
+            el.innerHTML = '<div class="log-empty"><span class="log-empty-icon">📋</span><span>Aucun log ne correspond aux filtres</span></div>';
+            return;
+        }
+        el.innerHTML = entries.map(e => {
+            const ts = e.ts ? e.ts.replace('T', ' ').substring(0, 19) : '—';
+            const lvl = (e.level || 'INFO').toUpperCase();
+            const taskId = (e.taskId || 'system').substring(0, 18);
+            const msg = (e.message || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            return `<div class="log-line"><span class="log-ts">${ts}</span><span class="log-level ${lvl}">${lvl}</span><span class="log-task">${taskId}</span><span class="log-msg">${msg}</span></div>`;
+        }).join('');
+        if (LogViewer.autoScroll) el.scrollTop = el.scrollHeight;
+    },
+
+    scrollBottom: () => {
+        const el = document.getElementById('log-viewer-main');
+        if (el) el.scrollTop = el.scrollHeight;
+    },
+
+    clear: () => {
+        LogViewer.entries = [];
+        LogViewer.filter();
+    },
+
+    export: () => {
+        const lines = LogViewer.entries.map(e =>
+            `[${e.ts || ''}] [${(e.level||'INFO').padEnd(5)}] [${(e.taskId||'system').padEnd(20)}] ${e.message || ''}`
+        ).join('\n');
+        const blob = new Blob([lines], {type:'text/plain'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `storage-monitor-${new Date().toISOString().slice(0,10)}.log`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+    }
+};
+
+// Alimenter le log viewer depuis les events toolbox
+socket.on('toolbox_log', (entry) => {
+    LogViewer.push(entry);
+    // Aussi dans la toolbox (comportement existant)
+    const opts = Toolbox.getLogOptions();
+    const level = entry.level || 'INFO';
+    if (level === 'CMD' && !opts.commands) return;
+    if (level === 'OUT' && !opts.output) return;
+    if (level === 'HTTP' && !opts.http) return;
+    if (level === 'DEBUG' && !opts.progress) return;
+    Toolbox.logEntries = Toolbox.logEntries || [];
+    Toolbox.logEntries.push({ ts: entry.ts || new Date().toISOString(), level, taskId: entry.taskId || 'system', message: entry.message || '' });
+    if (Toolbox.logEntries.length > 500) Toolbox.logEntries.shift();
+    fetch('/toolbox_log', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(entry) }).catch(()=>{});
+});
+
+// Miroir tasks-container dans slide-3 logs
+const _origRenderHistory = Toolbox.renderHistory.bind(Toolbox);
+Toolbox.renderHistory = () => {
+    _origRenderHistory();
+    const logsContainer = document.getElementById('tasks-container-logs');
+    if (logsContainer) {
+        const main = document.getElementById('tasks-container');
+        if (main) logsContainer.innerHTML = main.innerHTML;
+    }
+};
+
+
+
+// ═══════════════════════════════════════════════════════════════
+// TEST PANEL — panneau latéral pour les détails d'un test
+// ═══════════════════════════════════════════════════════════════
+const TestPanel = {
+    _currentId: null,
+
+    open: async (testId) => {
+        TestPanel._currentId = testId;
+        const panel  = document.getElementById('test-panel');
+        const overlay = document.getElementById('test-panel-overlay');
+        const body   = document.getElementById('test-panel-body');
+
+        // Ouvrir immédiatement avec spinner
+        body.innerHTML = '<div class="test-panel-loading"><div class="test-panel-spinner"></div><span>Chargement…</span></div>';
+        panel.classList.add('open');
+        overlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+
+        // Lire les métadonnées depuis la carte existante dans le DOM (0 fetch)
+        const card = document.getElementById(`report-${testId}`);
+        if (card) {
+            const name   = card.querySelector('strong')?.textContent || testId;
+            const date   = card.querySelector('.date')?.textContent || '';
+            const badge  = card.querySelector('.badge');
+            const status = badge?.textContent?.trim() || '?';
+            document.getElementById('test-panel-name').textContent = name;
+            document.getElementById('test-panel-meta').innerHTML =
+                `📅 ${date} &nbsp;·&nbsp; <span class="test-panel-status ${status.toLowerCase()}">${status}</span>`;
+            const icons = { Finished:'✅', Running:'⏳', Error:'❌' };
+            document.getElementById('test-panel-icon').textContent = icons[status] || '📊';
+        }
+
+        try {
+            const res = await fetch(`/test_fragment/${testId}`);
+            if (!res.ok) throw new Error(`Erreur serveur ${res.status}`);
+            const html = await res.text();
+
+            // Le fragment contient ses propres <style> + contenu — on l'injecte directement
+            body.innerHTML = html;
+            body.scrollTop = 0;
+
+        } catch (err) {
+            body.innerHTML = `
+                <div style="padding:40px; text-align:center;">
+                    <div style="font-size:2.5em; margin-bottom:12px;">❌</div>
+                    <p style="color:#e74c3c; font-weight:600;">Impossible de charger le rapport</p>
+                    <small style="color:#7f8c8d;">${err.message}</small>
+                    <div style="margin-top:20px;">
+                        <a href="/test_detail/${testId}" target="_blank"
+                           style="display:inline-block; padding:8px 18px; background:var(--primary); color:#fff;
+                                  border-radius:6px; text-decoration:none; font-weight:600;">
+                            ↗ Ouvrir dans un onglet
+                        </a>
+                    </div>
+                </div>`;
+        }
+    },
+
+    close: () => {
+        TestPanel._currentId = null;
+        document.getElementById('test-panel')?.classList.remove('open');
+        document.getElementById('test-panel-overlay')?.classList.remove('show');
+        document.body.style.overflow = '';
+    },
+
+    openExternal: () => {
+        if (TestPanel._currentId) {
+            window.open(`/test_detail/${TestPanel._currentId}`, '_blank');
+        }
+    },
+
+    _injectStyles: () => {
+        // Injecter les styles spécifiques de test_detail si pas déjà fait
+        if (document.getElementById('test-panel-extra-styles')) return;
+        const style = document.createElement('style');
+        style.id = 'test-panel-extra-styles';
+        style.textContent = `
+            .test-panel-body .summary-chip { padding:5px 12px; border-radius:16px; font-size:0.84em; font-weight:600; display:inline-flex; align-items:center; gap:5px; }
+            .test-panel-body .chip-ok       { background:#d4efdf; color:#1e8449; }
+            .test-panel-body .chip-warning  { background:#fdebd0; color:#d35400; }
+            .test-panel-body .chip-critical { background:#fadbd8; color:#c0392b; }
+            .test-panel-body .chip-info     { background:#d6eaf8; color:#1a5276; }
+            .test-panel-body .disk-header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; padding-bottom:12px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+            .test-panel-body .disk-title  { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+            .test-panel-body .disk-title h2 { margin:0; font-size:1.15em; }
+            .test-panel-body .health-pill { padding:3px 10px; border-radius:14px; font-size:0.82em; font-weight:600; }
+            .test-panel-body .health-pill.ok       { background:var(--success); color:#fff; }
+            .test-panel-body .health-pill.warning  { background:var(--warning); color:#2c3e50; }
+            .test-panel-body .health-pill.critical { background:var(--danger); color:#fff; }
+            .test-panel-body .temp-pill { padding:5px 12px; border-radius:16px; font-weight:700; color:#fff; font-size:0.88em; }
+            .test-panel-body .temp-cool { background:#2ecc71; }
+            .test-panel-body .temp-warm { background:#f39c12; color:#2c3e50; }
+            .test-panel-body .temp-hot  { background:#e74c3c; }
+            .test-panel-body .alert-box { border-radius:6px; padding:10px 14px; margin-bottom:12px; }
+            .test-panel-body .alert-box.critical { background:#fadbd8; border-left:4px solid var(--danger); }
+            .test-panel-body .alert-box.warning  { background:#fdebd0; border-left:4px solid var(--warning); }
+            .test-panel-body .alert-box strong { display:block; margin-bottom:5px; }
+            .test-panel-body .alert-box ul { margin:0 0 0 18px; }
+            .test-panel-body .alert-box li { margin:3px 0; font-size:0.88em; }
+            .test-panel-body .smart-cats { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:8px; margin:12px 0; }
+            .test-panel-body .smart-cat { border-radius:6px; padding:10px; border:1px solid var(--border); }
+            .test-panel-body .smart-cat.cat-ok       { background:#d4efdf; }
+            .test-panel-body .smart-cat.cat-warning  { background:#fdebd0; }
+            .test-panel-body .smart-cat.cat-critical { background:#fadbd8; }
+            .test-panel-body .smart-cat-title { font-weight:700; font-size:0.82em; margin-bottom:3px; }
+            .test-panel-body .smart-cat-value { font-size:1.5em; font-weight:700; }
+            .test-panel-body .smart-cat-note  { font-size:0.74em; color:#7f8c8d; margin-top:2px; }
+            .test-panel-body .metric-card { background:var(--bg); border-radius:8px; padding:12px; text-align:center; border:1px solid var(--border); }
+            .test-panel-body .metric-value { font-size:1.5em; font-weight:700; color:var(--primary); line-height:1.1; }
+            .test-panel-body .metric-unit  { font-size:0.6em; color:#7f8c8d; }
+            .test-panel-body .metric-label { font-size:0.8em; color:#7f8c8d; margin-top:3px; }
+            .test-panel-body .smart-section summary { cursor:pointer; padding:8px 12px; background:var(--bg); border-radius:6px; font-weight:600; user-select:none; }
+            .test-panel-body .smart-section summary:hover { background:var(--hover); }
+            .test-panel-body .smart-attr-critical td { background:#fff3cd !important; color:#856404; font-weight:500; }
+            .test-panel-body .smart-attr-alert    td { background:#f8d7da !important; color:#721c24; font-weight:600; }
+            .test-panel-body .tip { cursor:help; border-bottom:1px dashed #aaa; }
+            .test-panel-body .nvme-note { background:#d6eaf8; border-left:4px solid var(--primary); padding:7px 12px; border-radius:4px; font-size:0.84em; color:#1a5276; margin-bottom:10px; }
+            .test-panel-body .smart-error-banner { padding:10px 14px; background:#f8d7da; border-radius:6px; border-left:4px solid var(--danger); margin-bottom:10px; color:#721c24; font-size:0.88em; }
+            .test-panel-body .back-link { display:none; }
+        `;
+        document.head.appendChild(style);
+    }
+};
+
+// ═══════════════════════════════════════════════════════════════
+// REPORTS LIST — mise à jour dynamique sans reload
+// ═══════════════════════════════════════════════════════════════
+const ReportsList = {
+    // Ajouter une carte "Running" immédiatement après démarrage
+    addRunning: (testId, name) => {
+        const grid = document.getElementById('reports-list');
+        if (!grid) return;
+        // Éviter les doublons
+        if (document.getElementById(`report-${testId}`)) return;
+
+        const now = new Date().toLocaleDateString('fr-FR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'}).replace(',', '');
+        const card = document.createElement('div');
+        card.className = 'report-card running';
+        card.id = `report-${testId}`;
+        card.dataset.testId = testId;
+        card.style.cursor = 'pointer';
+        card.onclick = () => TestPanel.open(testId);
+        card.innerHTML = `
+            <div class="report-top">
+                <strong>${name}</strong>
+                <span class="date">${now}</span>
+            </div>
+            <div class="report-bottom">
+                <span class="badge bg-warning">Running</span>
+                <div class="actions">
+                    <input type="checkbox" class="chart-toggle" value="${testId}"
+                           onclick="event.stopPropagation();"
+                           onchange="Charts.update(Charts.currentChartType);">
+                    <button onclick="event.preventDefault(); event.stopPropagation(); Bench.deleteTest('${testId}')"
+                            class="btn-delete" title="Supprimer">🗑️</button>
+                </div>
+            </div>`;
+        grid.insertBefore(card, grid.firstChild);
+    },
+
+    // Mettre à jour le badge de statut d'une carte existante
+    updateCard: (testId, status, progress) => {
+        const card = document.getElementById(`report-${testId}`);
+        if (!card) return;
+
+        const badgeEl = card.querySelector('.badge');
+        if (!badgeEl) return;
+
+        const classMap = { Running:'bg-warning', Finished:'bg-success', Error:'bg-danger' };
+        badgeEl.className = `badge ${classMap[status] || 'bg-danger'}`;
+        badgeEl.textContent = status;
+        card.className = `report-card ${status.toLowerCase()}`;
+
+        // Ajouter barre de progression inline si Running
+        let progBar = card.querySelector('.inline-prog');
+        if (status === 'Running' && progress !== undefined) {
+            if (!progBar) {
+                progBar = document.createElement('div');
+                progBar.className = 'inline-prog progress-bar-bg';
+                progBar.style.cssText = 'margin:4px 0 0; height:3px;';
+                progBar.innerHTML = '<div class="progress-bar-fill" style="height:3px; transition:width 0.5s;"></div>';
+                card.appendChild(progBar);
+            }
+            progBar.querySelector('.progress-bar-fill').style.width = `${progress}%`;
+        } else if (status !== 'Running' && progBar) {
+            progBar.remove();
+        }
+    }
+};
+
+// Fermer le panel avec Escape
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') TestPanel.close();
+});
